@@ -1,0 +1,23 @@
+{
+  "ticker": "AAPL",
+  "fetched_at": "2024-01-15T12:00:00+00:00",
+  "as_of_date": null,
+  "missing_fields": [],
+  "prices": [
+    {"date": "2024-01-10", "open": 183.92, "high": 185.15, "low": 182.73, "close": 184.40, "volume": 53234100},
+    {"date": "2024-01-11", "open": 184.35, "high": 186.00, "low": 183.62, "close": 185.59, "volume": 47547300},
+    {"date": "2024-01-12", "open": 186.06, "high": 187.15, "low": 184.26, "close": 185.92, "volume": 52628100}
+  ],
+  "fundamentals": {
+    "roe": 0.17,
+    "debt_to_equity": 0.80,
+    "free_cash_flow": 89900000000,
+    "revenue_growth_5y": 0.092,
+    "earnings_growth_5y": 0.11,
+    "dividend_yield": 0.0051,
+    "payout_ratio": 0.158,
+    "dividend_growth_streak_years": null,
+    "pe_ratio": 30.4,
+    "pe_5y_avg": 28.1
+  }
+}

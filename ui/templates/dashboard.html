@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Investment Decision System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Stock Rankings</h1>
+  <p class="page-subtitle">
+    {{ stocks|length }} stocks analyzed ·
+    <span class="badge badge-buy">▲ BUY {{ buy_count }}</span>
+    <span class="badge badge-watch">■ WATCH {{ watch_count }}</span>
+    <span class="badge badge-avoid">▼ AVOID {{ avoid_count }}</span>
+  </p>
+</div>
+
+<!-- ── Global uncertainty panel ─────────────────────────────────────── -->
+{% if all_flags %}
+<section class="uncertainty-panel" id="global-flags">
+  <div class="panel-header panel-header-warning" onclick="togglePanel('flags-body')">
+    <span>⚠ Active Uncertainty Flags ({{ all_flags|length }})</span>
+    <span class="toggle-hint" id="flags-body-hint">▼ show</span>
+  </div>
+  <div class="panel-body hidden" id="flags-body">
+    <table class="flag-table">
+      <thead>
+        <tr><th>Ticker</th><th>Flag</th></tr>
+      </thead>
+      <tbody>
+        {% for item in all_flags %}
+        <tr>
+          <td><a href="/stock/{{ item.ticker }}" class="ticker-link">{{ item.ticker }}</a></td>
+          <td class="flag-text">{{ item.flag }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+
+<!-- ── Rankings table ────────────────────────────────────────────────── -->
+<section class="rankings-section">
+  <div class="table-toolbar">
+    <label for="sort-select">Sort by:</label>
+    <select id="sort-select" onchange="sortTable(this.value)">
+      <option value="score">Score (default)</option>
+      <option value="confidence">Confidence</option>
+      <option value="decision">Decision</option>
+      <option value="ticker">Ticker A–Z</option>
+    </select>
+    <span class="toolbar-hint">Click a row to inspect full reasoning</span>
+  </div>
+
+  <table class="rankings-table" id="rankings-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Ticker</th>
+        <th>Name</th>
+        <th>Sector</th>
+        <th>Score&nbsp;/100</th>
+        <th>Score Breakdown</th>
+        <th>Decision</th>
+        <th>Valuation</th>
+        <th>Confidence</th>
+        <th>Uncertainty</th>
+      </tr>
+    </thead>
+    <tbody id="rankings-body">
+      {% for s in stocks %}
+      <tr class="stock-row" onclick="window.location='/stock/{{ s.ticker }}'"
+          data-score="{{ s.score }}"
+          data-confidence="{{ s.confidence }}"
+          data-decision="{{ s.decision }}"
+          data-ticker="{{ s.ticker }}">
+        <td class="rank-num">{{ loop.index }}</td>
+        <td><a href="/stock/{{ s.ticker }}" class="ticker-link" onclick="event.stopPropagation()">{{ s.ticker }}</a></td>
+        <td class="stock-name">{{ s.name }}</td>
+        <td class="sector-tag">{{ s.sector }}</td>
+        <td class="score-cell">
+          <span class="score-number">{{ "%.1f"|format(s.score) }}</span>
+          <div class="score-bar-wrap">
+            <div class="score-bar" style="width:{{ s.score }}%"
+                 data-decision="{{ s.decision }}"></div>
+          </div>
+        </td>
+        <td class="breakdown-cell">
+          <div class="mini-breakdown">
+            <span class="mb-item" title="Quality ×40%">Q&nbsp;{{ "%.0f"|format(s.quality_score) }}</span>
+            <span class="mb-item" title="Growth ×25%">G&nbsp;{{ "%.0f"|format(s.growth_score) }}</span>
+            <span class="mb-item" title="Dividend ×20%">D&nbsp;{{ "%.0f"|format(s.dividend_score) }}</span>
+            <span class="mb-item" title="Valuation ×15%">V&nbsp;{{ "%.0f"|format(s.valuation_score) }}</span>
+          </div>
+        </td>
+        <td>
+          <span class="badge badge-{{ s.decision|lower }}">
+            {% if s.decision == 'BUY' %}▲{% elif s.decision == 'WATCH' %}■{% else %}▼{% endif %}
+            {{ s.decision }}
+          </span>
+        </td>
+        <td>
+          <span class="val-tag val-{{ s.valuation_status }}">{{ s.valuation_status }}</span>
+        </td>
+        <td class="conf-cell">
+          <div class="conf-bar-wrap">
+            <div class="conf-bar" style="width:{{ (s.confidence * 100)|int }}%"></div>
+          </div>
+          <span class="conf-number">{{ "%.2f"|format(s.confidence) }}</span>
+        </td>
+        <td class="flags-cell">
+          {% if s.uncertainty_flags %}
+            <span class="flag-count">⚠ {{ s.uncertainty_flags|length }}</span>
+          {% else %}
+            <span class="no-flags">—</span>
+          {% endif %}
+          {% if s.missing_fields %}
+            <span class="missing-badge">{{ s.missing_fields|length }} missing</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<!-- ── Score legend ──────────────────────────────────────────────────── -->
+<section class="legend-section">
+  <h2 class="section-title">Decision Logic</h2>
+  <div class="legend-grid">
+    <div class="legend-card legend-buy">
+      <div class="legend-decision">▲ BUY</div>
+      <ul>
+        <li>Score &gt; 75</li>
+        <li>Valuation = undervalued</li>
+        <li>Sentiment = negative but improving</li>
+        <li>No macro downgrade (bearish &lt; 0.60)</li>
+      </ul>
+    </div>
+    <div class="legend-card legend-watch">
+      <div class="legend-decision">■ WATCH</div>
+      <ul>
+        <li>Score 60–75, OR</li>
+        <li>Score &gt; 75 but valuation not undervalued, OR</li>
+        <li>BUY_CANDIDATE with failed sentiment gate, OR</li>
+        <li>BUY downgraded by macro headwind ≥ 0.60</li>
+      </ul>
+    </div>
+    <div class="legend-card legend-avoid">
+      <div class="legend-decision">▼ AVOID</div>
+      <ul>
+        <li>Score &lt; 60</li>
+        <li>Soft signals cannot upgrade AVOID</li>
+      </ul>
+    </div>
+    <div class="legend-card legend-weights">
+      <div class="legend-decision">Score Weights</div>
+      <ul>
+        <li>Quality: 40%</li>
+        <li>Growth: 25%</li>
+        <li>Dividend: 20%</li>
+        <li>Valuation: 15%</li>
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}

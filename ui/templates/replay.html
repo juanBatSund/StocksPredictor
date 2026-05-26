@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block title %}Historical Replay — {{ ticker }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Historical Replay</h1>
+  <p class="page-subtitle">
+    Step through past decision snapshots.
+    Each snapshot uses only data available at that historical date.
+  </p>
+</div>
+
+<div class="replay-controls">
+  <label for="ticker-select">Stock:</label>
+  <select id="ticker-select" onchange="window.location='/replay/' + this.value">
+    {% for t in all_tickers %}
+    <option value="{{ t }}" {% if t == ticker %}selected{% endif %}>{{ t }}</option>
+    {% endfor %}
+  </select>
+  <span class="replay-rule-note">
+    No future data used in any snapshot.
+    Decisions are deterministic — same inputs always produce same outputs.
+  </span>
+</div>
+
+<!-- ── Timeline ──────────────────────────────────────────────────────── -->
+<div class="timeline-wrap" id="timeline">
+  {% for snap in snapshots %}
+  <div class="timeline-node {% if snap.change_note %}timeline-changed{% endif %}"
+       data-idx="{{ loop.index0 }}"
+       onclick="showSnapshot({{ loop.index0 }})">
+    <div class="tl-dot badge-{{ snap.decision|lower }}">
+      {% if snap.decision == 'BUY' %}▲{% elif snap.decision == 'WATCH' %}■{% else %}▼{% endif %}
+    </div>
+    <div class="tl-date">{{ snap.date }}</div>
+    <div class="tl-decision text-{{ snap.decision|lower }}">{{ snap.decision }}</div>
+    <div class="tl-score mono">{{ "%.1f"|format(snap.score) }}</div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- ── Snapshot slider ────────────────────────────────────────────────── -->
+<div class="slider-wrap">
+  <label for="snapshot-slider">Snapshot:</label>
+  <input type="range" id="snapshot-slider" min="0" max="{{ snapshots|length - 1 }}"
+         value="{{ snapshots|length - 1 }}" step="1"
+         oninput="showSnapshot(parseInt(this.value))">
+  <span id="slider-date-label" class="slider-date-label">{{ snapshots[-1].date }}</span>
+</div>
+
+<!-- ── Snapshot detail ────────────────────────────────────────────────── -->
+<div id="snapshot-detail">
+  {% for snap in snapshots %}
+  <section class="snapshot-card {% if not loop.last %}hidden{% endif %}"
+           id="snapshot-{{ loop.index0 }}">
+
+    <div class="snapshot-header">
+      <div class="snapshot-title">
+        <span class="snapshot-ticker">{{ ticker }}</span>
+        at <span class="snapshot-date mono">{{ snap.date }}</span>
+      </div>
+      <span class="decision-badge decision-badge-{{ snap.decision|lower }}">
+        {% if snap.decision == 'BUY' %}▲{% elif snap.decision == 'WATCH' %}■{% else %}▼{% endif %}
+        {{ snap.decision }}
+      </span>
+    </div>
+
+    {% if snap.change_note %}
+    <div class="change-note-banner">
+      <strong>⟳ Decision changed:</strong> {{ snap.change_note }}
+    </div>
+    {% endif %}
+
+    <div class="snapshot-grid">
+      <div class="snap-item">
+        <span class="snap-label">Score</span>
+        <span class="snap-value mono">{{ "%.1f"|format(snap.score) }}/100</span>
+      </div>
+      <div class="snap-item">
+        <span class="snap-label">Confidence</span>
+        <span class="snap-value mono">{{ "%.2f"|format(snap.confidence) }}</span>
+      </div>
+      <div class="snap-item">
+        <span class="snap-label">Valuation</span>
+        <span class="snap-value val-tag val-{{ snap.valuation_status }}">{{ snap.valuation_status }}</span>
+      </div>
+      <div class="snap-item">
+        <span class="snap-label">Sentiment</span>
+        <span class="snap-value mono sent-status-{{ snap.sentiment_status }}">
+          {{ snap.sentiment_status }} ({{ "%+.3f"|format(snap.sentiment_score) }},
+          trend {{ "%+.4f"|format(snap.sentiment_trend) }}/day)
+        </span>
+      </div>
+      <div class="snap-item">
+        <span class="snap-label">Macro</span>
+        <span class="snap-value mono">{{ snap.macro_category }}
+          {% if snap.macro_sector_direction %}
+            → {{ snap.macro_sector_direction }}
+            ({{ "%.2f"|format(snap.macro_sector_strength) }})
+          {% endif %}
+        </span>
+      </div>
+    </div>
+
+    <!-- Score mini-bars -->
+    <div class="snap-score-breakdown">
+      <div class="snap-score-title">Score components at this date:</div>
+      <div class="snap-bars">
+        {% for label, val, cls in [
+          ('Quality',   snap.quality_score,   'quality'),
+          ('Growth',    snap.growth_score,    'growth'),
+          ('Dividend',  snap.dividend_score,  'dividend'),
+          ('Valuation', snap.valuation_score, 'valuation')
+        ] %}
+        <div class="snap-bar-row">
+          <span class="snap-bar-label">{{ label }}</span>
+          <div class="comp-bar-wrap">
+            <div class="comp-bar comp-{{ cls }}" style="width:{{ val }}%"></div>
+          </div>
+          <span class="snap-bar-val mono">{{ "%.0f"|format(val) }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Gate summary -->
+    <div class="snap-gates">
+      <span class="snap-gates-label">Gates:</span>
+      <code class="snap-gates-text">{{ snap.gates_summary }}</code>
+    </div>
+
+    <!-- Uncertainty flags -->
+    {% if snap.uncertainty_flags %}
+    <div class="snap-flags">
+      <span class="snap-flags-label">⚠ Uncertainty at this date:</span>
+      <ul class="snap-flag-list">
+        {% for flag in snap.uncertainty_flags %}
+        <li>{{ flag }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <!-- Navigation -->
+    <div class="snap-nav">
+      {% if not loop.first %}
+      <button class="snap-nav-btn" onclick="showSnapshot({{ loop.index0 - 1 }})">← Previous</button>
+      {% endif %}
+      {% if not loop.last %}
+      <button class="snap-nav-btn" onclick="showSnapshot({{ loop.index0 + 1 }})">Next →</button>
+      {% endif %}
+      <span class="snap-nav-pos">{{ loop.index }} / {{ snapshots|length }}</span>
+    </div>
+
+  </section>
+  {% endfor %}
+</div>
+
+<!-- ── Data integrity note ───────────────────────────────────────────── -->
+<section class="replay-integrity-note">
+  <h2 class="section-title">Backtest Integrity Rules Applied</h2>
+  <ul>
+    <li>Each snapshot uses only information available on that date (no future data)</li>
+    <li>Decisions are deterministic — same inputs always produce same outputs</li>
+    <li>Revised data does not overwrite historical snapshots</li>
+    <li>Benchmark comparison uses the identical calendar window</li>
+    <li>This UI does not simulate trading costs or slippage</li>
+  </ul>
+</section>
+
+<script>
+const SNAPSHOT_COUNT = {{ snapshots|length }};
+</script>
+{% endblock %}

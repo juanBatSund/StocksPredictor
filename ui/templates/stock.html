@@ -1,0 +1,531 @@
+{% extends "base.html" %}
+{% block title %}{{ stock.ticker }} — Stock Detail{% endblock %}
+
+{% block content %}
+<div class="stock-breadcrumb">
+  <a href="/" class="back-link">← Dashboard</a>
+  <span class="breadcrumb-sep">/</span>
+  <span>{{ stock.ticker }}</span>
+</div>
+
+<!-- ── Hero ───────────────────────────────────────────────────────────── -->
+<section class="stock-hero">
+  <div class="hero-left">
+    <h1 class="stock-ticker">{{ stock.ticker }}</h1>
+    <div class="stock-full-name">{{ stock.name }}</div>
+    <div class="hero-tags">
+      <span class="sector-tag">{{ stock.sector }}</span>
+      <span class="val-tag val-{{ stock.valuation_status }}">{{ stock.valuation_status }}</span>
+      {% if stock.missing_fields %}
+        <span class="missing-badge-lg">⚠ {{ stock.missing_fields|length }} missing field{% if stock.missing_fields|length > 1 %}s{% endif %}: {{ stock.missing_fields|join(', ') }}</span>
+      {% endif %}
+    </div>
+  </div>
+  <div class="hero-right">
+    <span class="decision-badge decision-badge-{{ stock.decision|lower }}">
+      {% if stock.decision == 'BUY' %}▲{% elif stock.decision == 'WATCH' %}■{% else %}▼{% endif %}
+      {{ stock.decision }}
+    </span>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="stat-label">Score</span>
+        <span class="stat-value">{{ "%.1f"|format(stock.score) }}&nbsp;/&nbsp;100</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-label">Confidence</span>
+        <span class="stat-value">{{ "%.2f"|format(stock.confidence) }}</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-label">Price</span>
+        <span class="stat-value">${{ "%.2f"|format(stock.price) }}</span>
+      </div>
+    </div>
+    <div class="conf-disclaimer">Confidence ≠ probability of return</div>
+  </div>
+</section>
+
+<!-- ── Uncertainty flags (most important: shown first) ───────────────── -->
+{% if stock.uncertainty_flags %}
+<section class="uncertainty-panel" id="uncertainty">
+  <div class="panel-header panel-header-warning">
+    <span>⚠ Uncertainty Flags ({{ stock.uncertainty_flags|length }}) — Read before acting</span>
+  </div>
+  <div class="panel-body">
+    <ul class="flag-list">
+      {% for flag in stock.uncertainty_flags %}
+      <li class="flag-item">{{ flag }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}
+
+<!-- ── Plain-English summary ─────────────────────────────────────────── -->
+<section class="summary-panel">
+  <h2 class="section-title">Plain-English Summary</h2>
+  <div class="summary-body">
+    {% if stock.decision == 'BUY' %}
+    <p>
+      <strong>{{ stock.ticker }}</strong> passes all three required gates for a BUY signal.
+      Its fundamental score of <strong>{{ "%.1f"|format(stock.score) }}/100</strong> exceeds the 75-point threshold,
+      it is currently <strong>{{ stock.valuation_status }}</strong> relative to its 5-year history,
+      and market sentiment is negative but recovering — the contrarian entry signal this system requires.
+      {% if stock.macro_sector_direction == 'mixed' %}
+      The macro context has a mixed impact on the sector; this did not trigger a downgrade
+      (threshold for downgrade: bearish strength ≥ 0.60).
+      {% elif stock.macro_sector_direction == 'bullish' %}
+      The macro context is bullish for this sector, adding a tailwind.
+      {% endif %}
+      Confidence is <strong>{{ "%.2f"|format(stock.confidence) }}</strong> (heuristic, not a return probability).
+    </p>
+    {% elif stock.decision == 'WATCH' %}
+    <p>
+      <strong>{{ stock.ticker }}</strong> does not yet meet all criteria for a BUY signal.
+      {% set gate1_fail = gates_failed | selectattr('name', 'equalto', 'fundamental_score') | list %}
+      {% set gate2_fail = gates_failed | selectattr('name', 'equalto', 'valuation_status') | list %}
+      {% if gate1_fail %}
+      Its fundamental score of <strong>{{ "%.1f"|format(stock.score) }}/100</strong>
+      falls short of the 75-point BUY threshold
+      ({{ "%.1f"|format(75 - stock.score) }} points away).
+      {% endif %}
+      {% if gate2_fail %}
+      Its valuation is currently <strong>{{ stock.valuation_status }}</strong>, not undervalued —
+      this system requires a valuation discount before issuing a BUY.
+      {% endif %}
+      {% if stock.macro_category and stock.macro_sector_direction == 'bearish' and stock.macro_sector_strength >= 0.60 %}
+      Additionally, the stock passed all three gates initially but was downgraded from BUY to WATCH
+      due to a macro headwind: <strong>{{ stock.macro_category }}</strong> is bearish for
+      the {{ stock.sector }} sector (strength {{ "%.2f"|format(stock.macro_sector_strength) }}).
+      {% endif %}
+      Monitor for changes in valuation status or score. Check back when conditions shift.
+    </p>
+    {% else %}
+    <p>
+      <strong>{{ stock.ticker }}</strong> scores <strong>{{ "%.1f"|format(stock.score) }}/100</strong>,
+      below the 60-point floor required to reach WATCH status.
+      {% if stock.missing_fields %}
+      Note: {{ stock.missing_fields|length }} fundamental field(s) could not be fetched
+      ({{ stock.missing_fields|join(', ') }}), which may understate the true score.
+      {% endif %}
+      Soft signals (sentiment, macro) cannot upgrade an AVOID decision under this system's rules.
+      Re-evaluate if fundamentals improve materially.
+    </p>
+    {% endif %}
+
+    {% if stock.notes %}
+    <div class="notes-block">
+      {% for note in stock.notes %}
+      <div class="note-line">{{ note }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ── Score breakdown ───────────────────────────────────────────────── -->
+<section class="panel">
+  <div class="panel-header" onclick="togglePanel('score-body')">
+    <span>Score Breakdown ({{ "%.1f"|format(stock.score) }}/100)</span>
+    <span class="toggle-hint" id="score-body-hint">▼ show</span>
+  </div>
+  <div class="panel-body hidden" id="score-body">
+    <div class="threshold-note">
+      BUY threshold: &gt; 75 &nbsp;|&nbsp; WATCH: 60–75 &nbsp;|&nbsp; AVOID: &lt; 60
+    </div>
+    <table class="breakdown-table">
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Score&nbsp;/100</th>
+          <th>Weight</th>
+          <th>Weighted</th>
+          <th>Visual</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% set comps = [
+          ('Quality',   stock.quality_score,   40, 'quality'),
+          ('Growth',    stock.growth_score,    25, 'growth'),
+          ('Dividend',  stock.dividend_score,  20, 'dividend'),
+          ('Valuation', stock.valuation_score, 15, 'valuation')
+        ] %}
+        {% for label, sc, wt, cls in comps %}
+        <tr>
+          <td><strong>{{ label }}</strong></td>
+          <td class="mono">{{ "%.1f"|format(sc) }}</td>
+          <td class="mono">{{ wt }}%</td>
+          <td class="mono">{{ "%.2f"|format(sc * wt / 100) }}</td>
+          <td>
+            <div class="comp-bar-wrap">
+              <div class="comp-bar comp-{{ cls }}" style="width:{{ sc }}%"></div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+        <tr class="total-row">
+          <td><strong>Total</strong></td>
+          <td class="mono"><strong>{{ "%.1f"|format(stock.score) }}</strong></td>
+          <td class="mono">100%</td>
+          <td class="mono"><strong>{{ "%.2f"|format(stock.score) }}</strong></td>
+          <td>
+            <div class="comp-bar-wrap">
+              <div class="comp-bar comp-total" style="width:{{ stock.score }}%"
+                   data-decision="{{ stock.decision }}"></div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ── Gate evaluation ───────────────────────────────────────────────── -->
+<section class="panel">
+  <div class="panel-header" onclick="togglePanel('gates-body')">
+    <span>Gate Evaluation —
+      {% set total_gates = stock.gates|length %}
+      {% set failed_count = gates_failed|length %}
+      {% set passed_count = gates_passed|length %}
+      {% set unknown_count = gates_unknown|length %}
+      <span class="gate-summary-inline">
+        {% if failed_count %}
+          <span class="gate-fail-count">✗ {{ failed_count }} failed</span>
+        {% endif %}
+        {% if passed_count %}
+          <span class="gate-pass-count">✓ {{ passed_count }} passed</span>
+        {% endif %}
+        {% if unknown_count %}
+          <span class="gate-unknown-count">? {{ unknown_count }} no data</span>
+        {% endif %}
+      </span>
+    </span>
+    <span class="toggle-hint" id="gates-body-hint">▼ show</span>
+  </div>
+  <div class="panel-body hidden" id="gates-body">
+    <p class="gates-rule-note">
+      Gates are evaluated in order. Hard gates (1 + 2) determine the base decision.
+      Soft gate (3) can only downgrade BUY→WATCH, never upgrade.
+    </p>
+    <table class="gates-table">
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Gate</th>
+          <th>Observed</th>
+          <th>Required</th>
+          <th>Explanation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- failed first (most actionable) -->
+        {% for g in gates_failed %}
+        <tr class="gate-row gate-fail">
+          <td class="gate-status gate-fail-icon">✗ FAIL</td>
+          <td class="mono gate-name">{{ g.name }}</td>
+          <td class="mono">{{ g.observed }}</td>
+          <td class="mono">{{ g.required }}</td>
+          <td>{{ g.note }}</td>
+        </tr>
+        {% endfor %}
+        {% for g in gates_unknown %}
+        <tr class="gate-row gate-unknown">
+          <td class="gate-status gate-unknown-icon">? NO DATA</td>
+          <td class="mono gate-name">{{ g.name }}</td>
+          <td class="mono">{{ g.observed }}</td>
+          <td class="mono">{{ g.required }}</td>
+          <td>{{ g.note }}</td>
+        </tr>
+        {% endfor %}
+        {% for g in gates_passed %}
+        <tr class="gate-row gate-pass">
+          <td class="gate-status gate-pass-icon">✓ PASS</td>
+          <td class="mono gate-name">{{ g.name }}</td>
+          <td class="mono">{{ g.observed }}</td>
+          <td class="mono">{{ g.required }}</td>
+          <td>{{ g.note }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ── Contributing factors ──────────────────────────────────────────── -->
+<section class="panel">
+  <div class="panel-header" onclick="togglePanel('factors-body')">
+    <span>Signal Factors —
+      {{ stock.contributing_factors|length }} supporting,
+      {{ stock.rejected_factors|length }} opposing
+    </span>
+    <span class="toggle-hint" id="factors-body-hint">▼ show</span>
+  </div>
+  <div class="panel-body hidden" id="factors-body">
+    {% if stock.contributing_factors %}
+    <h3 class="factor-group-title supporting">Supporting Factors</h3>
+    <ul class="factor-list">
+      {% for f in stock.contributing_factors %}
+      <li class="factor-item factor-supporting">
+        <span class="factor-name">{{ f.name }}</span>
+        <span class="factor-note">{{ f.note }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if stock.rejected_factors %}
+    <h3 class="factor-group-title opposing">Opposing / Rejected Factors</h3>
+    <ul class="factor-list">
+      {% for f in stock.rejected_factors %}
+      <li class="factor-item factor-opposing">
+        <span class="factor-name">{{ f.name }}</span>
+        <span class="factor-note">{{ f.note }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ── Sentiment ─────────────────────────────────────────────────────── -->
+<section class="panel">
+  <div class="panel-header" onclick="togglePanel('sentiment-body')">
+    <span>Sentiment Analysis</span>
+    <span class="toggle-hint" id="sentiment-body-hint">▼ show</span>
+  </div>
+  <div class="panel-body hidden" id="sentiment-body">
+    {% if stock.sentiment_score is not none %}
+    <div class="sentiment-grid">
+      <div class="sent-item">
+        <span class="sent-label">Score (−1 to +1)</span>
+        <span class="sent-value mono
+          {% if stock.sentiment_score < -0.1 %}sent-negative
+          {% elif stock.sentiment_score > 0.1 %}sent-positive
+          {% else %}sent-neutral{% endif %}">
+          {{ "%+.3f"|format(stock.sentiment_score) }}
+        </span>
+      </div>
+      <div class="sent-item">
+        <span class="sent-label">Status</span>
+        <span class="sent-value sent-status-{{ stock.sentiment_status }}">
+          {{ stock.sentiment_status }}
+        </span>
+      </div>
+      <div class="sent-item">
+        <span class="sent-label">Trend (per day)</span>
+        <span class="sent-value mono {% if stock.sentiment_trend > 0 %}sent-improving{% else %}sent-worsening{% endif %}">
+          {{ "%+.4f"|format(stock.sentiment_trend) }}
+        </span>
+      </div>
+      <div class="sent-item">
+        <span class="sent-label">Module Confidence</span>
+        <span class="sent-value mono {% if stock.sentiment_confidence < 0.20 %}low-conf{% endif %}">
+          {{ "%.2f"|format(stock.sentiment_confidence) }}
+          {% if stock.sentiment_confidence < 0.20 %}
+            <span class="low-conf-note">(low — few headlines matched lexicon)</span>
+          {% endif %}
+        </span>
+      </div>
+    </div>
+    <div class="sent-rule-box">
+      <strong>Interpretation rule:</strong>
+      BUY gate requires <code>status = negative AND trend &gt; 0</code> (negative but improving =
+      contrarian signal). Positive sentiment may indicate upside is already priced in.
+      This is a <em>heuristic assumption, not empirically validated</em>.
+    </div>
+    {% else %}
+    <p class="no-data">No sentiment data available — gate not evaluated.</p>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ── Macro context ─────────────────────────────────────────────────── -->
+<section class="panel">
+  <div class="panel-header" onclick="togglePanel('macro-body')">
+    <span>Macro Context</span>
+    <span class="toggle-hint" id="macro-body-hint">▼ show</span>
+  </div>
+  <div class="panel-body hidden" id="macro-body">
+    {% if stock.macro_category %}
+    <div class="macro-grid">
+      <div class="macro-item">
+        <span class="macro-label">Category</span>
+        <span class="macro-value mono">{{ stock.macro_category }}</span>
+      </div>
+      <div class="macro-item">
+        <span class="macro-label">Sector direction</span>
+        <span class="macro-value
+          macro-dir-{{ stock.macro_sector_direction if stock.macro_sector_direction else 'none' }}">
+          {{ stock.macro_sector_direction if stock.macro_sector_direction else '—' }}
+        </span>
+      </div>
+      {% if stock.macro_sector_strength is not none %}
+      <div class="macro-item">
+        <span class="macro-label">Sector strength</span>
+        <span class="macro-value mono">
+          {{ "%.2f"|format(stock.macro_sector_strength) }}
+          (downgrade threshold: ≥ 0.60 bearish)
+        </span>
+      </div>
+      {% endif %}
+      <div class="macro-item">
+        <span class="macro-label">Module confidence</span>
+        <span class="macro-value mono {% if stock.macro_confidence < 0.50 %}low-conf{% endif %}">
+          {{ "%.2f"|format(stock.macro_confidence) if stock.macro_confidence else '—' }}
+        </span>
+      </div>
+    </div>
+    <div class="macro-rule-box">
+      <strong>Rule:</strong> Macro can only <em>downgrade</em> (BUY→WATCH). It cannot upgrade WATCH or AVOID.
+      Bearish sector impact with strength ≥ 0.60 triggers a BUY→WATCH downgrade.
+    </div>
+    {% else %}
+    <p class="no-data">No macro context provided — impact not evaluated.</p>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ── Confidence breakdown ──────────────────────────────────────────── -->
+<section class="panel">
+  <div class="panel-header" onclick="togglePanel('conf-body')">
+    <span>Confidence Breakdown ({{ "%.2f"|format(stock.confidence) }})</span>
+    <span class="toggle-hint" id="conf-body-hint">▼ show</span>
+  </div>
+  <div class="panel-body hidden" id="conf-body">
+    <div class="conf-disclaimer-box">
+      ⚠ <strong>This is a heuristic indicator, NOT a probability of return.</strong>
+      A confidence of 0.81 does not mean an 81% chance of profit.
+      It reflects internal consistency of the data and signals.
+    </div>
+    {% set cb = stock.confidence_breakdown %}
+    <table class="conf-table">
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Weight</th>
+          <th>Value</th>
+          <th>Contribution</th>
+          <th>Rationale</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Data quality</td>
+          <td class="mono">30%</td>
+          <td class="mono">{{ "%.2f"|format(cb.data_quality) }}</td>
+          <td class="mono">{{ "%.3f"|format(cb.data_quality * 0.30) }}</td>
+          <td>Missing fundamental fields reduce this. Each missing field: −0.07</td>
+        </tr>
+        <tr>
+          <td>Valuation certainty</td>
+          <td class="mono">25%</td>
+          <td class="mono">{{ "%.2f"|format(cb.valuation_certainty) }}</td>
+          <td class="mono">{{ "%.3f"|format(cb.valuation_certainty * 0.25) }}</td>
+          <td>undervalued=1.0, fair/overvalued=0.5, unknown=0.0</td>
+        </tr>
+        <tr>
+          <td>Signal agreement</td>
+          <td class="mono">30%</td>
+          <td class="mono">{{ "%.2f"|format(cb.signal_agreement) }}</td>
+          <td class="mono">{{ "%.3f"|format(cb.signal_agreement * 0.30) }}</td>
+          <td>Do sentiment + macro agree with the decision direction?</td>
+        </tr>
+        <tr>
+          <td>Soft signal quality</td>
+          <td class="mono">15%</td>
+          <td class="mono">{{ "%.2f"|format(cb.soft_signal_quality) }}</td>
+          <td class="mono">{{ "%.3f"|format(cb.soft_signal_quality * 0.15) }}</td>
+          <td>Internal confidence of the sentiment and macro modules</td>
+        </tr>
+        <tr class="total-row">
+          <td><strong>Total</strong></td>
+          <td class="mono">100%</td>
+          <td class="mono"><strong>{{ "%.4f"|format(cb.total) }}</strong></td>
+          <td class="mono"><strong>{{ "%.4f"|format(cb.total) }}</strong></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ── Reasoning trace ───────────────────────────────────────────────── -->
+<section class="panel">
+  <div class="panel-header" onclick="togglePanel('trace-body')">
+    <span>Reasoning Trace ({{ stock.reasoning_trace|length }} steps) — Full decision walkthrough</span>
+    <span class="toggle-hint" id="trace-body-hint">▼ show</span>
+  </div>
+  <div class="panel-body hidden" id="trace-body">
+    <p class="trace-note">
+      Every step the decision engine executed, in order. Nothing is omitted.
+    </p>
+    <ol class="trace-list">
+      {% for step in stock.reasoning_trace %}
+      <li class="trace-step
+        {% if 'PASS' in step %}trace-pass
+        {% elif 'FAIL' in step %}trace-fail
+        {% elif 'BUY' == step[:3] %}trace-buy
+        {% elif 'WATCH' == step[:5] %}trace-watch
+        {% elif 'BUY→WATCH' in step %}trace-downgrade
+        {% elif 'Confidence:' in step %}trace-conf
+        {% endif %}">
+        <span class="trace-text">{{ step }}</span>
+      </li>
+      {% endfor %}
+    </ol>
+    <div class="trace-copy-wrap">
+      <button class="copy-btn" onclick="copyTrace('{{ stock.ticker }}')">
+        Copy trace to clipboard
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ── What would change this decision ──────────────────────────────── -->
+<section class="panel">
+  <div class="panel-header" onclick="togglePanel('change-body')">
+    <span>What Would Change This Decision?</span>
+    <span class="toggle-hint" id="change-body-hint">▼ show</span>
+  </div>
+  <div class="panel-body hidden" id="change-body">
+    {% if stock.decision == 'BUY' %}
+    <ul class="change-list">
+      <li>Score drops below 75 → WATCH</li>
+      <li>Valuation shifts to 'fair' or 'overvalued' → Gate 2 fails → WATCH</li>
+      <li>Sentiment improves to positive → Gate 3 fails → WATCH</li>
+      <li>Macro bearish headwind ≥ 0.60 for sector → BUY→WATCH</li>
+    </ul>
+    {% elif stock.decision == 'WATCH' %}
+    <ul class="change-list">
+      <li>Score drops below 60 → AVOID</li>
+      {% if stock.score < 75 %}
+      <li>Score rises above 75 AND valuation turns undervalued AND sentiment turns negative-but-improving → BUY</li>
+      {% endif %}
+      {% if stock.valuation_status != 'undervalued' %}
+      <li>Valuation shifts to 'undervalued' (one of multiple gates required for BUY)</li>
+      {% endif %}
+      {% if stock.macro_sector_direction == 'bearish' and stock.macro_sector_strength >= 0.60 %}
+      <li>Macro headwind strength drops below 0.60 → downgrade no longer applies</li>
+      {% endif %}
+    </ul>
+    {% else %}
+    <ul class="change-list">
+      <li>Score rises above 60 → WATCH</li>
+      <li>Score rises above 75 AND valuation = undervalued AND sentiment negative-but-improving → BUY</li>
+      {% if stock.missing_fields %}
+      <li>Missing fields ({{ stock.missing_fields|join(', ') }}) recovered → score may change</li>
+      {% endif %}
+    </ul>
+    {% endif %}
+    <p class="change-caveat">
+      These are mechanical rule changes only. This system does not predict when or whether
+      these conditions will occur.
+    </p>
+  </div>
+</section>
+
+<script>
+// Store trace for clipboard copy
+window._traces = window._traces || {};
+window._traces['{{ stock.ticker }}'] = {{ stock.reasoning_trace | tojson }};
+</script>
+{% endblock %}

@@ -1,0 +1,19 @@
+{
+  "ticker": "MISSING",
+  "fetched_at": "2024-01-15T12:00:00+00:00",
+  "as_of_date": null,
+  "missing_fields": ["returnOnEquity", "freeCashflow", "dividendYield"],
+  "prices": [],
+  "fundamentals": {
+    "roe": null,
+    "debt_to_equity": 1.2,
+    "free_cash_flow": null,
+    "revenue_growth_5y": -0.03,
+    "earnings_growth_5y": null,
+    "dividend_yield": null,
+    "payout_ratio": null,
+    "dividend_growth_streak_years": null,
+    "pe_ratio": null,
+    "pe_5y_avg": null
+  }
+}

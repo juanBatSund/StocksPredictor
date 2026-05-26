@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% block title %}Benchmark — Investment Decision System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Benchmark Comparison</h1>
+  <p class="page-subtitle">Strategy vs SPY buy-and-hold, random portfolio, and equal-weight baseline</p>
+</div>
+
+<div class="period-label">
+  Analysis period: <code>{{ period_start }}</code> → <code>{{ period_end }}</code>
+</div>
+
+<!-- ── Limitations banner ────────────────────────────────────────────── -->
+<section class="uncertainty-panel">
+  <div class="panel-header panel-header-warning">
+    <span>⚠ Known Limitations — Read Before Interpreting Results</span>
+  </div>
+  <div class="panel-body">
+    <ul class="flag-list">
+      {% for lim in limitations %}
+      <li class="flag-item">{{ lim }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<!-- ── Summary cards ─────────────────────────────────────────────────── -->
+<section class="bm-cards">
+  <div class="bm-card {% if outperforms_spy %}bm-outperform{% else %}bm-underperform{% endif %}">
+    <div class="bm-card-label">Strategy CAGR</div>
+    <div class="bm-card-value">{{ "%+.1f"|format(strategy_cagr * 100) }}%</div>
+    <div class="bm-card-sub">annualised, {{ period_start }}–{{ period_end }}</div>
+  </div>
+  <div class="bm-card">
+    <div class="bm-card-label">SPY (Buy &amp; Hold)</div>
+    <div class="bm-card-value">{{ "%+.1f"|format(spy_cagr * 100) }}%</div>
+    <div class="bm-card-sub">identical calendar window</div>
+  </div>
+  <div class="bm-card">
+    <div class="bm-card-label">Alpha vs SPY</div>
+    <div class="bm-card-value {% if outperforms_spy %}text-positive{% else %}text-negative{% endif %}">
+      {{ "%+.1f"|format(alpha_vs_spy * 100) }}pp
+    </div>
+    <div class="bm-card-sub">not risk-adjusted</div>
+  </div>
+  <div class="bm-card">
+    <div class="bm-card-label">Win Rate</div>
+    <div class="bm-card-value">{{ "%.1f"|format(win_rate * 100) }}%</div>
+    <div class="bm-card-sub">{{ profitable_trades }}/{{ total_trades }} trades</div>
+  </div>
+</section>
+
+<!-- ── Full metrics table ────────────────────────────────────────────── -->
+<section class="panel">
+  <div class="panel-header" onclick="togglePanel('metrics-body')">
+    <span>Full Metrics Table</span>
+    <span class="toggle-hint" id="metrics-body-hint">▼ show</span>
+  </div>
+  <div class="panel-body hidden" id="metrics-body">
+    <table class="bm-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Strategy</th>
+          <th>SPY (B&H)</th>
+          <th>Random</th>
+          <th>Equal-Weight</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>CAGR</td>
+          <td class="mono {% if strategy_cagr > spy_cagr %}text-positive{% endif %}">
+            {{ "%+.2f"|format(strategy_cagr * 100) }}%
+          </td>
+          <td class="mono">{{ "%+.2f"|format(spy_cagr * 100) }}%</td>
+          <td class="mono">{{ "%+.2f"|format(random_cagr * 100) }}%</td>
+          <td class="mono">{{ "%+.2f"|format(equal_weight_cagr * 100) }}%</td>
+        </tr>
+        <tr>
+          <td>Max Drawdown</td>
+          <td class="mono {% if max_drawdown_strategy > max_drawdown_spy %}text-positive{% endif %}">
+            {{ "%.1f"|format(max_drawdown_strategy * 100) }}%
+          </td>
+          <td class="mono">{{ "%.1f"|format(max_drawdown_spy * 100) }}%</td>
+          <td class="mono">{{ "%.1f"|format(max_drawdown_random * 100) }}%</td>
+          <td class="mono">—</td>
+        </tr>
+        <tr>
+          <td>Win Rate</td>
+          <td class="mono">{{ "%.1f"|format(win_rate * 100) }}%</td>
+          <td class="mono">—</td>
+          <td class="mono">~52%</td>
+          <td class="mono">55%</td>
+        </tr>
+        <tr>
+          <td>Alpha vs SPY</td>
+          <td class="mono {% if outperforms_spy %}text-positive{% else %}text-negative{% endif %}">
+            {{ "%+.2f"|format(alpha_vs_spy * 100) }}pp
+          </td>
+          <td class="mono">0.00pp</td>
+          <td class="mono">{{ "%+.2f"|format((random_cagr - spy_cagr) * 100) }}pp</td>
+          <td class="mono">{{ "%+.2f"|format((equal_weight_cagr - spy_cagr) * 100) }}pp</td>
+        </tr>
+        <tr>
+          <td>Total Trades</td>
+          <td class="mono">{{ total_trades }}</td>
+          <td class="mono">1 (buy &amp; hold)</td>
+          <td class="mono">varies</td>
+          <td class="mono">varies</td>
+        </tr>
+        <tr>
+          <td>Avg Hold</td>
+          <td class="mono">{{ "%.1f"|format(avg_hold_months) }} months</td>
+          <td class="mono">full period</td>
+          <td class="mono">—</td>
+          <td class="mono">—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="bm-visual">
+      <h3>CAGR Visual Comparison</h3>
+      <div class="cagr-bar-group">
+        {% for label, val, css_class in [
+          ('Strategy',     strategy_cagr,     'cagr-strategy'),
+          ('SPY B&H',      spy_cagr,          'cagr-spy'),
+          ('Random',       random_cagr,       'cagr-random'),
+          ('Equal-Weight', equal_weight_cagr, 'cagr-equal')
+        ] %}
+        <div class="cagr-row">
+          <span class="cagr-label">{{ label }}</span>
+          <div class="cagr-bar-wrap">
+            <div class="cagr-bar {{ css_class }}"
+                 style="width:{{ (val / 0.20 * 100)|round(1) }}%"></div>
+          </div>
+          <span class="cagr-value mono">{{ "%+.1f"|format(val * 100) }}%</span>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="cagr-scale-note">Bar width scaled to 20% CAGR = 100%</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Exit reason breakdown ─────────────────────────────────────────── -->
+<section class="panel">
+  <div class="panel-header" onclick="togglePanel('exit-body')">
+    <span>Exit Reason Breakdown</span>
+    <span class="toggle-hint" id="exit-body-hint">▼ show</span>
+  </div>
+  <div class="panel-body hidden" id="exit-body">
+    <table class="exit-table">
+      <thead>
+        <tr><th>Exit Reason</th><th>Count</th><th>Rule</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Score drop</td>
+          <td class="mono">{{ exit_reasons.score_drop }}</td>
+          <td>Score fell below 60 during hold period</td>
+        </tr>
+        <tr>
+          <td>Max hold reached</td>
+          <td class="mono">{{ exit_reasons.max_hold }}</td>
+          <td>Position held for 2 years (max hold period)</td>
+        </tr>
+        <tr>
+          <td>End of simulation</td>
+          <td class="mono">{{ exit_reasons.end_of_simulation }}</td>
+          <td>Simulation period ended while position was open</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ── Trade log ─────────────────────────────────────────────────────── -->
+<section class="panel">
+  <div class="panel-header" onclick="togglePanel('trades-body')">
+    <span>Trade Log ({{ trade_log|length }} sample trades)</span>
+    <span class="toggle-hint" id="trades-body-hint">▼ show</span>
+  </div>
+  <div class="panel-body hidden" id="trades-body">
+    <table class="trade-table">
+      <thead>
+        <tr>
+          <th>Ticker</th>
+          <th>Entry</th>
+          <th>Exit</th>
+          <th>Entry Score</th>
+          <th>Exit Score</th>
+          <th>Return</th>
+          <th>Exit Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in trade_log %}
+        <tr class="{% if t.return_pct >= 0 %}trade-win{% else %}trade-loss{% endif %}">
+          <td><a href="/stock/{{ t.ticker }}" class="ticker-link">{{ t.ticker }}</a></td>
+          <td class="mono">{{ t.entry }}</td>
+          <td class="mono">{{ t.exit }}</td>
+          <td class="mono">{{ "%.1f"|format(t.entry_score) }}</td>
+          <td class="mono">{{ "%.1f"|format(t.exit_score) }}</td>
+          <td class="mono {% if t.return_pct >= 0 %}text-positive{% else %}text-negative{% endif %}">
+            {{ "%+.1f"|format(t.return_pct * 100) }}%
+          </td>
+          <td>{{ t.exit_reason }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p class="trade-note">
+      Returns are price-based only. No dividends, transaction costs, or taxes included.
+    </p>
+  </div>
+</section>
+{% endblock %}

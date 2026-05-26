@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install *)",
+      "Bash(python3 -m pip install -q yfinance pydantic pytest pytest-mock)",
+      "Bash(python3 -m pytest tests/test_data/ -v)",
+      "Bash(python3 -m pytest tests/test_fundamentals/ tests/test_valuation/ -v)",
+      "Bash(python3 -m pytest tests/test_data/test_fetcher.py -v)",
+      "Bash(python3 -m pytest tests/test_data/ tests/test_fundamentals/ tests/test_valuation/ -v)",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 -m pytest tests/ -v)",
+      "Bash(python -m pytest tests/test_fundamentals/ -v)",
+      "Bash(python3 -m pytest tests/test_fundamentals/ -v)",
+      "Bash(python3 -m pytest tests/test_fundamentals/ tests/test_valuation/ -q)",
+      "Bash(python3 -m pytest tests/test_sentiment/ -v)",
+      "Bash(python3 -m pytest tests/ -v --tb=short)",
+      "Bash(python3 -m pytest tests/test_macro/ -v)",
+      "Bash(python3 -m pytest tests/ --tb=short)",
+      "Bash(python3 -m pytest tests/ --tb=no -q)",
+      "Bash(python3 -m pytest tests/test_decision/ -v)",
+      "Bash(python -m pytest tests/test_backtest/ -x -q)",
+      "Bash(python3 -m pytest tests/test_backtest/ -x -q)",
+      "Bash(python3 -m pytest -q)",
+      "Bash(python3 -m pytest tests/test_validation/ -x -q)",
+      "Bash(python -m pytest tests/test_validation/ -v)",
+      "Bash(python3 -m pytest tests/test_validation/ -v)",
+      "Bash(pip3 install *)",
+      "Bash(.venv/bin/python -c \"from ui.mock_data import get_all_stocks, get_stock, get_benchmark, get_replay_data; s = get_all_stocks\\(\\); print\\([x['ticker'] for x in s]\\); print\\('score:', s[0]['score']\\); print\\('gates:', [g.name for g in s[0]['gates']]\\)\")",
+      "Bash(.venv/bin/python -c ' *)"
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Investment Decision System{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-top">
+    <span class="site-title">Investment Decision System</span>
+    <span class="header-meta">
+      Model&nbsp;<code>{{ model_version }}</code>
+      &nbsp;·&nbsp;
+      Analysis date&nbsp;<code>{{ analysis_date }}</code>
+    </span>
+  </div>
+
+  <div class="disclaimer-banner">
+    <span class="disclaimer-icon">⚠</span>
+    <strong>Disclaimer:</strong>
+    Confidence scores are heuristic indicators only —
+    they are <em>not</em> probabilities of future returns.
+    All decisions reflect data available at analysis date.
+    Past patterns do not guarantee future performance.
+  </div>
+
+  <nav class="site-nav">
+    {% for page in nav_pages %}
+      <a href="{{ page.url }}"
+         class="nav-link{% if request.path == page.url %} active{% endif %}">
+        {{ page.label }}
+      </a>
+    {% endfor %}
+    <span class="nav-sep">|</span>
+    <span class="nav-hint">Click any ticker for full inspection</span>
+  </nav>
+</header>
+
+<main class="site-main">
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <span>No hidden logic · No black-box decisions · All weights and thresholds are shown</span>
+  <span class="footer-sep">·</span>
+  <span>BUY threshold: score &gt; 75 · WATCH: 60–75 · AVOID: &lt; 60</span>
+  <span class="footer-sep">·</span>
+  <span>Weights: Quality&nbsp;40% · Growth&nbsp;25% · Dividend&nbsp;20% · Valuation&nbsp;15%</span>
+</footer>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
