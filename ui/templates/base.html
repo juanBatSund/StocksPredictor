@@ -35,7 +35,11 @@
       </a>
     {% endfor %}
     <span class="nav-sep">|</span>
-    <span class="nav-hint">Click any ticker for full inspection</span>
+    <form class="search-form" action="/search" method="GET">
+      <input class="search-input" type="text" name="q"
+             placeholder="Search ticker…" autocomplete="off" maxlength="10">
+      <button class="search-btn" type="submit">Analyze</button>
+    </form>
   </nav>
 </header>
 
@@ -52,5 +56,6 @@
 </footer>
 
 <script src="{{ url_for('static', filename='app.js') }}"></script>
+{% block scripts %}{% endblock %}
 </body>
 </html>

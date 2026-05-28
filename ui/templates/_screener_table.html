@@ -1,0 +1,101 @@
+{% set buys   = results | selectattr("decision", "equalto", "BUY")   | list %}
+{% set watches = results | selectattr("decision", "equalto", "WATCH") | list %}
+{% set avoids  = results | selectattr("decision", "equalto", "AVOID") | list %}
+
+{% if buys %}
+<h3 class="screener-section-title screener-section-buy">▲ BUY ({{ buys|length }})</h3>
+<table class="screener-table">
+  <thead>
+    <tr>
+      <th>Ticker</th>
+      <th>Name</th>
+      <th>Sector</th>
+      <th class="text-right">Price</th>
+      <th class="text-right">Score</th>
+      <th class="text-right">Quality</th>
+      <th class="text-right">Growth</th>
+      <th class="text-right">Dividend</th>
+      <th class="text-right">Valuation</th>
+      <th>Status</th>
+      <th class="text-right">Confidence</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in buys | sort(attribute="score", reverse=true) %}
+    <tr>
+      <td><a href="/stock/{{ r.ticker }}?market={{ r.market_code }}" class="ticker-link">{{ r.ticker }}</a></td>
+      <td class="name-cell">{{ r.name }}</td>
+      <td class="text-muted">{{ r.sector | title }}</td>
+      <td class="text-right">{% if r.price %}{{ "%.2f"|format(r.price) }}{% else %}—{% endif %}</td>
+      <td class="text-right score-cell">{{ "%.1f"|format(r.score) }}</td>
+      <td class="text-right">{{ "%.0f"|format(r.quality_score) }}</td>
+      <td class="text-right">{{ "%.0f"|format(r.growth_score) }}</td>
+      <td class="text-right">{{ "%.0f"|format(r.dividend_score) }}</td>
+      <td class="text-right">{{ "%.0f"|format(r.valuation_score) }}</td>
+      <td><span class="valuation-tag valuation-{{ r.valuation_status | lower | replace(' ', '-') }}">{{ r.valuation_status }}</span></td>
+      <td class="text-right">{{ (r.confidence * 100) | round | int }}%</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% if watches %}
+<h3 class="screener-section-title screener-section-watch">■ WATCH ({{ watches|length }})</h3>
+<table class="screener-table screener-table-secondary">
+  <thead>
+    <tr>
+      <th>Ticker</th>
+      <th>Name</th>
+      <th class="text-right">Score</th>
+      <th>Valuation</th>
+      <th class="text-right">Confidence</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in watches | sort(attribute="score", reverse=true) %}
+    <tr>
+      <td><a href="/stock/{{ r.ticker }}?market={{ r.market_code }}" class="ticker-link">{{ r.ticker }}</a></td>
+      <td class="name-cell">{{ r.name }}</td>
+      <td class="text-right">{{ "%.1f"|format(r.score) }}</td>
+      <td><span class="valuation-tag valuation-{{ r.valuation_status | lower | replace(' ', '-') }}">{{ r.valuation_status }}</span></td>
+      <td class="text-right">{{ (r.confidence * 100) | round | int }}%</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% if not buys and not watches %}
+<p class="screener-empty">No BUY or WATCH candidates found in this run.</p>
+{% endif %}
+
+{% if avoids %}
+<details class="screener-avoid-details">
+  <summary class="screener-section-title screener-section-avoid">
+    ▼ AVOID ({{ avoids|length }}) — click to expand
+  </summary>
+  <table class="screener-table screener-table-avoid">
+    <thead>
+      <tr>
+        <th>Ticker</th>
+        <th>Name</th>
+        <th class="text-right">Score</th>
+        <th>Valuation</th>
+        <th class="text-right">Confidence</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in avoids | sort(attribute="score", reverse=true) %}
+      <tr>
+        <td><a href="/stock/{{ r.ticker }}?market={{ r.market_code }}" class="ticker-link">{{ r.ticker }}</a></td>
+        <td class="name-cell">{{ r.name }}</td>
+        <td class="text-right">{{ "%.1f"|format(r.score) }}</td>
+        <td><span class="valuation-tag valuation-{{ r.valuation_status | lower | replace(' ', '-') }}">{{ r.valuation_status }}</span></td>
+        <td class="text-right">{{ (r.confidence * 100) | round | int }}%</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</details>
+{% endif %}

@@ -37,10 +37,18 @@
       </div>
       <div class="hero-stat">
         <span class="stat-label">Price</span>
-        <span class="stat-value">${{ "%.2f"|format(stock.price) }}</span>
+        <span class="stat-value">{% if stock.price %}${{ "%.2f"|format(stock.price) }}{% else %}—{% endif %}</span>
       </div>
     </div>
     <div class="conf-disclaimer">Confidence ≠ probability of return</div>
+    <form class="watchlist-form"
+          action="{{ '/watchlist/remove' if is_watched else '/watchlist/add' }}"
+          method="POST">
+      <input type="hidden" name="ticker" value="{{ stock.ticker }}">
+      <button type="submit" class="watchlist-btn {% if is_watched %}watchlist-btn-watching{% else %}watchlist-btn-add{% endif %}">
+        {% if is_watched %}★ Watching{% else %}☆ Add to Watchlist{% endif %}
+      </button>
+    </form>
   </div>
 </section>
 

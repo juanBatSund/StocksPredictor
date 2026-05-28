@@ -10,7 +10,7 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from flask import Flask, render_template, abort, jsonify, request
+from flask import Flask, render_template, abort, jsonify, request, redirect, url_for
 from ui.mock_data import (
     get_all_stocks,
     get_stock,
@@ -19,6 +19,9 @@ from ui.mock_data import (
     MODEL_VERSION,
     ANALYSIS_DATE,
 )
+import ui.watchlist as wl
+import ui.screener as screener
+from config.tickers import MARKET_LABELS, MARKET_TICKERS
 
 app = Flask(__name__,
             template_folder="templates",
@@ -34,6 +37,8 @@ def inject_globals():
         "analysis_date":   ANALYSIS_DATE,
         "nav_pages": [
             {"url": "/",           "label": "Dashboard"},
+            {"url": "/watchlist",  "label": "Watchlist"},
+            {"url": "/screener",   "label": "Screener"},
             {"url": "/benchmark",  "label": "Benchmark"},
             {"url": "/replay",     "label": "Replay"},
         ],
@@ -57,19 +62,40 @@ def dashboard():
                            all_flags=all_flags,
                            buy_count=buy_count,
                            watch_count=watch_count,
-                           avoid_count=avoid_count)
+                           avoid_count=avoid_count,
+                           wl_tickers=wl.load())
 
 
 @app.route("/stock/<ticker>")
 def stock_detail(ticker: str):
-    stock = get_stock(ticker.upper())
+    ticker = ticker.upper()
+    # ?market= lets the screener (and watchlist) pass the correct exchange context.
+    # Without it, non-US tickers would be fetched without their exchange suffix
+    # (e.g. ABB fetched as NYSE ADR instead of ABB.ST on Stockholm).
+    market_code = request.args.get("market", "US").upper()
+    from config.markets import MARKETS
+    if market_code not in MARKETS:
+        market_code = "US"
+
+    stock = get_stock(ticker)
+
     if stock is None:
-        abort(404)
+        # Fall back to live analysis for tickers not in mock data
+        try:
+            from ui.pipeline import analyze
+            stock = analyze(ticker, market_code)
+        except ValueError:
+            abort(404)
+        except Exception:
+            abort(503)
+
+    is_watched = wl.contains(ticker)
     gates_failed  = [g for g in stock["gates"] if g.passed is False]
     gates_unknown = [g for g in stock["gates"] if g.passed is None]
     gates_passed  = [g for g in stock["gates"] if g.passed is True]
     return render_template("stock.html",
                            stock=stock,
+                           is_watched=is_watched,
                            gates_failed=gates_failed,
                            gates_unknown=gates_unknown,
                            gates_passed=gates_passed)
@@ -86,6 +112,97 @@ def benchmark():
 def replay(ticker: str = "MSFT"):
     data = get_replay_data(ticker.upper())
     return render_template("replay.html", **data)
+
+
+# ── Search ────────────────────────────────────────────────────────────────────
+
+@app.route("/search")
+def search():
+    q = request.args.get("q", "").strip().upper()
+    if not q:
+        return redirect(url_for("dashboard"))
+    return redirect(url_for("stock_detail", ticker=q))
+
+
+# ── Watchlist ─────────────────────────────────────────────────────────────────
+
+@app.route("/watchlist")
+def watchlist():
+    tickers = wl.load()
+    # Build a lightweight item for each watched ticker
+    items = []
+    for t in tickers:
+        stock = get_stock(t)  # use mock data if available
+        if stock:
+            items.append(stock)
+        else:
+            # Placeholder so the page still renders before the user clicks through
+            items.append({
+                "ticker": t,
+                "name": t,
+                "decision": None,
+                "score": None,
+                "confidence": None,
+                "sector": "",
+                "valuation_status": "",
+                "quality_score": None,
+                "growth_score": None,
+                "dividend_score": None,
+                "valuation_score": None,
+            })
+    return render_template("watchlist.html", items=items, watchlist_count=len(tickers))
+
+
+@app.route("/watchlist/add", methods=["POST"])
+def watchlist_add():
+    ticker = request.form.get("ticker", "").strip().upper()
+    if ticker:
+        wl.add(ticker)
+    return redirect(request.referrer or url_for("dashboard"))
+
+
+@app.route("/watchlist/remove", methods=["POST"])
+def watchlist_remove():
+    ticker = request.form.get("ticker", "").strip().upper()
+    if ticker:
+        wl.remove(ticker)
+    return redirect(request.referrer or url_for("dashboard"))
+
+
+# ── Screener ──────────────────────────────────────────────────────────────────
+
+@app.route("/screener")
+def screener_page():
+    markets = MARKET_LABELS
+    active_tab = request.args.get("tab", next(iter(markets))).upper()
+    if active_tab not in markets:
+        active_tab = next(iter(markets))
+    initial_results = {code: screener.load_results(code) for code in markets}
+    initial_states  = {code: screener.get_state(code).get("status", "idle") for code in markets}
+    initial_summary = {code: screener.get_state(code) for code in markets}
+    tickers_count   = {code: len(MARKET_TICKERS.get(code, [])) for code in markets}
+    return render_template(
+        "screener.html",
+        markets=markets,
+        active_tab=active_tab,
+        initial_results=initial_results,
+        initial_states=initial_states,
+        initial_summary=initial_summary,
+        tickers_count=tickers_count,
+    )
+
+
+@app.route("/screener/run/<market_code>", methods=["POST"])
+def screener_run(market_code: str):
+    market_code = market_code.upper()
+    if market_code in MARKET_LABELS:
+        screener.run_market(market_code)
+    return redirect(url_for("screener_page", tab=market_code))
+
+
+@app.route("/screener/status/<market_code>")
+def screener_status(market_code: str):
+    return jsonify(screener.get_state(market_code.upper()))
 
 
 # ── JSON API (for JS-driven interactions) ─────────────────────────────────────

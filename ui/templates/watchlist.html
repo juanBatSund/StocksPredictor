@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Watchlist — Investment Decision System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">★ Watchlist</h1>
+  <p class="page-subtitle">
+    {{ watchlist_count }} ticker{% if watchlist_count != 1 %}s{% endif %} saved ·
+    Click any ticker to run a full live analysis
+  </p>
+</div>
+
+{% if items %}
+<section class="panel">
+  <div class="panel-header">
+    <span>Watched Tickers</span>
+  </div>
+  <div class="panel-body" style="padding: 0;">
+    <table class="rankings-table" style="margin: 0;">
+      <thead>
+        <tr>
+          <th>Ticker</th>
+          <th>Name</th>
+          <th>Decision</th>
+          <th>Score&nbsp;/100</th>
+          <th>Valuation</th>
+          <th>Confidence</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr class="stock-row">
+          <td>
+            <a href="/stock/{{ item.ticker }}" class="ticker-link">{{ item.ticker }}</a>
+          </td>
+          <td class="stock-name">{{ item.name }}</td>
+          <td>
+            {% if item.decision %}
+            <span class="badge badge-{{ item.decision|lower }}">
+              {% if item.decision == 'BUY' %}▲{% elif item.decision == 'WATCH' %}■{% else %}▼{% endif %}
+              {{ item.decision }}
+            </span>
+            {% else %}
+            <span class="text-muted">—</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if item.score %}{{ "%.1f"|format(item.score) }}{% else %}—{% endif %}
+          </td>
+          <td>
+            {% if item.valuation_status %}
+            <span class="val-tag val-{{ item.valuation_status }}">{{ item.valuation_status }}</span>
+            {% else %}
+            <span class="text-muted">—</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if item.confidence %}{{ "%.2f"|format(item.confidence) }}{% else %}—{% endif %}
+          </td>
+          <td>
+            <a href="/stock/{{ item.ticker }}" class="btn-inline">Analyze</a>
+            <form action="/watchlist/remove" method="POST" class="inline-form">
+              <input type="hidden" name="ticker" value="{{ item.ticker }}">
+              <button type="submit" class="btn-inline btn-remove">Remove</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% else %}
+<section class="panel">
+  <div class="panel-body empty-watchlist">
+    <p class="text-muted">Your watchlist is empty.</p>
+    <p>Search for a ticker above or browse the <a href="/">Dashboard</a>,
+       then click <strong>☆ Add to Watchlist</strong> on any stock detail page.</p>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

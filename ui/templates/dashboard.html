@@ -12,6 +12,27 @@
   </p>
 </div>
 
+<!-- ── Watchlist quick-access ───────────────────────────────────────── -->
+{% if wl_tickers %}
+<section class="watchlist-strip panel">
+  <div class="panel-header">
+    <span>★ Watchlist ({{ wl_tickers|length }})</span>
+    <a href="/watchlist" class="panel-link">Manage</a>
+  </div>
+  <div class="watchlist-strip-body">
+    {% for t in wl_tickers %}
+    <span class="watchlist-chip">
+      <a href="/stock/{{ t }}" class="ticker-link">{{ t }}</a>
+      <form action="/watchlist/remove" method="POST" class="chip-remove-form">
+        <input type="hidden" name="ticker" value="{{ t }}">
+        <button type="submit" class="chip-remove-btn" title="Remove from watchlist">×</button>
+      </form>
+    </span>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
 <!-- ── Global uncertainty panel ─────────────────────────────────────── -->
 {% if all_flags %}
 <section class="uncertainty-panel" id="global-flags">

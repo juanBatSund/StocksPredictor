@@ -43,6 +43,12 @@ MARKETS: dict[str, MarketProfile] = {
         dividend_yield_max=0.06, dividend_yield_trap=0.09,
         typical_pe=15.0,
     ),
+    "FR": MarketProfile(
+        code="FR", name="France", ticker_suffix=".PA", currency="EUR",
+        dividend_yield_min=0.02, dividend_yield_peak=0.04,
+        dividend_yield_max=0.065, dividend_yield_trap=0.10,
+        typical_pe=14.0,
+    ),
 }
 
 

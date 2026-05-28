@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% block title %}Market Screener — Investment Decision System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Market Screener</h1>
+  <p class="page-subtitle">Find BUY candidates across top companies in each market</p>
+</div>
+
+<!-- ── Market tabs ───────────────────────────────────────────────────────── -->
+<div class="screener-tabs">
+  {% for code, label in markets.items() %}
+  <button class="screener-tab {% if code == active_tab %}screener-tab-active{% endif %}"
+          data-market="{{ code }}">
+    {{ label }}
+  </button>
+  {% endfor %}
+</div>
+
+<!-- ── Market panels ──────────────────────────────────────────────────────── -->
+{% for code, label in markets.items() %}
+<div class="screener-panel {% if code != active_tab %}screener-panel-hidden{% endif %}"
+     id="panel-{{ code }}">
+
+  <!-- Run controls -->
+  <div class="screener-controls panel">
+    <div class="panel-header">
+      <span>{{ label }}</span>
+      <form action="/screener/run/{{ code }}" method="POST" style="display:inline">
+        <button type="submit" class="screener-run-btn" id="run-btn-{{ code }}">
+          ▶ Run Screener
+        </button>
+      </form>
+    </div>
+
+    <!-- Progress bar (hidden when idle) -->
+    <div class="screener-progress-wrap" id="progress-wrap-{{ code }}" style="display:none">
+      <div class="screener-progress-bar">
+        <div class="screener-progress-fill" id="progress-fill-{{ code }}"></div>
+      </div>
+      <p class="screener-progress-label" id="progress-label-{{ code }}">Starting…</p>
+    </div>
+
+    <!-- Summary badges (shown when results exist) -->
+    <div class="screener-summary" id="summary-{{ code }}" style="display:none">
+      <span class="badge badge-buy">▲ BUY <span id="buy-count-{{ code }}">0</span></span>
+      <span class="badge badge-watch">■ WATCH <span id="watch-count-{{ code }}">0</span></span>
+      <span class="badge badge-avoid">▼ AVOID <span id="avoid-count-{{ code }}">0</span></span>
+      <span class="screener-meta" id="screener-meta-{{ code }}"></span>
+    </div>
+  </div>
+
+  <!-- Results table -->
+  <div class="panel screener-results" id="results-{{ code }}">
+    {% set results = initial_results.get(code, []) %}
+    {% if results %}
+    {% include "_screener_table.html" %}
+    {% else %}
+    <p class="screener-empty" id="empty-{{ code }}">
+      No results yet. Click <strong>Run Screener</strong> to analyze {{ tickers_count[code] }} companies.
+    </p>
+    {% endif %}
+  </div>
+
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+// ── Tab switching ─────────────────────────────────────────────────────────────
+document.querySelectorAll(".screener-tab").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".screener-tab").forEach(function(b) {
+      b.classList.remove("screener-tab-active");
+    });
+    document.querySelectorAll(".screener-panel").forEach(function(p) {
+      p.classList.add("screener-panel-hidden");
+    });
+    btn.classList.add("screener-tab-active");
+    document.getElementById("panel-" + btn.dataset.market).classList.remove("screener-panel-hidden");
+  });
+});
+
+// ── Polling ───────────────────────────────────────────────────────────────────
+var pollingIntervals = {};
+
+function startPolling(market) {
+  if (pollingIntervals[market]) return;
+  pollingIntervals[market] = setInterval(function() { pollMarket(market); }, 3000);
+}
+
+function stopPolling(market) {
+  clearInterval(pollingIntervals[market]);
+  delete pollingIntervals[market];
+}
+
+function pollMarket(market) {
+  fetch("/screener/status/" + market)
+    .then(function(r) { return r.json(); })
+    .then(function(data) { handleStatus(market, data); })
+    .catch(function() {});
+}
+
+function handleStatus(market, data) {
+  var progressWrap  = document.getElementById("progress-wrap-" + market);
+  var progressFill  = document.getElementById("progress-fill-" + market);
+  var progressLabel = document.getElementById("progress-label-" + market);
+  var summaryEl     = document.getElementById("summary-" + market);
+  var buyCount      = document.getElementById("buy-count-" + market);
+  var watchCount    = document.getElementById("watch-count-" + market);
+  var avoidCount    = document.getElementById("avoid-count-" + market);
+  var metaEl        = document.getElementById("screener-meta-" + market);
+  var runBtn        = document.getElementById("run-btn-" + market);
+
+  if (data.status === "running") {
+    runBtn.disabled = true;
+    runBtn.textContent = "Running…";
+    progressWrap.style.display = "block";
+    var pct = data.total > 0 ? Math.round(data.processed / data.total * 100) : 0;
+    progressFill.style.width = pct + "%";
+    progressLabel.textContent = data.processed + " / " + data.total + " analyzed";
+
+    buyCount.textContent   = data.buy_count   || 0;
+    watchCount.textContent = data.watch_count || 0;
+    avoidCount.textContent = data.avoid_count || 0;
+    summaryEl.style.display = "block";
+    return;
+  }
+
+  // Done or error — stop polling, reload results
+  stopPolling(market);
+  runBtn.disabled = false;
+  runBtn.textContent = "▶ Run Screener";
+  progressWrap.style.display = "none";
+
+  if (data.status === "done" || data.status === "error") {
+    buyCount.textContent   = data.buy_count   || 0;
+    watchCount.textContent = data.watch_count || 0;
+    avoidCount.textContent = data.avoid_count || 0;
+    summaryEl.style.display = "block";
+    if (data.status === "done") {
+      metaEl.textContent = data.processed + " companies screened";
+    } else {
+      metaEl.textContent = "Screener error — partial results shown";
+    }
+    // Reload preserving the active tab
+    window.location.href = "/screener?tab=" + market;
+  }
+}
+
+// ── Auto-start polling for markets that were already running on page load ─────
+var initialStates = {{ initial_states | tojson }};
+Object.keys(initialStates).forEach(function(market) {
+  if (initialStates[market] === "running") {
+    startPolling(market);
+  }
+  // Show summary badges from initial state
+  var state = {{ initial_summary | tojson }}[market];
+  if (state && (state.buy_count + state.watch_count + state.avoid_count) > 0) {
+    var summaryEl  = document.getElementById("summary-" + market);
+    var buyCount   = document.getElementById("buy-count-" + market);
+    var watchCount = document.getElementById("watch-count-" + market);
+    var avoidCount = document.getElementById("avoid-count-" + market);
+    var metaEl     = document.getElementById("screener-meta-" + market);
+    buyCount.textContent   = state.buy_count;
+    watchCount.textContent = state.watch_count;
+    avoidCount.textContent = state.avoid_count;
+    metaEl.textContent     = state.processed + " companies screened";
+    summaryEl.style.display = "block";
+  }
+});
+
+// ── Hook form submissions to begin polling ────────────────────────────────────
+document.querySelectorAll("form[action^='/screener/run/']").forEach(function(form) {
+  form.addEventListener("submit", function() {
+    var market = form.action.split("/").pop();
+    // Give server 500ms to start the thread before we begin polling
+    setTimeout(function() { startPolling(market); }, 500);
+  });
+});
+</script>
+{% endblock %}
