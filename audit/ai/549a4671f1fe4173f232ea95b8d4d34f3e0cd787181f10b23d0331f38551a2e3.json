@@ -1,0 +1,96 @@
+{
+  "analysis": {
+    "affected_sectors": [],
+    "analysis_confidence": 0.65,
+    "article_analyses": [
+      {
+        "article_id": "0a4d8731-ec51-3aa1-9146-cf403c22e03c",
+        "direction": "neutral",
+        "factual_summary": "Investor AB reported strong asset growth in its full year 2025 earnings call, with a focus on currency impacts.",
+        "horizon": "short_term",
+        "rationale": "The article highlights positive asset growth for Investor AB, but provides no specific financial figures or forward-looking statements. The mention of currency impact suggests potential volatility.",
+        "relevance": 0.7,
+        "uncertainty_flags": [
+          "currency fluctuations could negatively affect future earnings"
+        ]
+      },
+      {
+        "article_id": "ea3f1cb1-ff6b-37c7-b4e1-016dc1d27e61",
+        "direction": "neutral",
+        "factual_summary": "This article discusses three international stocks, one of which is Investor AB (INVE-B), that are relatively unknown to U.S. investors.",
+        "horizon": "long_term",
+        "rationale": "The article's focus on lesser-known international stocks does not directly provide insights into Investor AB\u2019s performance or outlook. It suggests a broader market context but lacks specific details.",
+        "relevance": 0.3,
+        "uncertainty_flags": [
+          "lack of detail regarding INVE-B's position within these stocks"
+        ]
+      },
+      {
+        "article_id": "ccba7f33-d4fd-36d0-bf45-6ce361a020ea",
+        "direction": "neutral",
+        "factual_summary": "The Investor AB board has undergone changes, with a renewed emphasis on valuation and earnings outlook.",
+        "horizon": "short_term",
+        "rationale": "Changes in the board of directors often signal shifts in strategy or priorities. The focus on valuation and earnings outlook suggests management is prioritizing these metrics, which could influence investor sentiment. However, no specific details are provided.",
+        "relevance": 0.8,
+        "uncertainty_flags": [
+          "the impact of the board changes on future performance is unknown"
+        ]
+      }
+    ],
+    "event_types": [],
+    "limitations": [],
+    "overall_direction": "neutral",
+    "schema_version": "1.0",
+    "sentiment_score": 0.0,
+    "ticker": "INVE-B",
+    "uncertainty_flags": []
+  },
+  "created_at": "2026-07-14T21:57:19.096335Z",
+  "prompt_version": "news-evidence-v1",
+  "record_id": "549a4671f1fe4173f232ea95b8d4d34f3e0cd787181f10b23d0331f38551a2e3",
+  "record_sha256": "9fc490b47692a561e8272486c6eaaab11e4971cafe4d0bf58bb01d90490db584",
+  "request": {
+    "articles": [
+      {
+        "article_id": "0a4d8731-ec51-3aa1-9146-cf403c22e03c",
+        "available_at": "2026-07-14T21:56:45.428423Z",
+        "body": null,
+        "headline": "Investor AB (IVSBF) Full Year 2025 Earnings Call Highlights: Strong Asset Growth Amid Currency ...",
+        "published_at": "2026-01-22T15:00:40Z",
+        "publisher": "GuruFocus.com",
+        "ticker": "INVE-B",
+        "url": "https://finance.yahoo.com/news/investor-ab-ivsbf-full-2025-150040211.html"
+      },
+      {
+        "article_id": "ea3f1cb1-ff6b-37c7-b4e1-016dc1d27e61",
+        "available_at": "2026-07-14T21:56:45.428423Z",
+        "body": null,
+        "headline": "3 International Stocks Most U.S. Investors Have Never Heard Of",
+        "published_at": "2026-03-20T22:16:00Z",
+        "publisher": "MarketBeat",
+        "ticker": "INVE-B",
+        "url": "https://www.marketbeat.com/stock-ideas/3-international-stocks-most-us-investors-have-never-heard-of/?utm_source=yahoofinance&utm_medium=yahoofinance"
+      },
+      {
+        "article_id": "ccba7f33-d4fd-36d0-bf45-6ce361a020ea",
+        "available_at": "2026-07-14T21:56:45.428423Z",
+        "body": null,
+        "headline": "Investor AB Board Changes Put Focus On Valuation And Earnings Outlook",
+        "published_at": "2026-04-09T23:10:54Z",
+        "publisher": "Simply Wall St.",
+        "ticker": "INVE-B",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/investor-ab-board-changes-put-231054087.html"
+      }
+    ],
+    "decision_at": "2026-07-14T21:56:45.648513Z",
+    "schema_version": "1.0",
+    "ticker": "INVE-B"
+  },
+  "response": {
+    "content": "{\"ticker\": \"INVE-B\", \"overall_direction\": \"neutral\", \"sentiment_score\": 0.0, \"article_analyses\": [{\"article_id\": \"0a4d8731-ec51-3aa1-9146-cf403c22e03c\", \"factual_summary\": \"Investor AB reported strong asset growth in its full year 2025 earnings call, with a focus on currency impacts.\", \"direction\": \"neutral\", \"relevance\": 0.7, \"horizon\": \"short_term\", \"rationale\": \"The article highlights positive asset growth for Investor AB, but provides no specific financial figures or forward-looking statements. The mention of currency impact suggests potential volatility.\", \"uncertainty_flags\": [\"currency fluctuations could negatively affect future earnings\"] }, {\"article_id\": \"ea3f1cb1-ff6b-37c7-b4e1-016dc1d27e61\", \"factual_summary\": \"This article discusses three international stocks, one of which is Investor AB (INVE-B), that are relatively unknown to U.S. investors.\", \"direction\": \"neutral\", \"relevance\": 0.3, \"horizon\": \"long_term\", \"rationale\": \"The article's focus on lesser-known international stocks does not directly provide insights into Investor AB\u2019s performance or outlook. It suggests a broader market context but lacks specific details.\", \"uncertainty_flags\": [\"lack of detail regarding INVE-B's position within these stocks\"] }, {\"article_id\": \"ccba7f33-d4fd-36d0-bf45-6ce361a020ea\", \"factual_summary\": \"The Investor AB board has undergone changes, with a renewed emphasis on valuation and earnings outlook.\", \"direction\": \"neutral\", \"relevance\": 0.8, \"horizon\": \"short_term\", \"rationale\": \"Changes in the board of directors often signal shifts in strategy or priorities. The focus on valuation and earnings outlook suggests management is prioritizing these metrics, which could influence investor sentiment. However, no specific details are provided.\", \"uncertainty_flags\": [\"the impact of the board changes on future performance is unknown\"] } ],\"analysis_confidence\": 0.65}",
+    "model": "gemma3:4b",
+    "provider": "ollama",
+    "received_at": "2026-07-14T21:57:19.095704Z",
+    "request_id": "2026-07-14T21:57:19.095012Z"
+  }
+}

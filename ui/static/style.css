@@ -1225,4 +1225,130 @@ a:hover { text-decoration: underline; }
 .screener-section-avoid { color: var(--text-muted); }
 .screener-table-avoid tbody tr { opacity: 0.7; }
 .screener-table-avoid tbody tr:hover { opacity: 1; }
+
+/* ── AI Settings page ──────────────────────────────────────────────────────── */
+.settings-page { max-width: 780px; margin: 0 auto; }
+.settings-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.4rem; }
+.settings-intro { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.55; }
+.settings-panel { margin-bottom: 1rem; }
+.settings-panel-soon { opacity: 0.75; }
+
+.settings-provider-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+.provider-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  background: var(--bg-card);
+  transition: border-color 0.15s;
+}
+.provider-card input[type=radio] { margin: 0 0 4px 0; }
+.provider-card:hover { border-color: var(--color-buy); }
+.provider-card-active { border-color: var(--color-buy); background: #EBF4FF; }
+.provider-card-soon { cursor: not-allowed; opacity: 0.55; }
+.provider-card-label { font-weight: 600; font-size: 0.9rem; }
+.provider-card-note { font-size: 0.75rem; color: var(--text-muted); }
+.provider-soon { color: var(--color-watch); }
+
+.settings-field { margin-bottom: 1rem; }
+.settings-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+.settings-input {
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-family: var(--font-mono);
+  background: #fff;
+  width: 340px;
+  max-width: 100%;
+}
+.settings-input-sm { width: 100px; }
+.settings-input:focus { outline: none; border-color: var(--color-buy); }
+.settings-select {
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-family: var(--font-mono);
+  background: #fff;
+  min-width: 280px;
+  max-width: 100%;
+}
+.settings-btn-secondary {
+  margin-left: 8px;
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #F5F7FA;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.settings-btn-secondary:hover { background: #E8ECF2; }
+.settings-field-note { font-size: 0.78rem; color: var(--text-muted); margin-left: 8px; }
+.note-ok   { color: var(--color-positive); font-weight: 600; }
+.note-warn { color: var(--color-watch);    font-weight: 600; }
+
+.settings-test-bar { display: flex; align-items: center; gap: 12px; margin-top: 0.5rem; }
+.settings-btn-test {
+  padding: 8px 18px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #F5F7FA;
+  font-size: 0.88rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+.settings-btn-test:hover { background: #E8ECF2; }
+.settings-btn-test:disabled { opacity: 0.5; cursor: wait; }
+.test-result { font-size: 0.85rem; font-family: var(--font-mono); }
+.test-ok    { color: var(--color-positive); }
+.test-warn  { color: var(--color-watch); }
+.test-error { color: var(--color-avoid); }
+
+.settings-save-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 1.2rem 0;
+}
+.settings-btn-save {
+  padding: 10px 24px;
+  background: var(--color-buy);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+}
+.settings-btn-save:hover { background: #0a5bcc; }
+.settings-save-note { font-size: 0.8rem; color: var(--text-muted); }
+.settings-soon-note { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; }
+
+/* AI article per-article breakdown table */
+.ai-articles-details { margin-top: 1rem; }
+.ai-articles-details summary {
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--color-buy);
+  list-style: none;
+  padding: 4px 0;
+}
+.ai-articles-details summary::-webkit-details-marker { display: none; }
 .inline-form { display: inline; }

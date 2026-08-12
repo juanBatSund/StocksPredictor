@@ -1,0 +1,223 @@
+{
+  "analysis": {
+    "affected_sectors": [],
+    "analysis_confidence": 0.6,
+    "article_analyses": [
+      {
+        "article_id": "07bed348-ad62-37d6-8094-458067ce5a5f",
+        "direction": "positive",
+        "factual_summary": "ABB is shifting its focus to AI data centers and robotics, particularly in relation to SoftBank's robotics initiatives. Analysis confidence: High",
+        "horizon": "short_term",
+        "rationale": "The article highlights a strategic shift within ABB towards AI and robotics, aligning with current trends.",
+        "relevance": 0.8,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "8fda8975-f02a-36b5-a3c5-c6de3df84639",
+        "direction": "positive",
+        "factual_summary": "Zacks reports a potential upward trend for ABB (ABBNY), citing a 6.0% increase and suggesting further strength. Analysis confidence: Medium",
+        "horizon": "short_term",
+        "rationale": "This article indicates positive momentum for ABB based on recent performance.",
+        "relevance": 0.7,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "b8c67d90-eb8b-3772-9367-4882b4e71068",
+        "direction": "neutral",
+        "factual_summary": "ABB is upgrading automation systems at the Buzzard North Sea platform. Analysis confidence: High",
+        "horizon": "short_term",
+        "rationale": "This describes a specific operational upgrade, representing a stable activity.",
+        "relevance": 0.6,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "881b74e6-9928-3105-a123-880898c2092c",
+        "direction": "positive",
+        "factual_summary": "Zacks discusses investment opportunities in the $200 billion humanoid robot future through ETFs, specifically referencing the ROBO Global Robotics & Automation ETF (ROBO). Analysis confidence: Medium",
+        "horizon": "medium_term",
+        "rationale": "This article suggests a broader investment theme related to robotics and humanoid robots.",
+        "relevance": 0.7,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "d7073929-d750-3916-8e2b-1313f86cc0c2",
+        "direction": "positive",
+        "factual_summary": "Zacks reports that ABB (ABBNY) stock is outperforming its industrial products peers this year. Analysis confidence: Medium",
+        "horizon": "short_term",
+        "rationale": "This indicates relative strength compared to other companies in ABB's sector.",
+        "relevance": 0.7,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "1897601e-16dc-3fc4-ac02-6b2bb2612431",
+        "direction": "positive",
+        "factual_summary": "24/7 Wall St. recommends the ROBO Global Robotics & Automation ETF (ROBO) as a top buy for robotics investors. Analysis confidence: Low",
+        "horizon": "medium_term",
+        "rationale": "This is an endorsement of a specific ETF focused on the robotics sector.",
+        "relevance": 0.5,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "712759f9-dc25-3b0f-9fb3-7a1f29e72736",
+        "direction": "neutral",
+        "factual_summary": "Mining Technology reports a new issue of MINE, focusing on the lithium moment in the UK. Analysis confidence: Low",
+        "horizon": "long_term",
+        "rationale": "This article discusses a broader industry trend (lithium) and its potential impact.",
+        "relevance": 0.3,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "d22c85d3-525f-302b-86a8-f7b372580b72",
+        "direction": "positive",
+        "factual_summary": "POWER Magazine reports a surge in battery energy storage and grid investments across Europe. Analysis confidence: High",
+        "horizon": "medium_term",
+        "rationale": "This highlights a growing market for ABB's energy storage solutions.",
+        "relevance": 0.8,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "f859da8e-33d3-3db2-8774-1e1664cd3b08",
+        "direction": "positive",
+        "factual_summary": "24/7 Wall St. suggests investing in BOTZ, a company focused on robotics, as AI's next act shifts towards robots. Analysis confidence: Low",
+        "horizon": "medium_term",
+        "rationale": "This article suggests a specific investment opportunity within the evolving landscape of AI and robotics.",
+        "relevance": 0.6,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "1dd95a26-bcf7-39fb-bfa2-f77d6ac0222a",
+        "direction": "positive",
+        "factual_summary": "Reuters reports that TCS (Tata Consultancy Services) has won a multi-million contract from ABB. Analysis confidence: Medium",
+        "horizon": "short_term",
+        "rationale": "This indicates ongoing business relationships and potential revenue for ABB.",
+        "relevance": 0.5,
+        "uncertainty_flags": []
+      }
+    ],
+    "event_types": [],
+    "limitations": [],
+    "overall_direction": "mixed",
+    "schema_version": "1.0",
+    "sentiment_score": 0.2,
+    "ticker": "ABB",
+    "uncertainty_flags": []
+  },
+  "created_at": "2026-07-14T21:43:09.913250Z",
+  "prompt_version": "news-evidence-v1",
+  "record_id": "83a7d389b1752ba1576925b5257edcb8e0d67b34b036f9db2709197096aabeb1",
+  "record_sha256": "cba01864c4ef0f7501a621a7f857c51053bf43978aff10fe359fbc875250deae",
+  "request": {
+    "articles": [
+      {
+        "article_id": "07bed348-ad62-37d6-8094-458067ce5a5f",
+        "available_at": "2026-07-14T21:41:43.282253Z",
+        "body": null,
+        "headline": "ABB Reshapes AI Data Center Focus As Robotics Move Nears SoftBank",
+        "published_at": "2026-06-07T14:13:53Z",
+        "publisher": "Simply Wall St.",
+        "ticker": "ABB",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/abb-reshapes-ai-data-center-141353674.html"
+      },
+      {
+        "article_id": "8fda8975-f02a-36b5-a3c5-c6de3df84639",
+        "available_at": "2026-07-14T21:41:43.282253Z",
+        "body": null,
+        "headline": "Strength Seen in ABB (ABBNY): Can Its 6.0% Jump Turn into More Strength?",
+        "published_at": "2026-06-12T12:22:00Z",
+        "publisher": "Zacks",
+        "ticker": "ABB",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/strength-seen-abb-abbny-6-122200773.html"
+      },
+      {
+        "article_id": "b8c67d90-eb8b-3772-9367-4882b4e71068",
+        "available_at": "2026-07-14T21:41:43.282253Z",
+        "body": null,
+        "headline": "ABB to upgrade automation systems at Buzzard North Sea platform",
+        "published_at": "2026-06-12T13:53:01Z",
+        "publisher": "Offshore Technology",
+        "ticker": "ABB",
+        "url": "https://www.offshore-technology.com/news/abb-to-upgrade-buzzard-platform/"
+      },
+      {
+        "article_id": "881b74e6-9928-3105-a123-880898c2092c",
+        "available_at": "2026-07-14T21:41:43.282253Z",
+        "body": null,
+        "headline": "Here's How to Invest in the $200 Billion Humanoid Robot Future With ETFs",
+        "published_at": "2026-06-18T16:44:00Z",
+        "publisher": "Zacks",
+        "ticker": "ABB",
+        "url": "https://finance.yahoo.com/technology/ai/articles/heres-invest-200-billion-humanoid-164400580.html"
+      },
+      {
+        "article_id": "d7073929-d750-3916-8e2b-1313f86cc0c2",
+        "available_at": "2026-07-14T21:41:43.282253Z",
+        "body": null,
+        "headline": "Is ABB (ABBNY) Stock Outpacing Its Industrial Products Peers This Year?",
+        "published_at": "2026-06-22T13:40:06Z",
+        "publisher": "Zacks",
+        "ticker": "ABB",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/abb-abbny-stock-outpacing-industrial-134006834.html"
+      },
+      {
+        "article_id": "1897601e-16dc-3fc4-ac02-6b2bb2612431",
+        "available_at": "2026-07-14T21:41:43.282253Z",
+        "body": null,
+        "headline": "Why Robo Global Robotics & Automation ETF (ROBO) Is a Top ETF Buy for Robotics Investors",
+        "published_at": "2026-06-24T18:55:46Z",
+        "publisher": "24/7 Wall St.",
+        "ticker": "ABB",
+        "url": "https://247wallst.com/investing/2026/06/24/why-robo-global-robotics-automation-etf-robo-is-a-top-etf-buy-for-robotics-investors/"
+      },
+      {
+        "article_id": "712759f9-dc25-3b0f-9fb3-7a1f29e72736",
+        "available_at": "2026-07-14T21:41:43.282253Z",
+        "body": null,
+        "headline": "The UK\u2019s lithium moment: new issue of MINE out now!",
+        "published_at": "2026-06-30T17:21:57Z",
+        "publisher": "Mining Technology",
+        "ticker": "ABB",
+        "url": "https://www.mining-technology.com/news/the-uks-lithium-moment-new-issue-of-mine-out-now/"
+      },
+      {
+        "article_id": "d22c85d3-525f-302b-86a8-f7b372580b72",
+        "available_at": "2026-07-14T21:41:43.282253Z",
+        "body": null,
+        "headline": "Battery Energy Storage, Grid Investments Surge Across Europe",
+        "published_at": "2026-07-01T08:35:04Z",
+        "publisher": "POWER Magazine",
+        "ticker": "ABB",
+        "url": "https://www.powermag.com/battery-energy-storage-grid-investments-surge-across-europe/"
+      },
+      {
+        "article_id": "f859da8e-33d3-3db2-8774-1e1664cd3b08",
+        "available_at": "2026-07-14T21:41:43.282253Z",
+        "body": null,
+        "headline": "AI\u2019s Next Act Isn\u2019t Chatbots. It\u2019s Robots, and BOTZ Is the Bet",
+        "published_at": "2026-07-06T19:30:52Z",
+        "publisher": "24/7 Wall St.",
+        "ticker": "ABB",
+        "url": "https://247wallst.com/personal-finance/2026/07/06/ais-next-act-isnt-chatbots-its-robots-and-botz-is-the-bet/"
+      },
+      {
+        "article_id": "1dd95a26-bcf7-39fb-bfa2-f77d6ac0222a",
+        "available_at": "2026-07-14T21:41:43.282253Z",
+        "body": null,
+        "headline": "India's TCS bags multi-million contract from industrial giant ABB",
+        "published_at": "2026-07-13T06:37:08Z",
+        "publisher": "Reuters",
+        "ticker": "ABB",
+        "url": "https://sg.finance.yahoo.com/news/indias-tcs-bags-multi-million-063708306.html"
+      }
+    ],
+    "decision_at": "2026-07-14T21:41:43.598804Z",
+    "schema_version": "1.0",
+    "ticker": "ABB"
+  },
+  "response": {
+    "content": "{\n  \"ticker\": \"ABB\",\n  \"overall_direction\": \"mixed\",\n  \"sentiment_score\": 0.2,\n  \"article_analyses\": [\n    {\n      \"article_id\": \"07bed348-ad62-37d6-8094-458067ce5a5f\",\n      \"factual_summary\": \"ABB is shifting its focus to AI data centers and robotics, particularly in relation to SoftBank's robotics initiatives. Analysis confidence: High\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.8,\n      \"horizon\": \"short_term\",\n      \"rationale\": \"The article highlights a strategic shift within ABB towards AI and robotics, aligning with current trends.\"\n    },\n    {\n      \"article_id\": \"8fda8975-f02a-36b5-a3c5-c6de3df84639\",\n      \"factual_summary\": \"Zacks reports a potential upward trend for ABB (ABBNY), citing a 6.0% increase and suggesting further strength. Analysis confidence: Medium\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.7,\n      \"horizon\": \"short_term\",\n      \"rationale\": \"This article indicates positive momentum for ABB based on recent performance.\"\n    },\n    {\n      \"article_id\": \"b8c67d90-eb8b-3772-9367-4882b4e71068\",\n      \"factual_summary\": \"ABB is upgrading automation systems at the Buzzard North Sea platform. Analysis confidence: High\",\n      \"direction\": \"neutral\",\n      \"relevance\": 0.6,\n      \"horizon\": \"short_term\",\n      \"rationale\": \"This describes a specific operational upgrade, representing a stable activity.\"\n    },\n    {\n      \"article_id\": \"881b74e6-9928-3105-a123-880898c2092c\",\n      \"factual_summary\": \"Zacks discusses investment opportunities in the $200 billion humanoid robot future through ETFs, specifically referencing the ROBO Global Robotics & Automation ETF (ROBO). Analysis confidence: Medium\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.7,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"This article suggests a broader investment theme related to robotics and humanoid robots.\"\n    },\n    {\n      \"article_id\": \"d7073929-d750-3916-8e2b-1313f86cc0c2\",\n      \"factual_summary\": \"Zacks reports that ABB (ABBNY) stock is outperforming its industrial products peers this year. Analysis confidence: Medium\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.7,\n      \"horizon\": \"short_term\",\n      \"rationale\": \"This indicates relative strength compared to other companies in ABB's sector.\"\n    },\n    {\n      \"article_id\": \"1897601e-16dc-3fc4-ac02-6b2bb2612431\",\n      \"factual_summary\": \"24/7 Wall St. recommends the ROBO Global Robotics & Automation ETF (ROBO) as a top buy for robotics investors. Analysis confidence: Low\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.5,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"This is an endorsement of a specific ETF focused on the robotics sector.\"\n    },\n    {\n      \"article_id\": \"712759f9-dc25-3b0f-9fb3-7a1f29e72736\",\n      \"factual_summary\": \"Mining Technology reports a new issue of MINE, focusing on the lithium moment in the UK. Analysis confidence: Low\",\n      \"direction\": \"neutral\",\n      \"relevance\": 0.3,\n      \"horizon\": \"long_term\",\n      \"rationale\": \"This article discusses a broader industry trend (lithium) and its potential impact.\"\n    },\n    {\n      \"article_id\": \"d22c85d3-525f-302b-86a8-f7b372580b72\",\n      \"factual_summary\": \"POWER Magazine reports a surge in battery energy storage and grid investments across Europe. Analysis confidence: High\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.8,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"This highlights a growing market for ABB's energy storage solutions.\"\n    },\n    {\n      \"article_id\": \"f859da8e-33d3-3db2-8774-1e1664cd3b08\",\n      \"factual_summary\": \"24/7 Wall St. suggests investing in BOTZ, a company focused on robotics, as AI's next act shifts towards robots. Analysis confidence: Low\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.6,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"This article suggests a specific investment opportunity within the evolving landscape of AI and robotics.\"\n    },\n    {\n      \"article_id\": \"1dd95a26-bcf7-39fb-bfa2-f77d6ac0222a\",\n      \"factual_summary\": \"Reuters reports that TCS (Tata Consultancy Services) has won a multi-million contract from ABB. Analysis confidence: Medium\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.5,\n      \"horizon\": \"short_term\",\n      \"rationale\": \"This indicates ongoing business relationships and potential revenue for ABB.\"\n    }\n  ],\n  \"analysis_confidence\": 0.6\n}",
+    "model": "gemma3:4b",
+    "provider": "ollama",
+    "received_at": "2026-07-14T21:43:09.912558Z",
+    "request_id": "2026-07-14T21:43:09.911924Z"
+  }
+}

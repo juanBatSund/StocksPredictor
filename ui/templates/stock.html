@@ -392,6 +392,100 @@
   </div>
 </section>
 
+<!-- ── AI Evidence ────────────────────────────────────────────────────── -->
+<section class="panel">
+  <div class="panel-header" onclick="togglePanel('ai-body')">
+    <span>AI Evidence
+      {% if stock.ai_overall_direction %}
+        — direction: <strong>{{ stock.ai_overall_direction }}</strong>
+        {% if stock.ai_analysis_confidence %}
+          (confidence {{ "%.2f"|format(stock.ai_analysis_confidence) }})
+        {% endif %}
+      {% else %}
+        — not available
+      {% endif %}
+    </span>
+    <span class="toggle-hint" id="ai-body-hint">▼ show</span>
+  </div>
+  <div class="panel-body hidden" id="ai-body">
+    {% if stock.ai_overall_direction %}
+    <div class="macro-grid">
+      <div class="macro-item">
+        <span class="macro-label">Overall direction</span>
+        <span class="macro-value macro-dir-{{ stock.ai_overall_direction }}">
+          {{ stock.ai_overall_direction }}
+        </span>
+      </div>
+      <div class="macro-item">
+        <span class="macro-label">AI sentiment score</span>
+        <span class="macro-value mono
+          {% if stock.ai_sentiment_score < -0.1 %}sent-negative
+          {% elif stock.ai_sentiment_score > 0.1 %}sent-positive
+          {% else %}sent-neutral{% endif %}">
+          {{ "%+.3f"|format(stock.ai_sentiment_score) }}
+        </span>
+      </div>
+      <div class="macro-item">
+        <span class="macro-label">Analysis confidence</span>
+        <span class="macro-value mono {% if stock.ai_analysis_confidence < 0.50 %}low-conf{% endif %}">
+          {{ "%.2f"|format(stock.ai_analysis_confidence) }}
+          {% if stock.ai_analysis_confidence < 0.70 %}
+            <span class="low-conf-note">(below downgrade threshold of 0.70)</span>
+          {% endif %}
+        </span>
+      </div>
+      {% if stock.ai_event_types %}
+      <div class="macro-item">
+        <span class="macro-label">Event types</span>
+        <span class="macro-value mono">{{ stock.ai_event_types | join(', ') }}</span>
+      </div>
+      {% endif %}
+    </div>
+    <div class="macro-rule-box">
+      <strong>Rule:</strong> AI evidence is <em>advisory only</em>. It can downgrade BUY→WATCH
+      when direction is <code>negative</code> with confidence ≥ 0.70. It cannot upgrade a decision.
+      AI confidence ≠ probability of return.
+    </div>
+    {% if stock.ai_news_analysis and stock.ai_news_analysis.status == 'available' %}
+    {% set analysis = stock.ai_news_analysis.analysis %}
+    <details class="ai-articles-details">
+      <summary>Per-article breakdown ({{ analysis.article_analyses | length }} article{% if analysis.article_analyses | length != 1 %}s{% endif %})</summary>
+      <table class="breakdown-table" style="margin-top:0.5rem">
+        <thead>
+          <tr>
+            <th>Article ID</th>
+            <th>Direction</th>
+            <th>Relevance</th>
+            <th>Horizon</th>
+            <th>Summary</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in analysis.article_analyses %}
+          <tr>
+            <td class="mono" style="font-size:0.7rem;max-width:120px;overflow:hidden;text-overflow:ellipsis">{{ a.article_id[:20] }}…</td>
+            <td><span class="macro-dir-{{ a.direction }}">{{ a.direction }}</span></td>
+            <td class="mono">{{ "%.2f"|format(a.relevance) }}</td>
+            <td class="mono">{{ a.horizon }}</td>
+            <td style="font-size:0.8rem">{{ a.factual_summary[:120] }}{% if a.factual_summary|length > 120 %}…{% endif %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </details>
+    {% endif %}
+    {% else %}
+    <p class="no-data">
+      {% if stock.ai_news_analysis %}
+        AI news analysis: {{ stock.ai_news_analysis.reason }}
+      {% else %}
+        AI analysis not available.
+      {% endif %}
+    </p>
+    {% endif %}
+  </div>
+</section>
+
 <!-- ── Confidence breakdown ──────────────────────────────────────────── -->
 <section class="panel">
   <div class="panel-header" onclick="togglePanel('conf-body')">
@@ -501,6 +595,7 @@
       <li>Valuation shifts to 'fair' or 'overvalued' → Gate 2 fails → WATCH</li>
       <li>Sentiment improves to positive → Gate 3 fails → WATCH</li>
       <li>Macro bearish headwind ≥ 0.60 for sector → BUY→WATCH</li>
+      <li>AI evidence: negative direction with confidence ≥ 0.70 → BUY→WATCH</li>
     </ul>
     {% elif stock.decision == 'WATCH' %}
     <ul class="change-list">

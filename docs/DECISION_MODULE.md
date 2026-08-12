@@ -5,7 +5,7 @@
 Takes the pre-computed results from all upstream modules and asks:
 **"Should we BUY, WATCH, or AVOID this stock — and how confident are we?"**
 
-It answers through an explicit rule chain: hard gates first, soft gates second, macro context last. Every rule that fired is recorded. Every rule that failed is also recorded. The final decision is the mechanical consequence of those recorded evaluations — not the output of any opaque scoring formula.
+It answers through an explicit rule chain: hard gates first, soft gates second, macro context third, AI evidence advisory last. Every rule that fired is recorded. Every rule that failed is also recorded. The final decision is the mechanical consequence of those recorded evaluations — not the output of any opaque scoring formula.
 
 The module produces:
 - A **decision**: `BUY` / `WATCH` / `AVOID`
@@ -15,7 +15,7 @@ The module produces:
 - **Uncertainty flags** (explicit reasons to distrust the decision)
 - A step-by-step **reasoning trace** (ordered list of every decision step)
 
-This module does **not** fetch data, compute scores, or classify events. It receives `FundamentalResult`, `SentimentResult`, and `MacroTag` and returns a `DecisionResult`.
+This module does **not** fetch data, compute scores, or classify events. It receives `FundamentalResult`, `SentimentResult`, `MacroTag`, and (optionally) `NewsAnalysis` from the AI evidence layer and returns a `DecisionResult`.
 
 ---
 
@@ -114,6 +114,8 @@ The engine recommends BUY. `system.md` defines exit as "after 1–2 years OR sco
 | Macro silently no-ops when sector is absent | Explicit uncertainty flag: "Macro: sector not specified" |
 | Sentiment gate failure reason was opaque | Gate note field explains WHY it failed (positive sentiment / wrong direction / missing) |
 | Soft signal confidence ignored in decision | `soft_signal_quality` component in confidence formula uses module-level confidence |
+| AI output was computed but never reached `decide()` | `decide()` now accepts `ai_analysis: NewsAnalysis | None`; advisory-only rules applied post-macro |
+| No way to see AI reasoning in the decision trace | AI direction, confidence, and downgrade events appear in `reasoning_trace` and `rejected_factors` |
 
 **Remaining hard limits — not fixable without more infrastructure:**
 
@@ -133,6 +135,7 @@ The engine recommends BUY. `system.md` defines exit as "after 1–2 years OR sco
 FundamentalResult (required)
 SentimentResult   (optional)
 MacroTag          (optional)
+NewsAnalysis      (optional — from AI evidence layer)
 sector            (optional — needed for macro impact lookup)
 missing_fields    (optional — from StockData.missing_fields)
         │
@@ -159,7 +162,17 @@ Step 5: Macro context (downgrade only)
   Bullish / mixed / strength < 0.60:
     no change to decision
 
+Step 5.5: AI evidence advisory (downgrade only — never upgrades)
+  Surface AI uncertainty_flags[:5] into decision uncertainty_flags
+  If AI direction and lexicon status conflict → add conflict uncertainty flag
+  If overall_direction == "negative" AND analysis_confidence ≥ 0.70:
+    BUY → WATCH (adds rejected Factor, trace step "BUY→WATCH: AI evidence")
+  If overall_direction == "positive" AND analysis_confidence ≥ 0.50:
+    Add contributing Factor (cannot upgrade WATCH→BUY)
+  AI absence: trace step "AI evidence: not available" — no effect on decision
+
 Step 6: Confidence computation (four explicit components)
+  soft_signal_quality uses 3-value average when AI confidence is present
 
 Step 7: Uncertainty flags, contributing and rejected factors
 
@@ -213,6 +226,25 @@ The macro check only fires when:
 
 If all four conditions are met: `BUY → WATCH`.
 The macro context **never** upgrades a decision.
+
+### AI evidence advisory (not a gate — conditional downgrade only)
+
+The AI advisory block fires when `ai_analysis` (a `NewsAnalysis` object) is passed to `decide()`.
+
+| AI direction | AI confidence | Current decision | Effect |
+|---|---|---|---|
+| `"negative"` | ≥ 0.70 | BUY | Downgrade to WATCH; add rejected Factor; trace step |
+| `"negative"` | ≥ 0.70 | WATCH or AVOID | Add rejected Factor; note in trace; no decision change |
+| `"negative"` | < 0.70 | any | Neutral trace step only |
+| `"positive"` | ≥ 0.50 | any | Add contributing Factor; **cannot** upgrade decision |
+| `"neutral"` | any | any | Neutral trace step only |
+| Not provided | — | any | Trace step "AI evidence: not available"; no effect |
+
+The threshold `_AI_DOWNGRADE_CONFIDENCE = 0.70` is defined in `engine.py:42`.
+
+**Why 0.70?** Below this level the AI's self-reported confidence is too uncertain to act on for a downgrade. This threshold has not been empirically calibrated — it is a starting point. Positive contributions use a lower threshold (0.50) because they cannot hurt: they add information without changing the decision.
+
+**AI/lexicon conflict:** if the lexicon scores sentiment as `"positive"` but the AI direction is `"negative"` (or vice versa), an uncertainty flag is added regardless of confidence. This is not a downgrade — it is a signal to the analyst that the two methods disagree.
 
 ---
 
@@ -275,11 +307,17 @@ Measures whether soft signals (sentiment + macro) agree with the decision direct
 
 ### Component 4 — Soft signal quality (15%)
 
+**Without AI analysis:**
 ```
 soft_signal_quality = (sentiment.confidence + macro.confidence) / 2
 ```
 
-Uses the internal confidence values from the sentiment and macro modules themselves. Defaults to 0.5 when a module's output is not provided (uncertain, not zero).
+**With AI analysis:**
+```
+soft_signal_quality = (sentiment.confidence + macro.confidence + ai_analysis_confidence) / 3
+```
+
+Uses the internal confidence values from the sentiment module, macro module, and AI evidence layer. Defaults to 0.5 when a module's output is not provided (uncertain, not zero). AI presence at any direction shifts this component — it does not require AI to agree with the decision to contribute.
 
 ---
 
@@ -311,6 +349,10 @@ Uses the internal confidence values from the sentiment and macro modules themsel
 | `macro_confidence` | `float \| None` | Macro tagger's own confidence |
 | `reasoning_trace` | `list[str]` | Ordered steps: every decision that was made |
 | `notes` | `list[str]` | `[decision_note, score_note, uncertainty_note]` |
+| `ai_overall_direction` | `str \| None` | AI direction: `"positive"` / `"negative"` / `"neutral"` |
+| `ai_sentiment_score` | `float \| None` | AI sentiment score (−1 to +1) |
+| `ai_analysis_confidence` | `float \| None` | AI self-reported confidence (0.0–1.0) |
+| `ai_event_types` | `list[str]` | AI-detected event labels (e.g. `["earnings_beat"]`) |
 
 ---
 
@@ -533,6 +575,9 @@ A missing sentiment signal does not mean sentiment is bad — it means sentiment
 **Macro only downgrades.**
 Allowing macro to upgrade decisions would require the macro signal to be accurate enough to override fundamentals. The macro tagger's limitations (uncalibrated weights, unknown classification accuracy) make it unsuitable as a positive gate.
 
+**AI only downgrades.**
+The same constraint applies to the AI evidence layer. AI can downgrade BUY→WATCH when negative direction is detected at confidence ≥ 0.70. It cannot upgrade WATCH→BUY or override any hard gate. A high-confidence positive AI signal adds a contributing Factor but leaves the decision unchanged. The AI advisory block is documented in full in `docs/AI_MODULE.md`.
+
 **Deterministic.**
 No randomness, no timestamps, no external calls in the decision logic. Same inputs always produce the same `DecisionResult`.
 
@@ -543,9 +588,12 @@ No randomness, no timestamps, no external calls in the decision logic. Same inpu
 | Concern | Where it lives |
 |---|---|
 | Fetching data, scoring fundamentals, sentiment, macro | Upstream modules (`src/data/`, `src/fundamentals/`, `src/sentiment/`, `src/macro/`) |
+| AI news analysis (fetching, prompting, auditing) | `src/ai/` — see `docs/AI_MODULE.md` |
+| AI provider selection and settings | `ui/ai_settings.py` — see `docs/AI_MODULE.md` |
 | Position sizing | Not implemented |
 | Portfolio-level correlation and concentration | Not implemented |
 | Exit timing (when to sell) | `src/backtest/` (not yet implemented) |
 | Historical backtesting of this decision rule | `src/backtest/` (not yet implemented) |
 | Benchmarking against SPY / random portfolio | Not implemented — most critical validation gap |
 | Threshold calibration against forward returns | Not implemented — requires a labelled return dataset |
+| Calibration of `_AI_DOWNGRADE_CONFIDENCE` (0.70) | Not implemented — threshold chosen heuristically |

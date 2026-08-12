@@ -21,7 +21,7 @@ decide(ticker, fundamental, sector, sentiment, macro, missing_fields)
 """
 
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from config.settings import SCORE_BUY, SCORE_WATCH_MIN
 from src.fundamentals.scorer import FundamentalResult
@@ -30,10 +30,16 @@ from src.macro.tagger import MacroTag
 from src.sentiment.scorer import SentimentResult
 from src.valuation.scorer import UNDERVALUED, UNKNOWN
 
+if TYPE_CHECKING:
+    from src.ai.models import NewsAnalysis
+
 _MODULE = "decision.engine"
 
 # Macro sector impact strength required to trigger a BUY→WATCH downgrade
 _MACRO_DOWNGRADE_THRESHOLD = 0.60
+
+# AI analysis confidence required for a negative direction to trigger BUY→WATCH downgrade
+_AI_DOWNGRADE_CONFIDENCE = 0.70
 
 # Sentiment confidence below this triggers an uncertainty flag
 _SENTIMENT_LOW_CONFIDENCE = 0.20
@@ -114,6 +120,12 @@ class DecisionResult:
     reasoning_trace: list[str]
     notes: list[str]                     # summary notes [decision, score, uncertainty]
 
+    # AI evidence sidecar (advisory — never the sole basis for a decision)
+    ai_overall_direction: Optional[str] = field(default=None)
+    ai_sentiment_score: Optional[float] = field(default=None)
+    ai_analysis_confidence: Optional[float] = field(default=None)
+    ai_event_types: list[str] = field(default_factory=list)
+
 
 # ── Public entry point ─────────────────────────────────────────────────────────
 
@@ -124,6 +136,7 @@ def decide(
     sentiment: SentimentResult | None = None,
     macro: MacroTag | None = None,
     missing_fields: list[str] | None = None,
+    ai_analysis: "NewsAnalysis | None" = None,
 ) -> DecisionResult:
     """
     Produce a BUY / WATCH / AVOID decision from pre-computed module results.
@@ -147,6 +160,7 @@ def decide(
         "valuation_status": fundamental.valuation.status,
         "has_sentiment": sentiment is not None,
         "has_macro": macro is not None,
+        "has_ai_analysis": ai_analysis is not None,
         "sector": sector,
         "missing_field_count": len(missing_fields),
     })
@@ -402,6 +416,85 @@ def decide(
         uncertainty.append("Macro: no macro context provided")
         trace.append("Macro: not provided")
 
+    # ── AI evidence (advisory sidecar — can only downgrade, never upgrade) ───────
+    ai_overall_direction_val: Optional[str] = None
+    ai_sentiment_score_val: Optional[float] = None
+    ai_analysis_confidence_val: Optional[float] = None
+    ai_event_types_val: list[str] = []
+
+    if ai_analysis is not None:
+        ai_overall_direction_val = ai_analysis.overall_direction
+        ai_sentiment_score_val = ai_analysis.sentiment_score
+        ai_analysis_confidence_val = ai_analysis.analysis_confidence
+        ai_event_types_val = list(ai_analysis.event_types)
+
+        # Surface AI uncertainty flags (capped to avoid noise)
+        for flag in ai_analysis.uncertainty_flags[:5]:
+            uncertainty.append(f"AI evidence: {flag}")
+
+        # Flag AI/lexicon conflict when both signals are available
+        if sentiment is not None:
+            if (
+                (sentiment.status == "positive" and ai_analysis.overall_direction == "negative")
+                or (sentiment.status == "negative" and ai_analysis.overall_direction == "positive")
+            ):
+                uncertainty.append(
+                    f"AI/lexicon conflict: AI direction '{ai_analysis.overall_direction}' "
+                    f"vs lexicon '{sentiment.status}' — signals disagree, treat with caution"
+                )
+
+        # Strong negative AI signal can downgrade BUY→WATCH (cannot upgrade)
+        if (
+            ai_analysis.overall_direction == "negative"
+            and ai_analysis.analysis_confidence >= _AI_DOWNGRADE_CONFIDENCE
+        ):
+            event_str = ", ".join(ai_analysis.event_types[:3]) or "unspecified"
+            if decision == "BUY":
+                decision = "WATCH"
+                rejected.append(Factor(
+                    "AI evidence: negative news",
+                    "opposing",
+                    f"AI direction: negative, confidence {ai_analysis.analysis_confidence:.2f} "
+                    f"(≥ {_AI_DOWNGRADE_CONFIDENCE}) — BUY downgraded to WATCH. "
+                    f"Events: {event_str}",
+                ))
+                trace.append(
+                    f"BUY→WATCH: AI evidence — negative direction, "
+                    f"confidence {ai_analysis.analysis_confidence:.2f}"
+                )
+            else:
+                rejected.append(Factor(
+                    "AI evidence: negative news",
+                    "opposing",
+                    f"AI direction: negative, confidence {ai_analysis.analysis_confidence:.2f} "
+                    f"— events: {event_str}",
+                ))
+                trace.append(
+                    f"AI headwind noted: negative direction "
+                    f"{ai_analysis.analysis_confidence:.2f} (decision already {decision})"
+                )
+        elif (
+            ai_analysis.overall_direction == "positive"
+            and ai_analysis.analysis_confidence >= 0.50
+        ):
+            contributing.append(Factor(
+                "AI evidence: positive news",
+                "supporting",
+                f"AI direction: positive, confidence {ai_analysis.analysis_confidence:.2f} "
+                f"— events: {', '.join(ai_analysis.event_types[:3]) or 'general positive'}",
+            ))
+            trace.append(
+                f"AI evidence: positive direction {ai_analysis.analysis_confidence:.2f} "
+                f"(cannot upgrade decision)"
+            )
+        else:
+            trace.append(
+                f"AI evidence: direction={ai_analysis.overall_direction}, "
+                f"confidence={ai_analysis.analysis_confidence:.2f} — no adjustment"
+            )
+    else:
+        trace.append("AI evidence: not available")
+
     # ── Confidence ────────────────────────────────────────────────────────────
     conf = _compute_confidence(
         score=score,
@@ -412,6 +505,7 @@ def decide(
         macro_sector_strength=macro_sector_strength,
         macro_confidence=macro_confidence_val,
         decision=decision,
+        ai_analysis_confidence=ai_analysis_confidence_val,
     )
     trace.append(
         f"Confidence: {conf.total:.2f} "
@@ -463,6 +557,10 @@ def decide(
         macro_sector_direction=macro_sector_direction,
         macro_sector_strength=macro_sector_strength,
         macro_confidence=macro_confidence_val,
+        ai_overall_direction=ai_overall_direction_val,
+        ai_sentiment_score=ai_sentiment_score_val,
+        ai_analysis_confidence=ai_analysis_confidence_val,
+        ai_event_types=ai_event_types_val,
         reasoning_trace=trace,
         notes=notes,
     )
@@ -494,6 +592,7 @@ def _compute_confidence(
     macro_sector_strength: Optional[float],
     macro_confidence: Optional[float],
     decision: str,
+    ai_analysis_confidence: Optional[float] = None,
 ) -> ConfidenceBreakdown:
     """
     Four-component confidence model.
@@ -540,7 +639,10 @@ def _compute_confidence(
     # ── Component 4: Soft signal quality ─────────────────────────────────────
     sent_conf = sentiment.confidence if sentiment is not None else 0.50
     mac_conf = macro_confidence if macro_confidence is not None else 0.50
-    soft_signal_quality = round((sent_conf + mac_conf) / 2, 4)
+    if ai_analysis_confidence is not None:
+        soft_signal_quality = round((sent_conf + mac_conf + ai_analysis_confidence) / 3, 4)
+    else:
+        soft_signal_quality = round((sent_conf + mac_conf) / 2, 4)
 
     # ── Weighted total ────────────────────────────────────────────────────────
     raw = (

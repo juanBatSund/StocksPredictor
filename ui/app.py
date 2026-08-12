@@ -21,6 +21,7 @@ from ui.mock_data import (
 )
 import ui.watchlist as wl
 import ui.screener as screener
+import ui.ai_settings as ai_cfg
 from config.tickers import MARKET_LABELS, MARKET_TICKERS
 
 app = Flask(__name__,
@@ -41,6 +42,7 @@ def inject_globals():
             {"url": "/screener",   "label": "Screener"},
             {"url": "/benchmark",  "label": "Benchmark"},
             {"url": "/replay",     "label": "Replay"},
+            {"url": "/settings",   "label": "AI Settings"},
         ],
     }
 
@@ -223,6 +225,87 @@ def api_stock(ticker: str):
 @app.route("/api/replay/<ticker>")
 def api_replay(ticker: str):
     return jsonify(get_replay_data(ticker.upper()))
+
+
+# ── AI Settings ───────────────────────────────────────────────────────────────
+
+@app.route("/settings", methods=["GET"])
+def settings_page():
+    cfg = ai_cfg.load()
+    models = []
+    if cfg.get("provider") == "ollama":
+        models = ai_cfg.list_ollama_models(cfg.get("ollama_base_url", ""))
+    return render_template(
+        "ai_settings.html",
+        cfg=cfg,
+        providers=ai_cfg.PROVIDERS,
+        models=models,
+    )
+
+
+@app.route("/settings", methods=["POST"])
+def settings_save():
+    provider = request.form.get("provider", "none")
+    updates = {
+        "provider": provider,
+        "ollama_model": request.form.get("ollama_model", "").strip(),
+        "ollama_base_url": request.form.get("ollama_base_url", "http://127.0.0.1:11434").strip(),
+        "ollama_timeout": int(request.form.get("ollama_timeout", 120) or 120),
+    }
+    ai_cfg.save(updates)
+    # Invalidate the analysis cache so next stock lookup uses the new model
+    from ui.pipeline import _CACHE
+    _CACHE.clear()
+    return redirect(url_for("settings_page"))
+
+
+@app.route("/api/ollama/models")
+def api_ollama_models():
+    base_url = request.args.get("base_url", "").strip()
+    models = ai_cfg.list_ollama_models(base_url or None)
+    return jsonify({"models": models, "count": len(models)})
+
+
+@app.route("/api/ai/test")
+def api_ai_test():
+    """Probe the configured AI service with a minimal request."""
+    from datetime import datetime, timezone
+    from src.ai.models import NewsAnalysisRequest, NewsArticle
+    from src.ai.service import AnalysisUnavailable, analyze_if_available
+
+    service = ai_cfg.get_service()
+    if service is None:
+        return jsonify({"status": "disabled", "message": "No AI provider configured."})
+
+    cfg = ai_cfg.load()
+    now = datetime.now(timezone.utc)
+    probe_article = NewsArticle(
+        article_id="probe-1",
+        ticker="TEST",
+        headline="Company reports steady quarterly results in line with expectations.",
+        publisher="Test Wire",
+        url=None,
+        published_at=now,
+        available_at=now,
+    )
+    probe_request = NewsAnalysisRequest(
+        ticker="TEST",
+        decision_at=now,
+        articles=[probe_article],
+    )
+    try:
+        result = analyze_if_available(service, probe_request)
+        if isinstance(result, AnalysisUnavailable):
+            return jsonify({"status": "error", "message": result.reason})
+        return jsonify({
+            "status": "ok",
+            "provider": result.provider,
+            "model": result.model,
+            "direction": result.analysis.overall_direction,
+            "confidence": result.analysis.analysis_confidence,
+        })
+    except Exception as exc:
+        return jsonify({"status": "error", "message": str(exc)})
 
 
 if __name__ == "__main__":

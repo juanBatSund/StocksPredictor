@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% block title %}AI Settings{% endblock %}
+
+{% block content %}
+<div class="settings-page">
+
+  <h1 class="settings-title">AI Provider Settings</h1>
+  <p class="settings-intro">
+    Choose which AI model analyses news articles for each stock.
+    The AI layer is <strong>advisory only</strong> — it cannot override the
+    deterministic BUY / WATCH / AVOID decision, but can downgrade BUY→WATCH
+    when it detects strongly negative news (confidence ≥ 0.70).
+  </p>
+
+  <form method="POST" action="/settings" id="settings-form">
+
+    <!-- ── Provider ──────────────────────────────────────────────────── -->
+    <section class="panel settings-panel">
+      <div class="panel-header"><span>Provider</span></div>
+      <div class="panel-body">
+        <div class="settings-provider-grid">
+          {% for key, label in providers.items() %}
+          <label class="provider-card {% if cfg.provider == key %}provider-card-active{% endif %} {% if key in ('claude','openai') %}provider-card-soon{% endif %}">
+            <input type="radio" name="provider" value="{{ key }}"
+                   {% if cfg.provider == key %}checked{% endif %}
+                   {% if key in ('claude','openai') %}disabled{% endif %}
+                   onchange="onProviderChange(this.value)">
+            <span class="provider-card-label">{{ label }}</span>
+            {% if key == 'ollama' %}
+              <span class="provider-card-note">Runs locally — no API key needed</span>
+            {% elif key == 'claude' %}
+              <span class="provider-card-note provider-soon">Coming soon</span>
+            {% elif key == 'openai' %}
+              <span class="provider-card-note provider-soon">Coming soon</span>
+            {% else %}
+              <span class="provider-card-note">No AI analysis</span>
+            {% endif %}
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Ollama config ─────────────────────────────────────────────── -->
+    <section class="panel settings-panel" id="ollama-section"
+             style="{% if cfg.provider != 'ollama' %}display:none{% endif %}">
+      <div class="panel-header"><span>Ollama — Local Model</span></div>
+      <div class="panel-body">
+
+        <div class="settings-field">
+          <label class="settings-label" for="ollama_base_url">Ollama base URL</label>
+          <input class="settings-input" type="text" id="ollama_base_url" name="ollama_base_url"
+                 value="{{ cfg.ollama_base_url }}"
+                 placeholder="http://127.0.0.1:11434">
+          <button type="button" class="settings-btn-secondary" onclick="detectModels()">
+            Detect installed models
+          </button>
+        </div>
+
+        <div class="settings-field">
+          <label class="settings-label" for="ollama_model">Model</label>
+          <select class="settings-select" id="ollama_model" name="ollama_model">
+            {% if cfg.ollama_model %}
+            <option value="{{ cfg.ollama_model }}" selected>{{ cfg.ollama_model }}</option>
+            {% endif %}
+            {% for m in models %}
+              {% if m.name != cfg.ollama_model %}
+              <option value="{{ m.name }}">
+                {{ m.name }}{% if m.size_gb %} — {{ m.size_gb }} GB{% endif %}
+              </option>
+              {% endif %}
+            {% endfor %}
+            {% if not models and not cfg.ollama_model %}
+            <option value="" disabled selected>Click "Detect installed models" above</option>
+            {% endif %}
+          </select>
+          <span class="settings-field-note" id="model-status">
+            {% if models %}{{ models|length }} model{% if models|length != 1 %}s{% endif %} found{% endif %}
+          </span>
+        </div>
+
+        <div class="settings-field">
+          <label class="settings-label" for="ollama_timeout">Request timeout (seconds)</label>
+          <input class="settings-input settings-input-sm" type="number"
+                 id="ollama_timeout" name="ollama_timeout"
+                 value="{{ cfg.ollama_timeout }}" min="10" max="600">
+          <span class="settings-field-note">Increase for large models. Qwen3 8B+ may need 180 s+.</span>
+        </div>
+
+        <!-- Test connection -->
+        <div class="settings-test-bar">
+          <button type="button" class="settings-btn-test" onclick="testConnection()">
+            Test connection
+          </button>
+          <span id="test-result" class="test-result"></span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Claude (stub) ─────────────────────────────────────────────── -->
+    <section class="panel settings-panel settings-panel-soon" id="claude-section"
+             style="{% if cfg.provider != 'claude' %}display:none{% endif %}">
+      <div class="panel-header"><span>Claude — Anthropic API</span></div>
+      <div class="panel-body">
+        <p class="settings-soon-note">
+          Claude integration is coming soon. Set <code>ANTHROPIC_API_KEY</code> in your
+          environment and this section will activate.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── OpenAI (stub) ─────────────────────────────────────────────── -->
+    <section class="panel settings-panel settings-panel-soon" id="openai-section"
+             style="{% if cfg.provider != 'openai' %}display:none{% endif %}">
+      <div class="panel-header"><span>ChatGPT — OpenAI API</span></div>
+      <div class="panel-body">
+        <p class="settings-soon-note">
+          OpenAI integration is coming soon. Set <code>OPENAI_API_KEY</code> in your
+          environment and this section will activate.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Save ──────────────────────────────────────────────────────── -->
+    <div class="settings-save-bar">
+      <button type="submit" class="settings-btn-save">Save &amp; Apply</button>
+      <span class="settings-save-note">
+        Saving clears the analysis cache — the next stock lookup will re-run with the new model.
+      </span>
+    </div>
+
+  </form>
+
+  <!-- ── Current status ────────────────────────────────────────────── -->
+  <section class="panel settings-panel" style="margin-top:1.5rem">
+    <div class="panel-header"><span>Current Status</span></div>
+    <div class="panel-body">
+      <table class="breakdown-table">
+        <tbody>
+          <tr>
+            <td><strong>Provider</strong></td>
+            <td class="mono">{{ providers[cfg.provider] if cfg.provider in providers else cfg.provider }}</td>
+          </tr>
+          {% if cfg.provider == 'ollama' %}
+          <tr>
+            <td><strong>Model</strong></td>
+            <td class="mono">{{ cfg.ollama_model if cfg.ollama_model else '— not set —' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Base URL</strong></td>
+            <td class="mono">{{ cfg.ollama_base_url }}</td>
+          </tr>
+          <tr>
+            <td><strong>Timeout</strong></td>
+            <td class="mono">{{ cfg.ollama_timeout }} s</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function onProviderChange(provider) {
+  document.getElementById('ollama-section').style.display  = provider === 'ollama'  ? '' : 'none';
+  document.getElementById('claude-section').style.display  = provider === 'claude'  ? '' : 'none';
+  document.getElementById('openai-section').style.display  = provider === 'openai'  ? '' : 'none';
+}
+
+function detectModels() {
+  const baseUrl = document.getElementById('ollama_base_url').value.trim();
+  const status  = document.getElementById('model-status');
+  const select  = document.getElementById('ollama_model');
+  const current = select.value;
+
+  status.textContent = 'Detecting…';
+  status.className   = 'settings-field-note';
+
+  fetch('/api/ollama/models?base_url=' + encodeURIComponent(baseUrl))
+    .then(r => r.json())
+    .then(data => {
+      if (!data.models || data.models.length === 0) {
+        status.textContent = 'No models found — is Ollama running?';
+        status.className   = 'settings-field-note note-warn';
+        return;
+      }
+      select.innerHTML = '';
+      data.models.forEach(m => {
+        const opt = document.createElement('option');
+        opt.value       = m.name;
+        opt.textContent = m.name + (m.size_gb ? ' — ' + m.size_gb + ' GB' : '');
+        if (m.name === current) opt.selected = true;
+        select.appendChild(opt);
+      });
+      status.textContent = data.count + ' model' + (data.count !== 1 ? 's' : '') + ' found';
+      status.className   = 'settings-field-note note-ok';
+    })
+    .catch(() => {
+      status.textContent = 'Could not reach Ollama.';
+      status.className   = 'settings-field-note note-warn';
+    });
+}
+
+function testConnection() {
+  const btn    = document.querySelector('.settings-btn-test');
+  const result = document.getElementById('test-result');
+  btn.disabled    = true;
+  result.textContent = 'Testing…';
+  result.className   = 'test-result';
+
+  // Save form first so the test uses the current selections
+  const form = document.getElementById('settings-form');
+  const data = new FormData(form);
+  fetch('/settings', { method: 'POST', body: data })
+    .then(() => fetch('/api/ai/test'))
+    .then(r => r.json())
+    .then(d => {
+      btn.disabled = false;
+      if (d.status === 'ok') {
+        result.textContent = `OK — ${d.provider} / ${d.model} → direction: ${d.direction}, confidence: ${d.confidence.toFixed(2)}`;
+        result.className   = 'test-result test-ok';
+      } else if (d.status === 'disabled') {
+        result.textContent = 'Disabled — select a provider above.';
+        result.className   = 'test-result test-warn';
+      } else {
+        result.textContent = 'Error: ' + d.message;
+        result.className   = 'test-result test-error';
+      }
+    })
+    .catch(e => {
+      btn.disabled       = false;
+      result.textContent = 'Request failed: ' + e;
+      result.className   = 'test-result test-error';
+    });
+}
+</script>
+{% endblock %}

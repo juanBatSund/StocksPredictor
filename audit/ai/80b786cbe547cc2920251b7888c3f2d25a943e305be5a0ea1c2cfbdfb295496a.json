@@ -1,0 +1,52 @@
+{
+  "analysis": {
+    "affected_sectors": [],
+    "analysis_confidence": 0.95,
+    "article_analyses": [
+      {
+        "article_id": "probe-1",
+        "direction": "neutral",
+        "factual_summary": "The company reported steady quarterly results that met expectations.",
+        "horizon": "short_term",
+        "rationale": "The article describes the company's recent financial performance as 'steady' and 'in line with expectations'. This suggests a stable current situation without significant positive or negative developments.",
+        "relevance": 1.0,
+        "uncertainty_flags": []
+      }
+    ],
+    "event_types": [],
+    "limitations": [],
+    "overall_direction": "neutral",
+    "schema_version": "1.0",
+    "sentiment_score": 0.0,
+    "ticker": "TEST",
+    "uncertainty_flags": []
+  },
+  "created_at": "2026-07-14T21:34:15.790704Z",
+  "prompt_version": "news-evidence-v1",
+  "record_id": "80b786cbe547cc2920251b7888c3f2d25a943e305be5a0ea1c2cfbdfb295496a",
+  "record_sha256": "22a3bd7ff09db1e81416ca5fc35b9e22980a1fc417c3c6dbea7be8b836b7d5bd",
+  "request": {
+    "articles": [
+      {
+        "article_id": "probe-1",
+        "available_at": "2026-07-14T21:34:02.303904Z",
+        "body": null,
+        "headline": "Company reports steady quarterly results in line with expectations.",
+        "published_at": "2026-07-14T21:34:02.303904Z",
+        "publisher": "Test Wire",
+        "ticker": "TEST",
+        "url": null
+      }
+    ],
+    "decision_at": "2026-07-14T21:34:02.303904Z",
+    "schema_version": "1.0",
+    "ticker": "TEST"
+  },
+  "response": {
+    "content": "{\"ticker\": \"TEST\", \"overall_direction\": \"neutral\", \"sentiment_score\": 0.0, \"article_analyses\": [{\"article_id\": \"probe-1\", \"factual_summary\": \"The company reported steady quarterly results that met expectations.\", \"direction\": \"neutral\", \"relevance\": 1.0, \"horizon\": \"short_term\", \"rationale\": \"The article describes the company's recent financial performance as 'steady' and 'in line with expectations'. This suggests a stable current situation without significant positive or negative developments.\", \"uncertainty_flags\": []} ],\"analysis_confidence\": 0.95}",
+    "model": "gemma3:4b",
+    "provider": "ollama",
+    "received_at": "2026-07-14T21:34:15.782053Z",
+    "request_id": "2026-07-14T21:34:15.780689Z"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "provider": "ollama",
+  "ollama_model": "gemma3:4b",
+  "ollama_base_url": "http://127.0.0.1:11434",
+  "ollama_timeout": 190
+}

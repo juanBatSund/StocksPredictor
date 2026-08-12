@@ -1,0 +1,223 @@
+{
+  "analysis": {
+    "affected_sectors": [],
+    "analysis_confidence": 0.7,
+    "article_analyses": [
+      {
+        "article_id": "0e65129e-5aed-39c0-9c80-cd0db024c240",
+        "direction": "neutral",
+        "factual_summary": "Simply Wall St published an article assessing Saab's valuation following strong Q1 2026 growth and expansion plans.",
+        "horizon": "short_term",
+        "rationale": "The article discusses a recent valuation check, indicating current market sentiment.",
+        "relevance": 0.8,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "6a343929-9392-33f2-ade8-4fe37cfa82aa",
+        "direction": "positive",
+        "factual_summary": "Simply Wall St reported on Saab's valuation following the SEK 640 million Carl Gustaf M4 order from Lithuania.",
+        "horizon": "short_term",
+        "rationale": "The significant order provides a positive catalyst for Saab's valuation.",
+        "relevance": 0.9,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "ab31b3c9-8d87-3f16-b091-83f6d43a9ec4",
+        "direction": "positive",
+        "factual_summary": "MT Newswires detailed a partnership between CAE and Saab to enhance Airborne Early Warning and Control capabilities based on the GlobalEye platform in Canada.",
+        "horizon": "medium_term",
+        "rationale": "The collaboration with a major player like CAE suggests future growth opportunities.",
+        "relevance": 0.7,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "d9c87000-c836-3629-8a8b-9ac72276268c",
+        "direction": "positive",
+        "factual_summary": "Moby reported on Saab securing a massive jet fighter deal.",
+        "horizon": "medium_term",
+        "rationale": "A large defense contract is a significant positive indicator for Saab.",
+        "relevance": 0.9,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "aa2a1f14-b2cd-38d7-8c5b-2c9c630ce221",
+        "direction": "positive",
+        "factual_summary": "The Financial Post noted that Canada is on track to meet NATO's 5% defense spending target by 2035, driven by a commitment from Prime Minister Carney.",
+        "horizon": "long_term",
+        "rationale": "Increased defense spending globally benefits Saab as a major arms supplier.",
+        "relevance": 0.6,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "54b73185-822c-3591-8c32-3b2e2747fde7",
+        "direction": "neutral",
+        "factual_summary": "MT Newswires covered Stifel Canada's analysis of opportunities for CAE under a new Canadian defense industrial strategy.",
+        "horizon": "medium_term",
+        "rationale": "This article provides context on the broader Canadian defense landscape.",
+        "relevance": 0.5,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "c6ba915e-eac8-3e48-a571-6466b128693c",
+        "direction": "neutral",
+        "factual_summary": "Simply Wall St conducted a valuation check following major defense wins and a recent share price pullback.",
+        "horizon": "short_term",
+        "rationale": "The article highlights the ongoing assessment of Saab's value.",
+        "relevance": 0.8,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "87d468e1-5ae1-33e5-9330-93880ce93b7f",
+        "direction": "positive",
+        "factual_summary": "Reuters reported that Airbus is leaning towards Saab as a partner in the unraveling Franco-German fighter program.",
+        "horizon": "medium_term",
+        "rationale": "A potential partnership with Airbus represents a significant strategic opportunity.",
+        "relevance": 0.7,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "db805fa6-e989-3481-a7d4-74cfc8d1d43c",
+        "direction": "positive",
+        "factual_summary": "Reuters detailed Saab's investment of $13 million in Comand AI, a defense technology company.",
+        "horizon": "medium_term",
+        "rationale": "Investment in innovative technologies suggests future growth potential.",
+        "relevance": 0.6,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "c6771851-22f1-3551-b38d-3f2e101d4517",
+        "direction": "positive",
+        "factual_summary": "The Wall Street Journal reported on Saab's agreement to deliver 16 Gripen fighter jets to Ukraine.",
+        "horizon": "long_term",
+        "rationale": "This major contract represents a substantial revenue opportunity and supports Ukraine's defense capabilities.",
+        "relevance": 0.9,
+        "uncertainty_flags": []
+      }
+    ],
+    "event_types": [],
+    "limitations": [],
+    "overall_direction": "positive",
+    "schema_version": "1.0",
+    "sentiment_score": 0.7,
+    "ticker": "SAAB-B.ST",
+    "uncertainty_flags": []
+  },
+  "created_at": "2026-07-14T21:37:22.218473Z",
+  "prompt_version": "news-evidence-v1",
+  "record_id": "2ec0d289a76deca0b96a9de75ce7ab93796b4d0de30d38266276e3888d8fde8d",
+  "record_sha256": "7c2892164b0c64a0ca537d4f57ae55ac456ea9323cad34966c12cd106b54ec7d",
+  "request": {
+    "articles": [
+      {
+        "article_id": "0e65129e-5aed-39c0-9c80-cd0db024c240",
+        "available_at": "2026-07-14T21:34:39.850626Z",
+        "body": null,
+        "headline": "Saab (OM:SAAB B) Valuation Check After Strong Q1 2026 Growth And Capacity Expansion Plans",
+        "published_at": "2026-04-26T19:07:14Z",
+        "publisher": "Simply Wall St.",
+        "ticker": "SAAB-B.ST",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/saab-om-saab-b-valuation-190714936.html"
+      },
+      {
+        "article_id": "6a343929-9392-33f2-ade8-4fe37cfa82aa",
+        "available_at": "2026-07-14T21:34:39.850626Z",
+        "body": null,
+        "headline": "Saab (OM:SAAB B) Valuation Check After Lithuania\u2019s SEK 640 Million Carl Gustaf M4 Order",
+        "published_at": "2026-05-21T18:11:55Z",
+        "publisher": "Simply Wall St.",
+        "ticker": "SAAB-B.ST",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/saab-om-saab-b-valuation-181155265.html"
+      },
+      {
+        "article_id": "ab31b3c9-8d87-3f16-b091-83f6d43a9ec4",
+        "available_at": "2026-07-14T21:34:39.850626Z",
+        "body": null,
+        "headline": "CAE Partners With Saab to Boost Canada's Airborne Early Warning and Control Based On The GlobalEye Platform",
+        "published_at": "2026-05-27T19:50:47Z",
+        "publisher": "MT Newswires",
+        "ticker": "SAAB-B.ST",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/cae-partners-saab-boost-canada-195047373.html"
+      },
+      {
+        "article_id": "d9c87000-c836-3629-8a8b-9ac72276268c",
+        "available_at": "2026-07-14T21:34:39.850626Z",
+        "body": null,
+        "headline": "Saab Takes Flight on a Massive Jet Fighter Deal",
+        "published_at": "2026-05-28T14:34:52Z",
+        "publisher": "Moby",
+        "ticker": "SAAB-B.ST",
+        "url": "https://app.moby.co/home/news/news-saab-takes-flight-on-a-massive-jet-fighter-deal?utm_source=yahoo_finance&utm_medium=rss"
+      },
+      {
+        "article_id": "aa2a1f14-b2cd-38d7-8c5b-2c9c630ce221",
+        "available_at": "2026-07-14T21:34:39.850626Z",
+        "body": null,
+        "headline": "Ottawa on track to achieve NATO's 5% spending target by 2035, Carney says",
+        "published_at": "2026-05-28T15:44:42Z",
+        "publisher": "Financial Post",
+        "ticker": "SAAB-B.ST",
+        "url": "https://financialpost.com/news/economy/ottawa-track-achieve-nato-spending-target-2035-carney"
+      },
+      {
+        "article_id": "54b73185-822c-3591-8c32-3b2e2747fde7",
+        "available_at": "2026-07-14T21:34:39.850626Z",
+        "body": null,
+        "headline": "Stifel Canada on Opportunities For CAE Under New Defence Industrial Strategy",
+        "published_at": "2026-05-28T17:37:22Z",
+        "publisher": "MT Newswires",
+        "ticker": "SAAB-B.ST",
+        "url": "https://finance.yahoo.com/sectors/technology/articles/stifel-canada-opportunities-cae-under-173722738.html"
+      },
+      {
+        "article_id": "c6ba915e-eac8-3e48-a571-6466b128693c",
+        "available_at": "2026-07-14T21:34:39.850626Z",
+        "body": null,
+        "headline": "Saab (OM:SAAB B) Valuation Check After Major Defense Wins And Recent Share Price Pullback",
+        "published_at": "2026-06-08T03:10:57Z",
+        "publisher": "Simply Wall St.",
+        "ticker": "SAAB-B.ST",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/saab-om-saab-b-valuation-031057910.html"
+      },
+      {
+        "article_id": "87d468e1-5ae1-33e5-9330-93880ce93b7f",
+        "available_at": "2026-07-14T21:34:39.850626Z",
+        "body": null,
+        "headline": "Analysis-Airbus leans towards Saab as Franco-German fighter unravels",
+        "published_at": "2026-06-10T10:49:47Z",
+        "publisher": "Reuters",
+        "ticker": "SAAB-B.ST",
+        "url": "https://uk.finance.yahoo.com/news/analysis-airbus-leans-towards-saab-104613213.html"
+      },
+      {
+        "article_id": "db805fa6-e989-3481-a7d4-74cfc8d1d43c",
+        "available_at": "2026-07-14T21:34:39.850626Z",
+        "body": null,
+        "headline": "Saab invests $13 million in defence technology company Comand AI",
+        "published_at": "2026-06-17T14:18:26Z",
+        "publisher": "Reuters",
+        "ticker": "SAAB-B.ST",
+        "url": "https://www.yahoo.com/news/articles/saab-invests-13-million-defence-140449772.html"
+      },
+      {
+        "article_id": "c6771851-22f1-3551-b38d-3f2e101d4517",
+        "available_at": "2026-07-14T21:34:39.850626Z",
+        "body": null,
+        "headline": "Saab Signs $2.5 Billion Deal to Deliver 16 Gripen Fighter Jets to Ukraine",
+        "published_at": "2026-07-01T08:23:00Z",
+        "publisher": "The Wall Street Journal",
+        "ticker": "SAAB-B.ST",
+        "url": "https://www.wsj.com/world/europe/saab-signs-2-5-billion-deal-to-deliver-16-gripen-fighter-jets-to-ukraine-a763759d?siteid=yhoof2&yptr=yahoo"
+      }
+    ],
+    "decision_at": "2026-07-14T21:34:40.070215Z",
+    "schema_version": "1.0",
+    "ticker": "SAAB-B.ST"
+  },
+  "response": {
+    "content": "{\n  \"ticker\": \"SAAB-B.ST\",\n  \"overall_direction\": \"positive\",\n  \"sentiment_score\": 0.7,\n  \"article_analyses\": [\n    {\n      \"article_id\": \"0e65129e-5aed-39c0-9c80-cd0db024c240\",\n      \"factual_summary\": \"Simply Wall St published an article assessing Saab's valuation following strong Q1 2026 growth and expansion plans.\",\n      \"direction\": \"neutral\",\n      \"relevance\": 0.8,\n      \"horizon\": \"short_term\",\n      \"rationale\": \"The article discusses a recent valuation check, indicating current market sentiment.\"\n    },\n    {\n      \"article_id\": \"6a343929-9392-33f2-ade8-4fe37cfa82aa\",\n      \"factual_summary\": \"Simply Wall St reported on Saab's valuation following the SEK 640 million Carl Gustaf M4 order from Lithuania.\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.9,\n      \"horizon\": \"short_term\",\n      \"rationale\": \"The significant order provides a positive catalyst for Saab's valuation.\"\n    },\n    {\n      \"article_id\": \"ab31b3c9-8d87-3f16-b091-83f6d43a9ec4\",\n      \"factual_summary\": \"MT Newswires detailed a partnership between CAE and Saab to enhance Airborne Early Warning and Control capabilities based on the GlobalEye platform in Canada.\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.7,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"The collaboration with a major player like CAE suggests future growth opportunities.\"\n    },\n    {\n      \"article_id\": \"d9c87000-c836-3629-8a8b-9ac72276268c\",\n      \"factual_summary\": \"Moby reported on Saab securing a massive jet fighter deal.\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.9,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"A large defense contract is a significant positive indicator for Saab.\"\n    },\n    {\n      \"article_id\": \"aa2a1f14-b2cd-38d7-8c5b-2c9c630ce221\",\n      \"factual_summary\": \"The Financial Post noted that Canada is on track to meet NATO's 5% defense spending target by 2035, driven by a commitment from Prime Minister Carney.\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.6,\n      \"horizon\": \"long_term\",\n      \"rationale\": \"Increased defense spending globally benefits Saab as a major arms supplier.\"\n    },\n    {\n      \"article_id\": \"54b73185-822c-3591-8c32-3b2e2747fde7\",\n      \"factual_summary\": \"MT Newswires covered Stifel Canada's analysis of opportunities for CAE under a new Canadian defense industrial strategy.\",\n      \"direction\": \"neutral\",\n      \"relevance\": 0.5,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"This article provides context on the broader Canadian defense landscape.\"\n    },\n    {\n      \"article_id\": \"c6ba915e-eac8-3e48-a571-6466b128693c\",\n      \"factual_summary\": \"Simply Wall St conducted a valuation check following major defense wins and a recent share price pullback.\",\n      \"direction\": \"neutral\",\n      \"relevance\": 0.8,\n      \"horizon\": \"short_term\",\n      \"rationale\": \"The article highlights the ongoing assessment of Saab's value.\"\n    },\n    {\n      \"article_id\": \"87d468e1-5ae1-33e5-9330-93880ce93b7f\",\n      \"factual_summary\": \"Reuters reported that Airbus is leaning towards Saab as a partner in the unraveling Franco-German fighter program.\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.7,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"A potential partnership with Airbus represents a significant strategic opportunity.\"\n    },\n    {\n      \"article_id\": \"db805fa6-e989-3481-a7d4-74cfc8d1d43c\",\n      \"factual_summary\": \"Reuters detailed Saab's investment of $13 million in Comand AI, a defense technology company.\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.6,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"Investment in innovative technologies suggests future growth potential.\"\n    },\n    {\n      \"article_id\": \"c6771851-22f1-3551-b38d-3f2e101d4517\",\n      \"factual_summary\": \"The Wall Street Journal reported on Saab's agreement to deliver 16 Gripen fighter jets to Ukraine.\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.9,\n      \"horizon\": \"long_term\",\n      \"rationale\": \"This major contract represents a substantial revenue opportunity and supports Ukraine's defense capabilities.\"\n    }\n  ],\n  \"analysis_confidence\": 0.7\n}",
+    "model": "gemma3:4b",
+    "provider": "ollama",
+    "received_at": "2026-07-14T21:37:22.217797Z",
+    "request_id": "2026-07-14T21:37:22.217185Z"
+  }
+}
