@@ -1,0 +1,223 @@
+{
+  "analysis": {
+    "affected_sectors": [],
+    "analysis_confidence": 0.6,
+    "article_analyses": [
+      {
+        "article_id": "643afa9b-4bef-381d-b948-f282b4887324",
+        "direction": "positive",
+        "factual_summary": "Simply Wall St. reported that Rotork's fair value has risen following an ABB bid and analyst downgrades. This suggests increased investor interest in Rotork due to the potential acquisition by ABB.",
+        "horizon": "short_term",
+        "rationale": "The article highlights a direct impact of an acquisition bid on a related company's stock value.",
+        "relevance": 0.8,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "c65921e0-9312-3eb3-92d1-debcda6702e8",
+        "direction": "neutral",
+        "factual_summary": "MarketBeat identified three humanoid robot ETFs, implying a speculative trend related to ABB's robotics business. This suggests potential future demand for ABB\u2019s robotic products.",
+        "horizon": "medium_term",
+        "rationale": "The article discusses a broader market trend that could influence ABB's robotics segment.",
+        "relevance": 0.6,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "39b37cfd-2164-3b31-8411-64715a62a995",
+        "direction": "neutral",
+        "factual_summary": "MarketBeat provided highlights from Rotork's H1 earnings call, offering insights into the company\u2019s financial performance. This information could be relevant to assessing ABB\u2019s strategic decisions and overall market position.",
+        "horizon": "short_term",
+        "rationale": "Earnings call highlights provide granular details on Rotork's performance, which is linked to ABB.",
+        "relevance": 0.7,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "e0160e31-ef39-355e-9f92-01b69786801f",
+        "direction": "negative",
+        "factual_summary": "Zacks noted that Teradyne is overvalued, suggesting a potential negative catalyst for ABB\u2019s stock if the broader semiconductor market weakens. This indicates a risk factor related to ABB's exposure to the semiconductor industry.",
+        "horizon": "medium_term",
+        "rationale": "The article identifies an external risk \u2013 overvaluation of a related company \u2013 that could impact ABB\u2019s stock price.",
+        "relevance": 0.7,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "c4c67f34-5f58-3cf6-bd21-f84742d812a1",
+        "direction": "negative",
+        "factual_summary": "Zacks reported that industrial products stocks are lagging, including ABB (ABBNY), suggesting a potential sector-wide downturn. This indicates a broader market risk for ABB.",
+        "horizon": "medium_term",
+        "rationale": "The article highlights a negative trend within the industrial products sector, which is where ABB operates.",
+        "relevance": 0.8,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "d5438f32-42c6-3651-9e01-fe93bc1650d3",
+        "direction": "positive",
+        "factual_summary": "Zacks reported an upgrade to ABB\u2019s rating to \u2018Buy\u2019, indicating positive sentiment and potentially increased investor confidence. This suggests a bullish outlook for the company.",
+        "horizon": "short_term",
+        "rationale": "A rating upgrade typically reflects improved analyst expectations.",
+        "relevance": 0.7,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "f3b4f6c6-e8ef-3a6a-b21a-b8239b59482d",
+        "direction": "negative",
+        "factual_summary": "AFP reported that Siemens shares plunged due to disappointing guidance, which could create headwinds for ABB if they are exposed to similar market concerns or competitive pressures.",
+        "horizon": "medium_term",
+        "rationale": "The article highlights a negative event impacting a competitor, which could indirectly affect ABB.",
+        "relevance": 0.6,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "46813f47-d8d7-363e-93ba-544450e53eae",
+        "direction": "positive",
+        "factual_summary": "Energy Monitor reported that ABB is investing in LevelTen Energy to support clean energy procurement. This indicates a strategic move towards sustainable solutions and potentially new growth opportunities.",
+        "horizon": "medium_term",
+        "rationale": "The article highlights ABB\u2019s commitment to the energy transition, which is a growing market.",
+        "relevance": 0.8,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "9399456f-d21a-36a5-953f-8099be6cd5d8",
+        "direction": "neutral",
+        "factual_summary": "MarketBeat provided highlights from Watts Water Technologies\u2019 Q2 earnings call, offering insights into the company's performance. This information could be relevant to assessing ABB\u2019s strategic decisions and overall market position.",
+        "horizon": "short_term",
+        "rationale": "Earnings call highlights provide granular details on Watts Water Technologies' performance, which is linked to ABB.",
+        "relevance": 0.5,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "d2f52d5e-7dd6-3992-81ac-a4e8d83fc264",
+        "direction": "positive",
+        "factual_summary": "Simply Wall St. reiterated ABB\u2019s partnership with LevelTen Energy to advance clean energy solutions, reinforcing the company's commitment to sustainable initiatives.",
+        "horizon": "medium_term",
+        "rationale": "This article confirms and expands on ABB\u2019s strategic investment in LevelTen Energy.",
+        "relevance": 0.7,
+        "uncertainty_flags": []
+      }
+    ],
+    "event_types": [],
+    "limitations": [],
+    "overall_direction": "mixed",
+    "schema_version": "1.0",
+    "sentiment_score": 0.3,
+    "ticker": "ABB",
+    "uncertainty_flags": []
+  },
+  "created_at": "2026-08-12T06:10:13.868341Z",
+  "prompt_version": "news-evidence-v1",
+  "record_id": "b88bc579e079a06bfd97cca0acca64af33991d859c8a574c665abde60ca945ed",
+  "record_sha256": "436fd5c17927ef03c4daa27ffa0e1ef031d6cb19315b53c344e6a1a7506110fe",
+  "request": {
+    "articles": [
+      {
+        "article_id": "643afa9b-4bef-381d-b948-f282b4887324",
+        "available_at": "2026-08-12T06:07:48.142268Z",
+        "body": null,
+        "headline": "Rotork (LSE:ROR) Stock Fair Value Rises After ABB Bid And Analyst Downgrades",
+        "published_at": "2026-08-02T08:09:39Z",
+        "publisher": "Simply Wall St.",
+        "ticker": "ABB",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/rotork-lse-ror-stock-fair-080939268.html"
+      },
+      {
+        "article_id": "c65921e0-9312-3eb3-92d1-debcda6702e8",
+        "available_at": "2026-08-12T06:07:48.142268Z",
+        "body": null,
+        "headline": "3 Humanoid Robot ETFs to Ride a Speculative Trend",
+        "published_at": "2026-08-03T13:10:00Z",
+        "publisher": "MarketBeat",
+        "ticker": "ABB",
+        "url": "https://www.marketbeat.com/articles/3-humanoid-robot-etfs-to-ride-a-speculative-trend/?utm_source=yahoofinance&utm_medium=yahoofinance"
+      },
+      {
+        "article_id": "39b37cfd-2164-3b31-8411-64715a62a995",
+        "available_at": "2026-08-12T06:07:48.142268Z",
+        "body": null,
+        "headline": "Rotork H1 Earnings Call Highlights",
+        "published_at": "2026-08-04T10:03:46Z",
+        "publisher": "MarketBeat",
+        "ticker": "ABB",
+        "url": "https://www.marketbeat.com/instant-alerts/rotork-h1-earnings-call-highlights-2026-08-04/?utm_source=yahoofinance&utm_medium=yahoofinance"
+      },
+      {
+        "article_id": "e0160e31-ef39-355e-9f92-01b69786801f",
+        "available_at": "2026-08-12T06:07:48.142268Z",
+        "body": null,
+        "headline": "Teradyne Is Overvalued at 10.36X PS: Should You Still Buy the Stock?",
+        "published_at": "2026-08-04T16:28:00Z",
+        "publisher": "Zacks",
+        "ticker": "ABB",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/teradyne-overvalued-10-36x-ps-162800519.html"
+      },
+      {
+        "article_id": "c4c67f34-5f58-3cf6-bd21-f84742d812a1",
+        "available_at": "2026-08-12T06:07:48.142268Z",
+        "body": null,
+        "headline": "Are Industrial Products Stocks Lagging  ABB (ABBNY) This Year?",
+        "published_at": "2026-08-05T13:40:03Z",
+        "publisher": "Zacks",
+        "ticker": "ABB",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/industrial-products-stocks-lagging-abb-134003329.html"
+      },
+      {
+        "article_id": "d5438f32-42c6-3651-9e01-fe93bc1650d3",
+        "available_at": "2026-08-12T06:07:48.142268Z",
+        "body": null,
+        "headline": "All You Need to Know About ABB (ABBNY) Rating Upgrade to Buy",
+        "published_at": "2026-08-05T16:00:02Z",
+        "publisher": "Zacks",
+        "ticker": "ABB",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/know-abb-abbny-rating-upgrade-160002483.html"
+      },
+      {
+        "article_id": "f3b4f6c6-e8ef-3a6a-b21a-b8239b59482d",
+        "available_at": "2026-08-12T06:07:48.142268Z",
+        "body": null,
+        "headline": "Siemens shares plunge on disappointing guidance raise",
+        "published_at": "2026-08-06T08:40:13Z",
+        "publisher": "AFP",
+        "ticker": "ABB",
+        "url": "https://finance.yahoo.com/technology/articles/siemens-shares-plunge-disappointing-guidance-084013901.html"
+      },
+      {
+        "article_id": "46813f47-d8d7-363e-93ba-544450e53eae",
+        "available_at": "2026-08-12T06:07:48.142268Z",
+        "body": null,
+        "headline": "ABB invests in LevelTen Energy to support clean energy procurement",
+        "published_at": "2026-08-07T10:54:00Z",
+        "publisher": "Energy Monitor",
+        "ticker": "ABB",
+        "url": "https://www.energymonitor.ai/news/abb-invests-in-levelten-energy/"
+      },
+      {
+        "article_id": "9399456f-d21a-36a5-953f-8099be6cd5d8",
+        "available_at": "2026-08-12T06:07:48.142268Z",
+        "body": null,
+        "headline": "Watts Water Technologies Q2 Earnings Call Highlights",
+        "published_at": "2026-08-09T17:03:57Z",
+        "publisher": "MarketBeat",
+        "ticker": "ABB",
+        "url": "https://www.marketbeat.com/instant-alerts/watts-water-technologies-q2-earnings-call-highlights-2026-08-09/?utm_source=yahoofinance&utm_medium=yahoofinance"
+      },
+      {
+        "article_id": "d2f52d5e-7dd6-3992-81ac-a4e8d83fc264",
+        "available_at": "2026-08-12T06:07:48.142268Z",
+        "body": null,
+        "headline": "Energy Transition Update - ABB Partners With LevelTen To Advance Clean Energy Solutions",
+        "published_at": "2026-08-11T11:37:19Z",
+        "publisher": "Simply Wall St.",
+        "ticker": "ABB",
+        "url": "https://finance.yahoo.com/energy/articles/energy-transition-abb-partners-levelten-113719756.html"
+      }
+    ],
+    "decision_at": "2026-08-12T06:07:48.492086Z",
+    "schema_version": "1.0",
+    "ticker": "ABB"
+  },
+  "response": {
+    "content": "{\n  \"ticker\": \"ABB\",\n  \"overall_direction\": \"mixed\",\n  \"sentiment_score\": 0.3,\n  \"article_analyses\": [\n    {\n      \"article_id\": \"643afa9b-4bef-381d-b948-f282b4887324\",\n      \"factual_summary\": \"Simply Wall St. reported that Rotork's fair value has risen following an ABB bid and analyst downgrades. This suggests increased investor interest in Rotork due to the potential acquisition by ABB.\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.8,\n      \"horizon\": \"short_term\",\n      \"rationale\": \"The article highlights a direct impact of an acquisition bid on a related company's stock value.\"\n    },\n    {\n      \"article_id\": \"c65921e0-9312-3eb3-92d1-debcda6702e8\",\n      \"factual_summary\": \"MarketBeat identified three humanoid robot ETFs, implying a speculative trend related to ABB's robotics business. This suggests potential future demand for ABB\u2019s robotic products.\",\n      \"direction\": \"neutral\",\n      \"relevance\": 0.6,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"The article discusses a broader market trend that could influence ABB's robotics segment.\"\n    },\n    {\n      \"article_id\": \"39b37cfd-2164-3b31-8411-64715a62a995\",\n      \"factual_summary\": \"MarketBeat provided highlights from Rotork's H1 earnings call, offering insights into the company\u2019s financial performance. This information could be relevant to assessing ABB\u2019s strategic decisions and overall market position.\",\n      \"direction\": \"neutral\",\n      \"relevance\": 0.7,\n      \"horizon\": \"short_term\",\n      \"rationale\": \"Earnings call highlights provide granular details on Rotork's performance, which is linked to ABB.\"\n    },\n    {\n      \"article_id\": \"e0160e31-ef39-355e-9f92-01b69786801f\",\n      \"factual_summary\": \"Zacks noted that Teradyne is overvalued, suggesting a potential negative catalyst for ABB\u2019s stock if the broader semiconductor market weakens. This indicates a risk factor related to ABB's exposure to the semiconductor industry.\",\n      \"direction\": \"negative\",\n      \"relevance\": 0.7,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"The article identifies an external risk \u2013 overvaluation of a related company \u2013 that could impact ABB\u2019s stock price.\"\n    },\n    {\n      \"article_id\": \"c4c67f34-5f58-3cf6-bd21-f84742d812a1\",\n      \"factual_summary\": \"Zacks reported that industrial products stocks are lagging, including ABB (ABBNY), suggesting a potential sector-wide downturn. This indicates a broader market risk for ABB.\",\n      \"direction\": \"negative\",\n      \"relevance\": 0.8,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"The article highlights a negative trend within the industrial products sector, which is where ABB operates.\"\n    },\n    {\n      \"article_id\": \"d5438f32-42c6-3651-9e01-fe93bc1650d3\",\n      \"factual_summary\": \"Zacks reported an upgrade to ABB\u2019s rating to \u2018Buy\u2019, indicating positive sentiment and potentially increased investor confidence. This suggests a bullish outlook for the company.\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.7,\n      \"horizon\": \"short_term\",\n      \"rationale\": \"A rating upgrade typically reflects improved analyst expectations.\"\n    },\n    {\n      \"article_id\": \"f3b4f6c6-e8ef-3a6a-b21a-b8239b59482d\",\n      \"factual_summary\": \"AFP reported that Siemens shares plunged due to disappointing guidance, which could create headwinds for ABB if they are exposed to similar market concerns or competitive pressures.\",\n      \"direction\": \"negative\",\n      \"relevance\": 0.6,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"The article highlights a negative event impacting a competitor, which could indirectly affect ABB.\"\n    },\n    {\n      \"article_id\": \"46813f47-d8d7-363e-93ba-544450e53eae\",\n      \"factual_summary\": \"Energy Monitor reported that ABB is investing in LevelTen Energy to support clean energy procurement. This indicates a strategic move towards sustainable solutions and potentially new growth opportunities.\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.8,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"The article highlights ABB\u2019s commitment to the energy transition, which is a growing market.\"\n    },\n    {\n      \"article_id\": \"9399456f-d21a-36a5-953f-8099be6cd5d8\",\n      \"factual_summary\": \"MarketBeat provided highlights from Watts Water Technologies\u2019 Q2 earnings call, offering insights into the company's performance. This information could be relevant to assessing ABB\u2019s strategic decisions and overall market position.\",\n      \"direction\": \"neutral\",\n      \"relevance\": 0.5,\n      \"horizon\": \"short_term\",\n      \"rationale\": \"Earnings call highlights provide granular details on Watts Water Technologies' performance, which is linked to ABB.\"\n    },\n    {\n      \"article_id\": \"d2f52d5e-7dd6-3992-81ac-a4e8d83fc264\",\n      \"factual_summary\": \"Simply Wall St. reiterated ABB\u2019s partnership with LevelTen Energy to advance clean energy solutions, reinforcing the company's commitment to sustainable initiatives.\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.7,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"This article confirms and expands on ABB\u2019s strategic investment in LevelTen Energy.\"\n    }\n  ],\n  \"analysis_confidence\": 0.6\n}",
+    "model": "gemma3:4b",
+    "provider": "ollama",
+    "received_at": "2026-08-12T06:10:13.866406Z",
+    "request_id": "2026-08-12T06:10:13.864141Z"
+  }
+}

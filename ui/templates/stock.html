@@ -396,7 +396,9 @@
 <section class="panel">
   <div class="panel-header" onclick="togglePanel('ai-body')">
     <span>AI Evidence
-      {% if stock.ai_overall_direction %}
+      {% if stock.ai_news_analysis and stock.ai_news_analysis.status == 'pending' %}
+        — analyzing…
+      {% elif stock.ai_overall_direction %}
         — direction: <strong>{{ stock.ai_overall_direction }}</strong>
         {% if stock.ai_analysis_confidence %}
           (confidence {{ "%.2f"|format(stock.ai_analysis_confidence) }})
@@ -408,7 +410,12 @@
     <span class="toggle-hint" id="ai-body-hint">▼ show</span>
   </div>
   <div class="panel-body hidden" id="ai-body">
-    {% if stock.ai_overall_direction %}
+    {% if stock.ai_news_analysis and stock.ai_news_analysis.status == 'pending' %}
+    <p class="no-data" id="ai-pending-note">
+      Running local AI news analysis in the background — this panel and the decision above
+      will refresh automatically when it finishes (can take up to a couple of minutes).
+    </p>
+    {% elif stock.ai_overall_direction %}
     <div class="macro-grid">
       <div class="macro-item">
         <span class="macro-label">Overall direction</span>
@@ -630,5 +637,26 @@
 // Store trace for clipboard copy
 window._traces = window._traces || {};
 window._traces['{{ stock.ticker }}'] = {{ stock.reasoning_trace | tojson }};
+
+{% if stock.ai_news_analysis and stock.ai_news_analysis.status == 'pending' %}
+// Background AI news analysis is still running (see ui/pipeline.py). Poll until it
+// finishes, then reload so the decision/gates/confidence panels reflect it — those are
+// computed server-side and not worth re-deriving client-side.
+(function pollAiAnalysis() {
+  var ticker = {{ stock.ticker | tojson }};
+  var market = {{ request.args.get('market', 'US') | tojson }};
+  var interval = setInterval(function () {
+    fetch('/api/stock/' + ticker + '/ai_status?market=' + market)
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data.status === 'ready') {
+          clearInterval(interval);
+          window.location.reload();
+        }
+      })
+      .catch(function () { /* transient — keep polling */ });
+  }, 4000);
+})();
+{% endif %}
 </script>
 {% endblock %}

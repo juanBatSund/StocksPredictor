@@ -1,0 +1,117 @@
+{
+  "analysis": {
+    "affected_sectors": [],
+    "analysis_confidence": 0.75,
+    "article_analyses": [
+      {
+        "article_id": "0a4d8731-ec51-3aa1-9146-cf403c22e03c",
+        "direction": "neutral",
+        "factual_summary": "Investor AB reported strong asset growth and discussed shareholder returns during its full year 2025 earnings call. The board changes are focused on valuation and earnings outlook.",
+        "horizon": "short_term",
+        "rationale": "This article provides details of Investor AB's recent financial performance and strategic direction as of early 2026.",
+        "relevance": 1.0,
+        "uncertainty_flags": [
+          "None"
+        ]
+      },
+      {
+        "article_id": "ea3f1cb1-ff6b-37c7-b4e1-016dc1d27e61",
+        "direction": "neutral",
+        "factual_summary": "This article highlights three international stocks that are relatively unknown to U.S. investors.",
+        "horizon": "long_term",
+        "rationale": "The article's relevance to INVE-B is limited as it discusses broader investment themes rather than specific company information.",
+        "relevance": 0.5,
+        "uncertainty_flags": [
+          "Low - general market commentary"
+        ]
+      },
+      {
+        "article_id": "ccba7f33-d4fd-36d0-bf45-6ce361a020ea",
+        "direction": "neutral",
+        "factual_summary": "The Investor AB board changes are focused on valuation and earnings outlook.",
+        "horizon": "short_term",
+        "rationale": "This article details a recent development regarding the company's governance and strategic priorities.",
+        "relevance": 1.0,
+        "uncertainty_flags": [
+          "None"
+        ]
+      },
+      {
+        "article_id": "80cd29de-c155-3142-a398-1cc682cdb49f",
+        "direction": "neutral",
+        "factual_summary": "Investor AB reported strong shareholder returns and discussed market conditions during its Q2 2026 earnings call.",
+        "horizon": "short_term",
+        "rationale": "This article provides the most recent financial information available for Investor AB as of July 2026.",
+        "relevance": 1.0,
+        "uncertainty_flags": [
+          "None"
+        ]
+      }
+    ],
+    "event_types": [],
+    "limitations": [],
+    "overall_direction": "neutral",
+    "schema_version": "1.0",
+    "sentiment_score": 0.0,
+    "ticker": "INVE-B",
+    "uncertainty_flags": []
+  },
+  "created_at": "2026-08-12T06:12:57.191570Z",
+  "prompt_version": "news-evidence-v1",
+  "record_id": "434b44943311170d0e6b9b525efe6574e9eaf6124938cc154004ddad67bfed04",
+  "record_sha256": "63c95c5e3a720d63fd0be086a2d58f673ccfc579199199b6345ba03741a2247f",
+  "request": {
+    "articles": [
+      {
+        "article_id": "0a4d8731-ec51-3aa1-9146-cf403c22e03c",
+        "available_at": "2026-08-12T06:12:05.278492Z",
+        "body": null,
+        "headline": "Investor AB (IVSBF) Full Year 2025 Earnings Call Highlights: Strong Asset Growth Amid Currency ...",
+        "published_at": "2026-01-22T15:00:40Z",
+        "publisher": "GuruFocus.com",
+        "ticker": "INVE-B",
+        "url": "https://finance.yahoo.com/news/investor-ab-ivsbf-full-2025-150040211.html"
+      },
+      {
+        "article_id": "ea3f1cb1-ff6b-37c7-b4e1-016dc1d27e61",
+        "available_at": "2026-08-12T06:12:05.278492Z",
+        "body": null,
+        "headline": "3 International Stocks Most U.S. Investors Have Never Heard Of",
+        "published_at": "2026-03-20T22:16:00Z",
+        "publisher": "MarketBeat",
+        "ticker": "INVE-B",
+        "url": "https://www.marketbeat.com/stock-ideas/3-international-stocks-most-us-investors-have-never-heard-of/?utm_source=yahoofinance&utm_medium=yahoofinance"
+      },
+      {
+        "article_id": "ccba7f33-d4fd-36d0-bf45-6ce361a020ea",
+        "available_at": "2026-08-12T06:12:05.278492Z",
+        "body": null,
+        "headline": "Investor AB Board Changes Put Focus On Valuation And Earnings Outlook",
+        "published_at": "2026-04-09T23:10:54Z",
+        "publisher": "Simply Wall St.",
+        "ticker": "INVE-B",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/investor-ab-board-changes-put-231054087.html"
+      },
+      {
+        "article_id": "80cd29de-c155-3142-a398-1cc682cdb49f",
+        "available_at": "2026-08-12T06:12:05.278492Z",
+        "body": null,
+        "headline": "Investor AB (IVSBF) Q2 2026 Earnings Call Highlights: Strong Shareholder Returns Amid Market ...",
+        "published_at": "2026-07-16T15:01:03Z",
+        "publisher": "GuruFocus.com",
+        "ticker": "INVE-B",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/investor-ab-ivsbf-q2-2026-150103999.html"
+      }
+    ],
+    "decision_at": "2026-08-12T06:12:05.505081Z",
+    "schema_version": "1.0",
+    "ticker": "INVE-B"
+  },
+  "response": {
+    "content": "{\"ticker\": \"INVE-B\", \"overall_direction\": \"neutral\", \"sentiment_score\": 0.0, \"article_analyses\": [{\"article_id\": \"0a4d8731-ec51-3aa1-9146-cf403c22e03c\", \"factual_summary\": \"Investor AB reported strong asset growth and discussed shareholder returns during its full year 2025 earnings call. The board changes are focused on valuation and earnings outlook.\", \"direction\": \"neutral\", \"relevance\": 1.0, \"horizon\": \"short_term\", \"rationale\": \"This article provides details of Investor AB's recent financial performance and strategic direction as of early 2026.\", \"uncertainty_flags\": [\"None\"]}, {\"article_id\": \"ea3f1cb1-ff6b-37c7-b4e1-016dc1d27e61\", \"factual_summary\": \"This article highlights three international stocks that are relatively unknown to U.S. investors.\", \"direction\": \"neutral\", \"relevance\": 0.5, \"horizon\": \"long_term\", \"rationale\": \"The article's relevance to INVE-B is limited as it discusses broader investment themes rather than specific company information.\", \"uncertainty_flags\": [\"Low - general market commentary\"]}, {\"article_id\": \"ccba7f33-d4fd-36d0-bf45-6ce361a020ea\", \"factual_summary\": \"The Investor AB board changes are focused on valuation and earnings outlook.\", \"direction\": \"neutral\", \"relevance\": 1.0, \"horizon\": \"short_term\", \"rationale\": \"This article details a recent development regarding the company's governance and strategic priorities.\", \"uncertainty_flags\": [\"None\"]}, {\"article_id\": \"80cd29de-c155-3142-a398-1cc682cdb49f\", \"factual_summary\": \"Investor AB reported strong shareholder returns and discussed market conditions during its Q2 2026 earnings call.\", \"direction\": \"neutral\", \"relevance\": 1.0, \"horizon\": \"short_term\", \"rationale\": \"This article provides the most recent financial information available for Investor AB as of July 2026.\", \"uncertainty_flags\": [\"None\"]}],\"analysis_confidence\": 0.75}",
+    "model": "gemma3:4b",
+    "provider": "ollama",
+    "received_at": "2026-08-12T06:12:57.190488Z",
+    "request_id": "2026-08-12T06:12:57.189492Z"
+  }
+}

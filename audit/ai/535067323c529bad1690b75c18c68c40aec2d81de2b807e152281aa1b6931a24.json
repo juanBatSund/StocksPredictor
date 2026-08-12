@@ -1,0 +1,223 @@
+{
+  "analysis": {
+    "affected_sectors": [],
+    "analysis_confidence": 0.7,
+    "article_analyses": [
+      {
+        "article_id": "d50b2f89-5ada-32b5-848d-6e14341af1f6",
+        "direction": "positive",
+        "factual_summary": "Reuters reported that IBM and Together AI have signed a $240 million deal for Nvidia-powered AI inference clusters. This partnership is focused on building out IBM\u2019s cloud capabilities through the use of AI.",
+        "horizon": "short_term",
+        "rationale": "This article directly details a significant financial agreement for IBM involving Nvidia and AI infrastructure.",
+        "relevance": 1.0,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "e0cef56b-9d7d-3428-ad33-72480cebbc5f",
+        "direction": "positive",
+        "factual_summary": "Stocktwits highlighted the $240M deal between IBM and Together AI, framing it as a move into the \u2018Neocloud\u2019 business. This suggests an expansion of IBM's cloud offerings leveraging Nvidia technology.",
+        "horizon": "short_term",
+        "rationale": "This article provides additional context to the deal, emphasizing its strategic importance for IBM\u2019s cloud ambitions.",
+        "relevance": 1.0,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "56405a8f-cf11-33f7-9f61-51e63a81fe30",
+        "direction": "neutral",
+        "factual_summary": "Trefis reported that Palantir\u2019s sovereign AI boom is almost entirely in America, indicating a strong domestic demand for AI solutions and potentially benefiting IBM's offerings.",
+        "horizon": "medium_term",
+        "rationale": "While not directly about IBM, this article suggests a broader trend of AI adoption in the US that could positively impact IBM\u2019s business.",
+        "relevance": 0.7,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "89d3862f-0eff-3b18-a47b-12f788bf6d0e",
+        "direction": "positive",
+        "factual_summary": "Quartz detailed the $240 million AI inference deal between IBM and Together AI, confirming the financial terms and the focus on open-source inference.",
+        "horizon": "short_term",
+        "rationale": "This article provides a concise summary of the key details of the agreement.",
+        "relevance": 1.0,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "e05ca9dc-acd5-3fcc-9871-454aa33f0b8b",
+        "direction": "negative",
+        "factual_summary": "24/7 Wall St. reported that IBM\u2019s CEO has questioned the spending on AI, suggesting a potential concern about the return on investment in this area.",
+        "horizon": "short_term",
+        "rationale": "This article introduces a potentially negative element \u2013 concerns about IBM\u2019s AI spending strategy.",
+        "relevance": 0.6,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "0a3d020b-9287-3b7d-b486-51df9fd50a1c",
+        "direction": "neutral",
+        "factual_summary": "Simply Wall St. provided an overview of IBM, discussing the company\u2019s recent attention and its potential drivers, including the AI investments.",
+        "horizon": "medium_term",
+        "rationale": "This article offers a broader perspective on IBM's situation, linking it to the company\u2019s AI initiatives.",
+        "relevance": 0.5,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "b365a9a3-967f-335f-ba5a-a2e4616aafb0",
+        "direction": "positive",
+        "factual_summary": "Zacks reported on the \u2018Next AI Surge\u2019 and identified top quantum ETFs to buy, suggesting a broader trend in AI investment that could benefit IBM.",
+        "horizon": "medium_term",
+        "rationale": "This article highlights the potential for growth in the AI sector and suggests IBM may be positioned to capitalize on this trend.",
+        "relevance": 0.4,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "3f96c848-e528-3a92-8dff-308d198c8637",
+        "direction": "positive",
+        "factual_summary": "Barrons.com detailed IBM\u2019s $240 million AI bet to build out its cloud capabilities, emphasizing the strategic importance of this investment.",
+        "horizon": "short_term",
+        "rationale": "This article provides a detailed explanation of IBM\u2019s strategy and commitment to AI-powered cloud solutions.",
+        "relevance": 1.0,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "250e845b-89ed-36d6-9b1e-93bd3d7d9c16",
+        "direction": "positive",
+        "factual_summary": "GuruFocus.com reported IBM\u2019s landing of a $240 million AI inference deal, summarizing the key details of the agreement.",
+        "horizon": "short_term",
+        "rationale": "This article provides a concise summary of the key details of the agreement.",
+        "relevance": 1.0,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "5d7d0e5b-cffc-3c26-8765-72d44150f7c5",
+        "direction": "neutral",
+        "factual_summary": "Zacks reported on how AI\u2019s \u2018Jurassic Park\u2019 moment sent cybersecurity stocks soaring, suggesting a potential impact of AI advancements across various sectors including IBM.",
+        "horizon": "medium_term",
+        "rationale": "This article highlights the broader implications of AI and its potential influence on cybersecurity \u2013 an area where IBM has a presence.",
+        "relevance": 0.3,
+        "uncertainty_flags": []
+      }
+    ],
+    "event_types": [],
+    "limitations": [],
+    "overall_direction": "mixed",
+    "schema_version": "1.0",
+    "sentiment_score": 0.2,
+    "ticker": "IBM",
+    "uncertainty_flags": []
+  },
+  "created_at": "2026-08-12T06:22:25.997058Z",
+  "prompt_version": "news-evidence-v1",
+  "record_id": "535067323c529bad1690b75c18c68c40aec2d81de2b807e152281aa1b6931a24",
+  "record_sha256": "39f973b17b38f0784edf3cd702f1c3285d65b65c4e699764f69fb2977e2501c9",
+  "request": {
+    "articles": [
+      {
+        "article_id": "d50b2f89-5ada-32b5-848d-6e14341af1f6",
+        "available_at": "2026-08-12T06:20:51.357557Z",
+        "body": null,
+        "headline": "IBM, Together AI ink $240 million deal for Nvidia-powered AI inference cluster",
+        "published_at": "2026-08-11T12:02:37Z",
+        "publisher": "Reuters",
+        "ticker": "IBM",
+        "url": "https://finance.yahoo.com/technology/ai/articles/ibm-together-ai-ink-240-120237670.html"
+      },
+      {
+        "article_id": "e0cef56b-9d7d-3428-ad33-72480cebbc5f",
+        "available_at": "2026-08-12T06:20:51.357557Z",
+        "body": null,
+        "headline": "IBM's $240M Together AI Deal For Nvidia Systems Puts It In The Neocloud Business",
+        "published_at": "2026-08-11T13:04:23Z",
+        "publisher": "Stocktwits",
+        "ticker": "IBM",
+        "url": "https://stocktwits.com/news-articles/markets/equity/ibm-240-m-together-ai-deal-for-nvidia-systems-puts-it-in-the-neocloud-business/cZoZU9vRJQq"
+      },
+      {
+        "article_id": "56405a8f-cf11-33f7-9f61-51e63a81fe30",
+        "available_at": "2026-08-12T06:20:51.357557Z",
+        "body": null,
+        "headline": "Palantir's Sovereign AI Boom Is Almost Entirely In America",
+        "published_at": "2026-08-11T13:23:14Z",
+        "publisher": "Trefis",
+        "ticker": "IBM",
+        "url": "https://www.trefis.com/articles/611000/palantirs-sovereign-ai-boom-is-almost-entirely-in-america/2026-08-11"
+      },
+      {
+        "article_id": "89d3862f-0eff-3b18-a47b-12f788bf6d0e",
+        "available_at": "2026-08-12T06:20:51.357557Z",
+        "body": null,
+        "headline": "IBM and Together AI sign $240 million AI inference deal",
+        "published_at": "2026-08-11T13:43:24Z",
+        "publisher": "Quartz",
+        "ticker": "IBM",
+        "url": "https://qz.com/ibm-together-ai-240-million-open-source-inference-deal-081126"
+      },
+      {
+        "article_id": "e05ca9dc-acd5-3fcc-9871-454aa33f0b8b",
+        "available_at": "2026-08-12T06:20:51.357557Z",
+        "body": null,
+        "headline": "IBM\u2019s CEO Just Did the Math on AI Spending \u2014 and the Numbers Don\u2019t Add Up",
+        "published_at": "2026-08-11T14:01:42Z",
+        "publisher": "24/7 Wall St.",
+        "ticker": "IBM",
+        "url": "https://247wallst.com/investing/2026/08/11/ibms-ceo-just-did-the-math-on-ai-spending-and-the-numbers-dont-add-up/"
+      },
+      {
+        "article_id": "0a3d020b-9287-3b7d-b486-51df9fd50a1c",
+        "available_at": "2026-08-12T06:20:51.357557Z",
+        "body": null,
+        "headline": "International Business Machines (IBM), What Is Driving Fresh Attention Today?",
+        "published_at": "2026-08-11T14:12:27Z",
+        "publisher": "Simply Wall St.",
+        "ticker": "IBM",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/international-business-machines-ibm-driving-141227692.html"
+      },
+      {
+        "article_id": "b365a9a3-967f-335f-ba5a-a2e4616aafb0",
+        "available_at": "2026-08-12T06:20:51.357557Z",
+        "body": null,
+        "headline": "The Next AI Surge: Top Quantum ETFs to Buy Amid Washington's Funding Push",
+        "published_at": "2026-08-11T14:31:00Z",
+        "publisher": "Zacks",
+        "ticker": "IBM",
+        "url": "https://finance.yahoo.com/technology/ai/articles/next-ai-surge-top-quantum-143100120.html"
+      },
+      {
+        "article_id": "3f96c848-e528-3a92-8dff-308d198c8637",
+        "available_at": "2026-08-12T06:20:51.357557Z",
+        "body": null,
+        "headline": "Inside IBM\u2019s $240 Million AI Bet to Build Out Its Cloud Capabilities",
+        "published_at": "2026-08-11T18:26:00Z",
+        "publisher": "Barrons.com",
+        "ticker": "IBM",
+        "url": "https://www.barrons.com/articles/ibm-together-ai-cloud-deal-ea60e818?siteid=yhoof2&yptr=yahoo"
+      },
+      {
+        "article_id": "250e845b-89ed-36d6-9b1e-93bd3d7d9c16",
+        "available_at": "2026-08-12T06:20:51.357557Z",
+        "body": null,
+        "headline": "IBM Lands a $240 Million AI Inference Deal",
+        "published_at": "2026-08-11T19:10:47Z",
+        "publisher": "GuruFocus.com",
+        "ticker": "IBM",
+        "url": "https://finance.yahoo.com/technology/ai/articles/ibm-lands-240-million-ai-191047046.html"
+      },
+      {
+        "article_id": "5d7d0e5b-cffc-3c26-8765-72d44150f7c5",
+        "available_at": "2026-08-12T06:20:51.357557Z",
+        "body": null,
+        "headline": "How AI's \"Jurassic Park\" Moment Sent Cybersecurity Stocks Soaring",
+        "published_at": "2026-08-11T21:20:00Z",
+        "publisher": "Zacks",
+        "ticker": "IBM",
+        "url": "https://finance.yahoo.com/technology/ai/articles/ais-jurassic-park-moment-sent-212000661.html"
+      }
+    ],
+    "decision_at": "2026-08-12T06:20:51.643381Z",
+    "schema_version": "1.0",
+    "ticker": "IBM"
+  },
+  "response": {
+    "content": "{\n  \"ticker\": \"IBM\",\n  \"overall_direction\": \"mixed\",\n  \"sentiment_score\": 0.2,\n  \"article_analyses\": [\n    {\n      \"article_id\": \"d50b2f89-5ada-32b5-848d-6e14341af1f6\",\n      \"factual_summary\": \"Reuters reported that IBM and Together AI have signed a $240 million deal for Nvidia-powered AI inference clusters. This partnership is focused on building out IBM\u2019s cloud capabilities through the use of AI.\",\n      \"direction\": \"positive\",\n      \"relevance\": 1.0,\n      \"horizon\": \"short_term\",\n      \"rationale\": \"This article directly details a significant financial agreement for IBM involving Nvidia and AI infrastructure.\"\n    },\n    {\n      \"article_id\": \"e0cef56b-9d7d-3428-ad33-72480cebbc5f\",\n      \"factual_summary\": \"Stocktwits highlighted the $240M deal between IBM and Together AI, framing it as a move into the \u2018Neocloud\u2019 business. This suggests an expansion of IBM's cloud offerings leveraging Nvidia technology.\",\n      \"direction\": \"positive\",\n      \"relevance\": 1.0,\n      \"horizon\": \"short_term\",\n      \"rationale\": \"This article provides additional context to the deal, emphasizing its strategic importance for IBM\u2019s cloud ambitions.\"\n    },\n    {\n      \"article_id\": \"56405a8f-cf11-33f7-9f61-51e63a81fe30\",\n      \"factual_summary\": \"Trefis reported that Palantir\u2019s sovereign AI boom is almost entirely in America, indicating a strong domestic demand for AI solutions and potentially benefiting IBM's offerings.\",\n      \"direction\": \"neutral\",\n      \"relevance\": 0.7,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"While not directly about IBM, this article suggests a broader trend of AI adoption in the US that could positively impact IBM\u2019s business.\"\n    },\n    {\n      \"article_id\": \"89d3862f-0eff-3b18-a47b-12f788bf6d0e\",\n      \"factual_summary\": \"Quartz detailed the $240 million AI inference deal between IBM and Together AI, confirming the financial terms and the focus on open-source inference.\",\n      \"direction\": \"positive\",\n      \"relevance\": 1.0,\n      \"horizon\": \"short_term\",\n      \"rationale\": \"This article provides a concise summary of the key details of the agreement.\"\n    },\n    {\n      \"article_id\": \"e05ca9dc-acd5-3fcc-9871-454aa33f0b8b\",\n      \"factual_summary\": \"24/7 Wall St. reported that IBM\u2019s CEO has questioned the spending on AI, suggesting a potential concern about the return on investment in this area.\",\n      \"direction\": \"negative\",\n      \"relevance\": 0.6,\n      \"horizon\": \"short_term\",\n      \"rationale\": \"This article introduces a potentially negative element \u2013 concerns about IBM\u2019s AI spending strategy.\"\n    },\n    {\n      \"article_id\": \"0a3d020b-9287-3b7d-b486-51df9fd50a1c\",\n      \"factual_summary\": \"Simply Wall St. provided an overview of IBM, discussing the company\u2019s recent attention and its potential drivers, including the AI investments.\",\n      \"direction\": \"neutral\",\n      \"relevance\": 0.5,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"This article offers a broader perspective on IBM's situation, linking it to the company\u2019s AI initiatives.\"\n    },\n    {\n      \"article_id\": \"b365a9a3-967f-335f-ba5a-a2e4616aafb0\",\n      \"factual_summary\": \"Zacks reported on the \u2018Next AI Surge\u2019 and identified top quantum ETFs to buy, suggesting a broader trend in AI investment that could benefit IBM.\",\n      \"direction\": \"positive\",\n      \"relevance\": 0.4,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"This article highlights the potential for growth in the AI sector and suggests IBM may be positioned to capitalize on this trend.\"\n    },\n    {\n      \"article_id\": \"3f96c848-e528-3a92-8dff-308d198c8637\",\n      \"factual_summary\": \"Barrons.com detailed IBM\u2019s $240 million AI bet to build out its cloud capabilities, emphasizing the strategic importance of this investment.\",\n      \"direction\": \"positive\",\n      \"relevance\": 1.0,\n      \"horizon\": \"short_term\",\n      \"rationale\": \"This article provides a detailed explanation of IBM\u2019s strategy and commitment to AI-powered cloud solutions.\"\n    },\n    {\n      \"article_id\": \"250e845b-89ed-36d6-9b1e-93bd3d7d9c16\",\n      \"factual_summary\": \"GuruFocus.com reported IBM\u2019s landing of a $240 million AI inference deal, summarizing the key details of the agreement.\",\n      \"direction\": \"positive\",\n      \"relevance\": 1.0,\n      \"horizon\": \"short_term\",\n      \"rationale\": \"This article provides a concise summary of the key details of the agreement.\"\n    },\n    {\n      \"article_id\": \"5d7d0e5b-cffc-3c26-8765-72d44150f7c5\",\n      \"factual_summary\": \"Zacks reported on how AI\u2019s \u2018Jurassic Park\u2019 moment sent cybersecurity stocks soaring, suggesting a potential impact of AI advancements across various sectors including IBM.\",\n      \"direction\": \"neutral\",\n      \"relevance\": 0.3,\n      \"horizon\": \"medium_term\",\n      \"rationale\": \"This article highlights the broader implications of AI and its potential influence on cybersecurity \u2013 an area where IBM has a presence.\"\n    }\n  ],\n  \"analysis_confidence\": 0.7\n}",
+    "model": "gemma3:4b",
+    "provider": "ollama",
+    "received_at": "2026-08-12T06:22:25.995650Z",
+    "request_id": "2026-08-12T06:22:25.994709Z"
+  }
+}

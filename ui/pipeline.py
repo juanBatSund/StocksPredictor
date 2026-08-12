@@ -21,9 +21,13 @@ unavailable (empty headline list) or no macro event is on record, the
 respective argument is passed as None to decide(). The engine records that
 absence as an uncertainty flag — nothing is silently dropped.
 
-Optional local AI news analysis is a sidecar only. It records source-linked
-evidence for inspection but never changes the deterministic sentiment score or
-BUY/WATCH/AVOID decision in this module.
+Optional local AI news analysis is a sidecar: it records source-linked
+evidence for inspection and may soften/harden the decision within the bounds
+described in decision.engine, but it never runs on the request thread. The
+local model call is slow (seconds to ~2 minutes via Ollama), so it is always
+executed on a background thread; analyze() returns the deterministic result
+immediately with ai_news_analysis.status == "pending" and the page polls
+ai_status() until the AI-enriched result is cached.
 
 Known limitations
 -----------------
@@ -40,6 +44,8 @@ Known limitations
 
 import os
 import sys
+import threading
+from concurrent.futures import ThreadPoolExecutor
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -59,22 +65,79 @@ from src.sentiment.news import fetch_articles
 from src.sentiment.scorer import score as score_sentiment
 from src.decision.engine import decide
 
-# In-memory result cache. AI configuration is part of the identity so enabling
-# a new local model cannot silently return a deterministic-only cached result.
-_CACHE: dict[str, dict] = {}
+# Deterministic (fast) results, keyed by "TICKER:MARKET". Independent of AI
+# configuration — the AI status shown for a given call is computed fresh.
+_FAST_CACHE: dict[str, dict] = {}
+
+# Inputs needed to re-run decide() once the AI analysis finishes, keyed by
+# "TICKER:MARKET".
+_CONTEXT_CACHE: dict[str, dict] = {}
+
+# AI-enriched final results, keyed by "TICKER:MARKET:<ai_suffix>" so switching
+# provider/model can never silently return a stale AI-influenced decision.
+_AI_CACHE: dict[str, dict] = {}
+
+# Full keys with an AI job currently running.
+_AI_PENDING: set[str] = set()
+
+_LOCK = threading.Lock()
+_AI_EXECUTOR = ThreadPoolExecutor(max_workers=2, thread_name_prefix="ai-analysis")
 
 
 def analyze(ticker: str, market_code: str = "US") -> dict:
     """
-    Run the full pipeline for ticker and return a UI-ready stock dict.
+    Run the deterministic pipeline for ticker and return a UI-ready stock dict.
 
     Raises ValueError if no price or info data can be fetched (invalid ticker).
-    Results are cached in-memory until the server restarts.
+    The optional local AI news analysis never runs on this call: if configured
+    and articles are available, it is kicked off on a background thread and
+    this returns immediately with ai_news_analysis.status == "pending". Call
+    ai_status() to poll for completion; once ready, this function returns the
+    AI-enriched result directly from cache.
     """
     ticker = ticker.upper().strip()
-    key = _cache_key(ticker, market_code)
-    if key in _CACHE:
-        return _CACHE[key]
+    full_key = _cache_key(ticker, market_code)
+
+    with _LOCK:
+        ready = _AI_CACHE.get(full_key)
+    if ready is not None:
+        return ready
+
+    fast_result, context = _get_fast_result(ticker, market_code)
+
+    result = dict(fast_result)
+    service = configured_news_analysis_service()
+    articles = context["articles"]
+    if service is None:
+        result["ai_news_analysis"] = {
+            "status": "unavailable",
+            "reason": "AI news analysis is not configured",
+        }
+    elif not articles:
+        result["ai_news_analysis"] = {"status": "not_run", "reason": _NO_ARTICLES_REASON}
+    else:
+        _ensure_ai_job(ticker, full_key, context, service)
+        result["ai_news_analysis"] = {"status": "pending"}
+    return result
+
+
+def ai_status(ticker: str, market_code: str = "US") -> dict:
+    """Poll the state of the background AI job for (ticker, market_code)."""
+    full_key = _cache_key(ticker.upper().strip(), market_code)
+    with _LOCK:
+        if full_key in _AI_CACHE:
+            return {"status": "ready"}
+        if full_key in _AI_PENDING:
+            return {"status": "pending"}
+    return {"status": "idle"}
+
+
+def _get_fast_result(ticker: str, market_code: str) -> tuple[dict, dict]:
+    fast_key = f"{ticker}:{market_code}"
+    with _LOCK:
+        cached = _FAST_CACHE.get(fast_key)
+    if cached is not None:
+        return cached, _CONTEXT_CACHE[fast_key]
 
     market = MARKETS[market_code]
     full_ticker = ticker + market.ticker_suffix
@@ -105,14 +168,12 @@ def analyze(ticker: str, market_code: str = "US") -> dict:
         if dated_headlines
         else None
     )
-    ai_outcome = _analyse_news_sidecar(ticker, articles)
 
     # ── Macro ─────────────────────────────────────────────────────────────────
     latest_event = get_latest_event(date.today())
     macro = tag_macro(latest_event.description) if latest_event else None
 
-    # ── Decision ──────────────────────────────────────────────────────────────
-    ai_analysis_obj = ai_outcome.analysis if isinstance(ai_outcome, AuditedNewsAnalysis) else None
+    # ── Decision (deterministic only — AI evidence added later, in background) ─
     dr = decide(
         ticker=ticker,
         fundamental=fundamental,
@@ -120,20 +181,88 @@ def analyze(ticker: str, market_code: str = "US") -> dict:
         sentiment=sentiment,
         macro=macro,
         missing_fields=stock_data.missing_fields,
-        ai_analysis=ai_analysis_obj,
+        ai_analysis=None,
     )
 
-    result = _build_dict(ticker, dr, stock_data, info, _serialise_ai_outcome(ai_outcome))
-    _CACHE[key] = result
-    return result
+    fast_result = _build_dict(ticker, dr, stock_data, info, {"status": "not_run"})
+    context = {
+        "fundamental": fundamental,
+        "sector": sector,
+        "sentiment": sentiment,
+        "macro": macro,
+        "missing_fields": stock_data.missing_fields,
+        "stock_data": stock_data,
+        "info": info,
+        "articles": articles,
+    }
+    with _LOCK:
+        _FAST_CACHE[fast_key] = fast_result
+        _CONTEXT_CACHE[fast_key] = context
+    return fast_result, context
+
+
+def _ensure_ai_job(ticker: str, full_key: str, context: dict, service) -> None:
+    with _LOCK:
+        if full_key in _AI_CACHE or full_key in _AI_PENDING:
+            return
+        _AI_PENDING.add(full_key)
+    _AI_EXECUTOR.submit(_run_ai_job, ticker, full_key, context, service)
+
+
+def _run_ai_job(ticker: str, full_key: str, context: dict, service) -> None:
+    try:
+        request = NewsAnalysisRequest(
+            ticker=ticker,
+            decision_at=datetime.now(timezone.utc),
+            articles=context["articles"],
+        )
+        ai_outcome = analyze_if_available(service, request)
+        ai_analysis_obj = ai_outcome.analysis if isinstance(ai_outcome, AuditedNewsAnalysis) else None
+
+        dr = decide(
+            ticker=ticker,
+            fundamental=context["fundamental"],
+            sector=context["sector"],
+            sentiment=context["sentiment"],
+            macro=context["macro"],
+            missing_fields=context["missing_fields"],
+            ai_analysis=ai_analysis_obj,
+        )
+
+        result = _build_dict(
+            ticker, dr, context["stock_data"], context["info"], _serialise_ai_outcome(ai_outcome)
+        )
+        with _LOCK:
+            _AI_CACHE[full_key] = result
+    finally:
+        with _LOCK:
+            _AI_PENDING.discard(full_key)
 
 
 def invalidate(ticker: str, market_code: str = "US") -> None:
     """Remove a ticker from the in-memory cache to force a re-fetch."""
-    prefix = f"{ticker.upper()}:{market_code}:"
-    for key in list(_CACHE):
-        if key.startswith(prefix):
-            _CACHE.pop(key, None)
+    ticker = ticker.upper().strip()
+    fast_key = f"{ticker}:{market_code}"
+    prefix = f"{fast_key}:"
+    with _LOCK:
+        _FAST_CACHE.pop(fast_key, None)
+        _CONTEXT_CACHE.pop(fast_key, None)
+        for key in list(_AI_CACHE):
+            if key.startswith(prefix):
+                _AI_CACHE.pop(key, None)
+        for key in list(_AI_PENDING):
+            if key.startswith(prefix):
+                _AI_PENDING.discard(key)
+
+
+def clear_cache() -> None:
+    """Drop all cached results (fast and AI-enriched). Pending jobs finish but their
+    results land under their own AI-config key, so a stale write is never returned."""
+    with _LOCK:
+        _FAST_CACHE.clear()
+        _CONTEXT_CACHE.clear()
+        _AI_CACHE.clear()
+        _AI_PENDING.clear()
 
 
 def _build_dict(ticker: str, dr, stock_data, info: dict, ai_news_analysis: dict) -> dict:
@@ -189,18 +318,6 @@ def _cache_key(ticker: str, market_code: str) -> str:
 
 
 _NO_ARTICLES_REASON = "No provenance-rich news articles available"
-
-
-def _analyse_news_sidecar(ticker: str, articles) -> AuditedNewsAnalysis | AnalysisUnavailable:
-    """Run optional local AI analysis. Returns typed result so decide() can consume it."""
-    if not articles:
-        return AnalysisUnavailable(_NO_ARTICLES_REASON)
-    request = NewsAnalysisRequest(
-        ticker=ticker,
-        decision_at=datetime.now(timezone.utc),
-        articles=articles,
-    )
-    return analyze_if_available(configured_news_analysis_service(), request)
 
 
 def _serialise_ai_outcome(outcome: AuditedNewsAnalysis | AnalysisUnavailable) -> dict:

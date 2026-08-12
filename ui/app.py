@@ -227,6 +227,14 @@ def api_replay(ticker: str):
     return jsonify(get_replay_data(ticker.upper()))
 
 
+@app.route("/api/stock/<ticker>/ai_status")
+def api_stock_ai_status(ticker: str):
+    """Poll the background AI news analysis job kicked off by /stock/<ticker>."""
+    market_code = request.args.get("market", "US").upper()
+    from ui.pipeline import ai_status
+    return jsonify(ai_status(ticker.upper(), market_code))
+
+
 # ── AI Settings ───────────────────────────────────────────────────────────────
 
 @app.route("/settings", methods=["GET"])
@@ -254,8 +262,8 @@ def settings_save():
     }
     ai_cfg.save(updates)
     # Invalidate the analysis cache so next stock lookup uses the new model
-    from ui.pipeline import _CACHE
-    _CACHE.clear()
+    from ui.pipeline import clear_cache
+    clear_cache()
     return redirect(url_for("settings_page"))
 
 
@@ -309,4 +317,4 @@ def api_ai_test():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5050)
+    app.run(debug=True, port=5050, threaded=True)

@@ -1,0 +1,238 @@
+{
+  "analysis": {
+    "affected_sectors": [],
+    "analysis_confidence": 0.65,
+    "article_analyses": [
+      {
+        "article_id": "f9007da0-e8df-313a-b4e2-24fec880e0a6",
+        "direction": "neutral",
+        "factual_summary": "MT Newswires reported higher trading activity for European equities represented by American Depositary Receipts (ADRs) in US markets on Tuesday and Wednesday, May 6th and 7th.",
+        "horizon": "short_term",
+        "rationale": "This article provides a factual record of trading activity for PRU ADRs, reflecting broader market movements in European equities.",
+        "relevance": 1.0,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "d5b7af6c-7f90-316c-a2ec-6daeb6f3c67e",
+        "direction": "neutral",
+        "factual_summary": "MT Newswires reported higher trading activity for European equities represented by American Depositary Receipts (ADRs) in US markets on Wednesday, May 6th.",
+        "horizon": "short_term",
+        "rationale": "This article provides a factual record of trading activity for PRU ADRs, reflecting broader market movements in European equities.",
+        "relevance": 1.0,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "b80d9455-1a10-3953-98c1-2876fe5efb06",
+        "direction": "neutral",
+        "factual_summary": "Simply Wall St. noted a shift in analyst valuation targets for Prudential (PRU) due to changing market perceptions.",
+        "horizon": "medium_term",
+        "rationale": "This article highlights an important factor \u2013 changes in analyst estimates \u2013 which can influence investor sentiment and potentially impact the stock price.",
+        "relevance": 0.7,
+        "uncertainty_flags": [
+          "Analyst estimates are subjective and may not accurately predict future performance"
+        ]
+      },
+      {
+        "article_id": "b8196dd6-c81d-3fe4-b429-c2e41bbd031f",
+        "direction": "negative",
+        "factual_summary": "Investing.com reported a slide in Asia-exposed bank stocks following a report on Hong Kong account suspensions.",
+        "horizon": "short_term",
+        "rationale": "This article identifies a specific risk factor \u2013 the suspension of accounts in Hong Kong \u2013 that could negatively impact Prudential's Asian operations.",
+        "relevance": 0.6,
+        "uncertainty_flags": [
+          "The severity and duration of the account suspensions are unknown"
+        ]
+      },
+      {
+        "article_id": "1021b43b-0d0a-321b-a983-5fae208cbdbb",
+        "direction": "negative",
+        "factual_summary": "Insider Monkey reported a lower price target for Prudential (PRU) based on recent market analysis.",
+        "horizon": "medium_term",
+        "rationale": "This article indicates a potential downward revision in valuation expectations, which could put pressure on the stock price.",
+        "relevance": 0.7,
+        "uncertainty_flags": [
+          "The reasons for the lower target are not specified"
+        ]
+      },
+      {
+        "article_id": "2807874c-2e22-35fe-b723-0205ed243035",
+        "direction": "positive",
+        "factual_summary": "GuruFocus.com detailed a boom in wealth insurance across AIA and Prudential in Asia.",
+        "horizon": "medium_term",
+        "rationale": "This article suggests growth opportunities for Prudential within the Asian wealth management sector.",
+        "relevance": 0.5,
+        "uncertainty_flags": [
+          "The sustainability of this growth is not guaranteed"
+        ]
+      },
+      {
+        "article_id": "e18772ef-a1df-3547-ae33-0530b2409600",
+        "direction": "neutral",
+        "factual_summary": "Insider Monkey reported the launch of a financial literacy app, Levela, by Prudential\u2019s Prudence Foundation in Asia and Africa.",
+        "horizon": "long_term",
+        "rationale": "This article highlights a corporate social responsibility initiative with potential long-term benefits for brand reputation and customer engagement.",
+        "relevance": 0.3,
+        "uncertainty_flags": [
+          "The impact of the app on Prudential\u2019s financial performance is uncertain"
+        ]
+      },
+      {
+        "article_id": "c7a2f8ae-8b92-3943-b1bb-ea0977fb8582",
+        "direction": "neutral",
+        "factual_summary": "MT Newswires reported higher trading activity for European equities represented by American Depositary Receipts (ADRs) in US markets on Wednesday, July 22nd.",
+        "horizon": "short_term",
+        "rationale": "This article provides a factual record of trading activity for PRU ADRs, reflecting broader market movements in European equities.",
+        "relevance": 1.0,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "ae4a2055-0603-31be-b108-4968698b94ff",
+        "direction": "neutral",
+        "factual_summary": "MT Newswires reported higher trading activity for European equities represented by American Depositary Receipts (ADRs) in US markets on Thursday, July 30th.",
+        "horizon": "short_term",
+        "rationale": "This article provides a factual record of trading activity for PRU ADRs, reflecting broader market movements in European equities.",
+        "relevance": 1.0,
+        "uncertainty_flags": []
+      },
+      {
+        "article_id": "6f73cdf1-cc25-3313-b2d7-51bf78a81ae0",
+        "direction": "negative",
+        "factual_summary": "Bloomberg reported a tumble in Prudential and HSBC shares due to a China insurance tax report.",
+        "horizon": "short_term",
+        "rationale": "This article identifies a significant negative catalyst \u2013 the China insurance tax report \u2013 that could negatively impact Prudential\u2019s performance in China.",
+        "relevance": 0.8,
+        "uncertainty_flags": [
+          "The specific details of the tax report and its potential impact are not fully disclosed"
+        ]
+      }
+    ],
+    "event_types": [],
+    "limitations": [],
+    "overall_direction": "neutral",
+    "schema_version": "1.0",
+    "sentiment_score": 0.0,
+    "ticker": "PRU",
+    "uncertainty_flags": [
+      "Thin evidence base",
+      "Contradictory information across articles"
+    ]
+  },
+  "created_at": "2026-08-12T06:24:06.334029Z",
+  "prompt_version": "news-evidence-v1",
+  "record_id": "11abda0d4620c2ac1478b3416bf704afaaed6aff49f68f80ffb80e01480366fb",
+  "record_sha256": "4fb3e88bc40c9fdc8df2f76d57e9f8317482e3c7d2923090061fa018551cf91b",
+  "request": {
+    "articles": [
+      {
+        "article_id": "f9007da0-e8df-313a-b4e2-24fec880e0a6",
+        "available_at": "2026-08-12T06:22:35.055754Z",
+        "body": null,
+        "headline": "European Equities Traded in the US as American Depositary Receipts Higher in Tuesday Trading",
+        "published_at": "2026-05-05T15:08:10Z",
+        "publisher": "MT Newswires",
+        "ticker": "PRU",
+        "url": "https://finance.yahoo.com/markets/world-indices/articles/european-equities-traded-us-american-150810007.html"
+      },
+      {
+        "article_id": "d5b7af6c-7f90-316c-a2ec-6daeb6f3c67e",
+        "available_at": "2026-08-12T06:22:35.055754Z",
+        "body": null,
+        "headline": "European Equities Traded in the US as American Depositary Receipts Climb Sharply Higher in Wednesday Trading",
+        "published_at": "2026-05-06T15:10:23Z",
+        "publisher": "MT Newswires",
+        "ticker": "PRU",
+        "url": "https://finance.yahoo.com/markets/world-indices/articles/european-equities-traded-us-american-151023653.html"
+      },
+      {
+        "article_id": "b80d9455-1a10-3953-98c1-2876fe5efb06",
+        "available_at": "2026-08-12T06:22:35.055754Z",
+        "body": null,
+        "headline": "Why The Prudential (LSE:PRU) Story Is Shifting As Analysts Rework Valuation Targets",
+        "published_at": "2026-05-10T15:13:41Z",
+        "publisher": "Simply Wall St.",
+        "ticker": "PRU",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/why-prudential-lse-pru-story-151341764.html"
+      },
+      {
+        "article_id": "b8196dd6-c81d-3fe4-b429-c2e41bbd031f",
+        "available_at": "2026-08-12T06:22:35.055754Z",
+        "body": null,
+        "headline": "Asia-exposed bank stocks slide after report on Hong Kong account suspensions",
+        "published_at": "2026-06-04T13:15:08Z",
+        "publisher": "Investing.com",
+        "ticker": "PRU",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/asia-exposed-bank-stocks-slide-131508144.html"
+      },
+      {
+        "article_id": "1021b43b-0d0a-321b-a983-5fae208cbdbb",
+        "available_at": "2026-08-12T06:22:35.055754Z",
+        "body": null,
+        "headline": "The Bigger Story Behind Prudential\u2019s (PUK) Lower Price Target",
+        "published_at": "2026-06-12T00:38:33Z",
+        "publisher": "Insider Monkey",
+        "ticker": "PRU",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/bigger-story-behind-prudential-puk-003833832.html"
+      },
+      {
+        "article_id": "2807874c-2e22-35fe-b723-0205ed243035",
+        "available_at": "2026-08-12T06:22:35.055754Z",
+        "body": null,
+        "headline": "AIA, Prudential Chase Asia's Wealth Insurance Boom",
+        "published_at": "2026-06-16T14:51:59Z",
+        "publisher": "GuruFocus.com",
+        "ticker": "PRU",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/aia-prudential-chase-asias-wealth-145159429.html"
+      },
+      {
+        "article_id": "e18772ef-a1df-3547-ae33-0530b2409600",
+        "available_at": "2026-08-12T06:22:35.055754Z",
+        "body": null,
+        "headline": "Prudential\u2019s (PUK) Prudence Foundation Launches Levela App to Improve Financial Literacy in Asia and Africa",
+        "published_at": "2026-06-23T17:53:59Z",
+        "publisher": "Insider Monkey",
+        "ticker": "PRU",
+        "url": "https://finance.yahoo.com/small-business/articles/prudential-puk-prudence-foundation-launches-175359136.html"
+      },
+      {
+        "article_id": "c7a2f8ae-8b92-3943-b1bb-ea0977fb8582",
+        "available_at": "2026-08-12T06:22:35.055754Z",
+        "body": null,
+        "headline": "European Equities Traded in the US as American Depositary Receipts Rise in Wednesday Trading",
+        "published_at": "2026-07-22T15:10:24Z",
+        "publisher": "MT Newswires",
+        "ticker": "PRU",
+        "url": "https://finance.yahoo.com/markets/world-indices/articles/european-equities-traded-us-american-151024042.html"
+      },
+      {
+        "article_id": "ae4a2055-0603-31be-b108-4968698b94ff",
+        "available_at": "2026-08-12T06:22:35.055754Z",
+        "body": null,
+        "headline": "European Equities Traded in the US as American Depositary Receipts Track Sharply Higher in Thursday Trading",
+        "published_at": "2026-07-30T15:15:53Z",
+        "publisher": "MT Newswires",
+        "ticker": "PRU",
+        "url": "https://finance.yahoo.com/markets/world-indices/articles/european-equities-traded-us-american-151553087.html"
+      },
+      {
+        "article_id": "6f73cdf1-cc25-3313-b2d7-51bf78a81ae0",
+        "available_at": "2026-08-12T06:22:35.055754Z",
+        "body": null,
+        "headline": "Prudential, HSBC Shares Tumble on China Insurance Tax Report",
+        "published_at": "2026-08-05T11:22:23Z",
+        "publisher": "Bloomberg",
+        "ticker": "PRU",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/prudential-hsbc-shares-tumble-china-112223256.html"
+      }
+    ],
+    "decision_at": "2026-08-12T06:22:35.455805Z",
+    "schema_version": "1.0",
+    "ticker": "PRU"
+  },
+  "response": {
+    "content": "{\"ticker\": \"PRU\", \"overall_direction\": \"neutral\", \"sentiment_score\": 0.0, \"article_analyses\": [{\"article_id\": \"f9007da0-e8df-313a-b4e2-24fec880e0a6\", \"factual_summary\": \"MT Newswires reported higher trading activity for European equities represented by American Depositary Receipts (ADRs) in US markets on Tuesday and Wednesday, May 6th and 7th.\", \"direction\": \"neutral\", \"relevance\": 1.0, \"horizon\": \"short_term\", \"rationale\": \"This article provides a factual record of trading activity for PRU ADRs, reflecting broader market movements in European equities.\", \"uncertainty_flags\": []}, {\"article_id\": \"d5b7af6c-7f90-316c-a2ec-6daeb6f3c67e\", \"factual_summary\": \"MT Newswires reported higher trading activity for European equities represented by American Depositary Receipts (ADRs) in US markets on Wednesday, May 6th.\", \"direction\": \"neutral\", \"relevance\": 1.0, \"horizon\": \"short_term\", \"rationale\": \"This article provides a factual record of trading activity for PRU ADRs, reflecting broader market movements in European equities.\", \"uncertainty_flags\": []}, {\"article_id\": \"b80d9455-1a10-3953-98c1-2876fe5efb06\", \"factual_summary\": \"Simply Wall St. noted a shift in analyst valuation targets for Prudential (PRU) due to changing market perceptions.\", \"direction\": \"neutral\", \"relevance\": 0.7, \"horizon\": \"medium_term\", \"rationale\": \"This article highlights an important factor \u2013 changes in analyst estimates \u2013 which can influence investor sentiment and potentially impact the stock price.\", \"uncertainty_flags\": [\"Analyst estimates are subjective and may not accurately predict future performance\"]}, {\"article_id\": \"b8196dd6-c81d-3fe4-b429-c2e41bbd031f\", \"factual_summary\": \"Investing.com reported a slide in Asia-exposed bank stocks following a report on Hong Kong account suspensions.\", \"direction\": \"negative\", \"relevance\": 0.6, \"horizon\": \"short_term\", \"rationale\": \"This article identifies a specific risk factor \u2013 the suspension of accounts in Hong Kong \u2013 that could negatively impact Prudential's Asian operations.\", \"uncertainty_flags\": [\"The severity and duration of the account suspensions are unknown\"]}, {\"article_id\": \"1021b43b-0d0a-321b-a983-5fae208cbdbb\", \"factual_summary\": \"Insider Monkey reported a lower price target for Prudential (PRU) based on recent market analysis.\", \"direction\": \"negative\", \"relevance\": 0.7, \"horizon\": \"medium_term\", \"rationale\": \"This article indicates a potential downward revision in valuation expectations, which could put pressure on the stock price.\", \"uncertainty_flags\": [\"The reasons for the lower target are not specified\"]}, {\"article_id\": \"2807874c-2e22-35fe-b723-0205ed243035\", \"factual_summary\": \"GuruFocus.com detailed a boom in wealth insurance across AIA and Prudential in Asia.\", \"direction\": \"positive\", \"relevance\": 0.5, \"horizon\": \"medium_term\", \"rationale\": \"This article suggests growth opportunities for Prudential within the Asian wealth management sector.\", \"uncertainty_flags\": [\"The sustainability of this growth is not guaranteed\"]}, {\"article_id\": \"e18772ef-a1df-3547-ae33-0530b2409600\", \"factual_summary\": \"Insider Monkey reported the launch of a financial literacy app, Levela, by Prudential\u2019s Prudence Foundation in Asia and Africa.\", \"direction\": \"neutral\", \"relevance\": 0.3, \"horizon\": \"long_term\", \"rationale\": \"This article highlights a corporate social responsibility initiative with potential long-term benefits for brand reputation and customer engagement.\", \"uncertainty_flags\": [\"The impact of the app on Prudential\u2019s financial performance is uncertain\"]}, {\"article_id\": \"c7a2f8ae-8b92-3943-b1bb-ea0977fb8582\", \"factual_summary\": \"MT Newswires reported higher trading activity for European equities represented by American Depositary Receipts (ADRs) in US markets on Wednesday, July 22nd.\", \"direction\": \"neutral\", \"relevance\": 1.0, \"horizon\": \"short_term\", \"rationale\": \"This article provides a factual record of trading activity for PRU ADRs, reflecting broader market movements in European equities.\", \"uncertainty_flags\": []}, {\"article_id\": \"ae4a2055-0603-31be-b108-4968698b94ff\", \"factual_summary\": \"MT Newswires reported higher trading activity for European equities represented by American Depositary Receipts (ADRs) in US markets on Thursday, July 30th.\", \"direction\": \"neutral\", \"relevance\": 1.0, \"horizon\": \"short_term\", \"rationale\": \"This article provides a factual record of trading activity for PRU ADRs, reflecting broader market movements in European equities.\", \"uncertainty_flags\": []}, {\"article_id\": \"6f73cdf1-cc25-3313-b2d7-51bf78a81ae0\", \"factual_summary\": \"Bloomberg reported a tumble in Prudential and HSBC shares due to a China insurance tax report.\", \"direction\": \"negative\", \"relevance\": 0.8, \"horizon\": \"short_term\", \"rationale\": \"This article identifies a significant negative catalyst \u2013 the China insurance tax report \u2013 that could negatively impact Prudential\u2019s performance in China.\", \"uncertainty_flags\": [\"The specific details of the tax report and its potential impact are not fully disclosed\"]}],\"analysis_confidence\": 0.65,\"uncertainty_flags\":[\"Thin evidence base\",\"Contradictory information across articles\"]}",
+    "model": "gemma3:4b",
+    "provider": "ollama",
+    "received_at": "2026-08-12T06:24:06.333036Z",
+    "request_id": "2026-08-12T06:24:06.332319Z"
+  }
+}
